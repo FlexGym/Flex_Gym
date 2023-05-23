@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import static jakarta.persistence.FetchType.*;
+
 @Getter
 @RequiredArgsConstructor
 @Entity
@@ -17,6 +19,6 @@ public class Information extends BaseEntity {
 
     private String content;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = LAZY)
     private Favorite favorite;
 }
