@@ -12,13 +12,15 @@ import lombok.experimental.SuperBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.FetchType.*;
+
 @Getter
 @RequiredArgsConstructor
 @Entity
 @SuperBuilder
 public class Board extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     private User user;
 
     @OneToMany(mappedBy = "board", cascade = {CascadeType.ALL})
