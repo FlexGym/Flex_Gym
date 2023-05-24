@@ -2,7 +2,7 @@ package com.ll.FlexGym.domain.Board.entity;
 
 import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.Comment.entity.Comment;
-import com.ll.FlexGym.domain.User.entitiy.User;
+import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,7 +21,7 @@ import static jakarta.persistence.FetchType.*;
 public class Board extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
-    private User user;
+    private Member member;
 
     @OneToMany(mappedBy = "board", cascade = {CascadeType.ALL})
     private List<Comment> comments = new ArrayList<>();

@@ -1,7 +1,7 @@
 package com.ll.FlexGym.domain.BoardLike.entity;
 
 import com.ll.FlexGym.domain.Board.entity.Board;
-import com.ll.FlexGym.domain.User.entitiy.User;
+import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 public class BoardLike extends BaseEntity {
     
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;

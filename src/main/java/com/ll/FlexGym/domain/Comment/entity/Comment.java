@@ -2,7 +2,7 @@ package com.ll.FlexGym.domain.Comment.entity;
 
 import com.ll.FlexGym.domain.Board.entity.Board;
 import com.ll.FlexGym.domain.CommentLIke.entity.CommentLike;
-import com.ll.FlexGym.domain.User.entitiy.User;
+import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -23,7 +23,7 @@ public class Comment extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = LAZY)
-    private User user;
+    private Member member;
 
     @ManyToOne(fetch = LAZY)
     private Board board;
