@@ -1,7 +1,7 @@
 package com.ll.FlexGym.domain.Favorite.entity;
 
 import com.ll.FlexGym.domain.Information.entity.Information;
-import com.ll.FlexGym.domain.User.entitiy.User;
+import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -19,7 +19,7 @@ import static jakarta.persistence.FetchType.*;
 public class Favorite extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
-    private User user;
+    private Member member;
 
 
     @OneToOne(mappedBy ="favorite", fetch = LAZY)
