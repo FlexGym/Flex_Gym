@@ -8,7 +8,7 @@
 
 <main layout:fragment="main" style="height: 100vh; display: flex; justify-content: center; align-items: center;">
     <script>
-        function JoinForm__submit(form) {
+        function JoinFormDto__submit(form) {
             // username 이(가) 올바른지 체크
 
             form.username.value = form.username.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
@@ -41,8 +41,24 @@
                 return;
             }
 
+            form.passwordValidation.value = form.passwordValidation.value.trim();
+
+            if (form.passwordValidation.value.length == 0) {
+                form.passwordValidation.focus();
+                toastWarning('비밀번호 확인을 입력해주세요.');
+                return;
+            }
+
+
+            if (form.passwordValidation.value !== form.password.value) {
+                form.passwordValidation.focus();
+                toastWarning('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+
             form.submit(); // 폼 발송
         }
+
     </script>
 
     <div class="max-w-2xl w-full px-4">
@@ -51,7 +67,7 @@
             회원가입
         </h1>
 
-        <form th:action method="POST" class="flex flex-col gap-6" onsubmit="LoginForm__submit(this); return false;">
+        <form th:action method="POST" class="flex flex-col gap-6" onsubmit="JoinFormDto__submit(this); return false;">
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">아이디</span>
@@ -64,6 +80,13 @@
                     <span class="label-text">비빌번호</span>
                 </label>
                 <input type="password" name="password" placeholder="비빌번호" class="input input-bordered"/>
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">비빌번호 확인</span>
+                </label>
+                <input type="password" name="passwordValidation" placeholder="비빌번호 확인" class="input input-bordered"/>
             </div>
 
             <button id="btn-login-1" class="btn btn-block btn-primary gap-1">
