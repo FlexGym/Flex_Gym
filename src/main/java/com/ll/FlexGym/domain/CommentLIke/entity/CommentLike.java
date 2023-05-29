@@ -1,7 +1,7 @@
 package com.ll.FlexGym.domain.CommentLIke.entity;
 
 import com.ll.FlexGym.domain.Comment.entity.Comment;
-import com.ll.FlexGym.domain.User.entitiy.User;
+import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -21,6 +21,6 @@ public class CommentLike extends BaseEntity {
     private Comment comment;
 
     @ManyToOne(fetch = LAZY)
-    private User user;
+    private Member member;
 
 }
