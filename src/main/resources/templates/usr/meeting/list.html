@@ -1,0 +1,34 @@
+<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="">
+
+<head>
+    <title>모임</title>
+</head>
+
+<body>
+
+<main layout:fragment="main">
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성일시</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="meeting, loop : ${meetingList}">
+            <td th:text="${loop.count}"></td>
+            <td>
+                <a th:href="@{|/usr/meeting/detail/${meeting.id}|}" th:text="${meeting.subject}"></a>
+            </td>
+            <td th:text="${#temporals.format(meeting.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/usr/meeting/create}" class="btn btn-primary">모임 등록하기</a>
+</main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="">
+
+<head>
+    <title>모임 상세</title>
+</head>
+
+<body>
+
+<main layout:fragment="main">
+
+<h1 th:text="${meeting.subject}"></h1>
+<div th:text="${meeting.createDate}"></div>
+<div th:text="${meeting.capacity}"></div>
+<div th:text="${meeting.dateTime}"></div>
+<div th:text="${meeting.location}"></div>
+<div th:text="${meeting.content}"></div>
+
+</main>
+
+</body>
+</html>

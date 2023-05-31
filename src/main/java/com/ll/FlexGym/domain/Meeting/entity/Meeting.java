@@ -32,7 +32,7 @@ public class Meeting extends BaseEntity {
 
     //ChatRoom 미반영
 
-    private String meetingName;
+    private String subject;
     private Integer capacity;
     private String location;
     private String dateTime;

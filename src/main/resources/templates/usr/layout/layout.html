@@ -31,6 +31,7 @@
 <!-- 공통 상단 -->
 <header layout:fragment="header" style="display: flex; justify-content: center; align-items: center;">
     <a href="/" class="btn btn-link">메인</a>
+    <a href="/usr/meeting/list" class="btn btn-link">모임</a>
     <a href="/usr/member/login" th:if="${@rq.logout}" class="btn btn-link">로그인</a>
     <a href="/usr/member/join" th:if="${@rq.logout}" class="btn btn-link">회원가입</a>
     <a href="/usr/member/me" th:if="${@rq.login}" class="btn btn-link">내 정보</a>
