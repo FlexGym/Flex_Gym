@@ -1,4 +1,4 @@
-package com.ll.FlexGym.domain.chatUser.entity;
+package com.ll.FlexGym.domain.ChatMember.entity;
 
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.Member.entitiy.Member;

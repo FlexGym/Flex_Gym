@@ -1,7 +1,7 @@
 package com.ll.FlexGym.domain.ChatMessage.entity;
 
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
-import com.ll.FlexGym.domain.chatUser.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;

@@ -2,7 +2,7 @@ package com.ll.FlexGym.domain.ChatRoom.entity;
 
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
-import com.ll.FlexGym.domain.chatUser.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;

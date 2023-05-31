@@ -6,7 +6,7 @@ import com.ll.FlexGym.domain.ChatMessage.entity.ChatMessageType;
 import com.ll.FlexGym.domain.ChatMessage.repository.ChatMessageRepository;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.service.ChatRoomService;
-import com.ll.FlexGym.domain.chatUser.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

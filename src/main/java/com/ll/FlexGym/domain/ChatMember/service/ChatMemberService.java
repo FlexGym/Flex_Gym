@@ -1,7 +1,7 @@
-package com.ll.FlexGym.domain.chatUser.service;
+package com.ll.FlexGym.domain.ChatMember.service;
 
-import com.ll.FlexGym.domain.chatUser.entity.ChatMember;
-import com.ll.FlexGym.domain.chatUser.repository.ChatMemberRepository;
+import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatMember.repository.ChatMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
