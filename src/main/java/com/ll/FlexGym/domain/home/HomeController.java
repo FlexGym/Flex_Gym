@@ -14,6 +14,6 @@ public class HomeController {
     public String showMain() {
         if (rq.isLogout()) return "redirect:/usr/member/login";
 
-        return "redirect:/rooms";
+        return "redirect:/usr/chat/rooms";
     }
 }

@@ -4,7 +4,7 @@ let ChatMessageUl = null;
 
 function getChatMessages() {
     console.log("fromId : " + fromId);
-    fetch(`/rooms/${chatRoomId}/messages?fromId=${fromId}`, {
+    fetch(`/usr/chat/rooms/${chatRoomId}/messages?fromId=${fromId}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

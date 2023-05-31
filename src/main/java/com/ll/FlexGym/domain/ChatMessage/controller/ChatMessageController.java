@@ -49,7 +49,7 @@ public class ChatMessageController {
         System.out.println("예외 발생!!");
     }
 
-    @GetMapping("/rooms/{roomId}/messages")
+    @GetMapping("/usr/chat/rooms/{roomId}/messages")
     @ResponseBody
     public List<ChatMessageDto> findAll(
             @PathVariable Long roomId, @AuthenticationPrincipal SecurityMember member,

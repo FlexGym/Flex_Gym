@@ -13,12 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/usr/chat")
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
@@ -30,7 +32,7 @@ public class ChatRoomController {
         List<ChatRoom> chatRooms = chatRoomService.findAll();
 
         model.addAttribute("chatRooms", chatRooms);
-        return "rooms";
+        return "usr/chat/rooms";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -43,13 +45,13 @@ public class ChatRoomController {
 
         model.addAttribute("chatRoom", chatRoomDto);
 
-        return "room";
+        return "usr/chat/room";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/rooms/new")
     public String showNewRoom() {
-        return "newRoom";
+        return "usr/chat/newRoom";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -60,6 +62,6 @@ public class ChatRoomController {
 
         ChatRoom chatRoom = chatRoomService.createAndSave(roomName, member.getId());
 
-        return "redirect:/rooms/" + chatRoom.getId();
+        return "redirect:/usr/chat/rooms/" + chatRoom.getId();
     }
 }
