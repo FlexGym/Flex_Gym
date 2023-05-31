@@ -4,12 +4,14 @@ import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Meeting.repository.MeetingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class MeetingService {
     private final MeetingRepository meetingRepository;
 
@@ -21,6 +23,7 @@ public class MeetingService {
         return meetingRepository.findById(id);
     }
 
+    @Transactional
     public void create(String subject, Integer capacity, String location, String dateTime, String content) {
         Meeting meeting = Meeting
                 .builder()
