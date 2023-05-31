@@ -22,7 +22,7 @@ import static lombok.AccessLevel.PROTECTED;
 @SuperBuilder
 public class ChatMessage extends BaseEntity {
 
-    private String message; // 내용
+    private String content; // 내용
 
     @ManyToOne(fetch = LAZY)
     private ChatMember sender; // 작성자
@@ -34,13 +34,13 @@ public class ChatMessage extends BaseEntity {
     private ChatMessageType type;
 
     @Builder
-    public ChatMessage(String message, ChatMember sender, ChatRoom chatRoom, ChatMessageType type) {
+    public ChatMessage(String content, ChatMember sender, ChatRoom chatRoom, ChatMessageType type) {
 
-        Assert.notNull(message, "message는 널일 수 없습니다.");
+        Assert.notNull(content, "content는 널일 수 없습니다.");
         Assert.notNull(sender, "sender는 널일 수 없습니다.");
         Assert.notNull(chatRoom, "chatRoom는 널일 수 없습니다.");
 
-        this.message = message;
+        this.content = content;
         this.sender = sender;
         this.chatRoom = chatRoom;
     }

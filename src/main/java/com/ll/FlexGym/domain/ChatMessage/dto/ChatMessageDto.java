@@ -41,7 +41,7 @@ public class ChatMessageDto {
                 .id(chatMessage.getId())
                 .type(chatMessage.getType())
                 .sender(userDto)
-                .content(chatMessage.getMessage())
+                .content(chatMessage.getContent())
                 .type(chatMessage.getType())
                 .createdAt(chatMessage.getCreateDate())
                 .updatedAt(chatMessage.getModifyDate())

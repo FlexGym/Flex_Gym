@@ -24,7 +24,7 @@ public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomService chatRoomService;
 
-    public ChatMessage createAndSave(String message, Long senderId, Long chatRoomId, ChatMessageType type) {
+    public ChatMessage createAndSave(String content, Long senderId, Long chatRoomId, ChatMessageType type) {
 
         ChatRoom chatRoom = chatRoomService.findById(chatRoomId);
 
@@ -34,7 +34,7 @@ public class ChatMessageService {
                 .orElseThrow();
 
         ChatMessage chatMessage = ChatMessage.builder()
-                .message(message)
+                .content(content)
                 .sender(sender)
                 .type(type)
                 .chatRoom(chatRoom)
