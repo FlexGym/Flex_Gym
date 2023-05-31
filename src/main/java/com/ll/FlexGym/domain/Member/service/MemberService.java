@@ -2,6 +2,7 @@ package com.ll.FlexGym.domain.Member.service;
 
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.repository.MemberRepository;
+import com.ll.FlexGym.global.exception.DataNotFoundException;
 import com.ll.FlexGym.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,5 +54,17 @@ public class MemberService {
         if (opMember.isPresent()) return RsData.of("S-2", "로그인 되었습니다.", opMember.get());
 
         return join(providerTypeCode, username, "");
+    }
+
+
+    public Member getMember(String username){
+        Optional<Member> member = this.memberRepository.findByUsername(username);
+        if(member.isPresent())
+        {
+            return member.get();
+        }
+        else {
+            throw new DataNotFoundException("member not found");
+        }
     }
 }

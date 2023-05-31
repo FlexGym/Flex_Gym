@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     private final Rq rq;
 
+
+
     @GetMapping("/")
     public String showMain() {
         if (rq.isLogout()) return "redirect:/usr/member/login";
