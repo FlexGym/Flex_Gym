@@ -29,8 +29,8 @@ import static com.ll.FlexGym.domain.ChatMessage.entity.ChatMessageType.MESSAGE;
 public class ChatMessageController {
     private final ChatMessageService chatMessageService;
 
-    @MessageMapping("/chats/{roomId}/sendMessage")
-    @SendTo("/topic/chats/{roomId}")
+    @MessageMapping("/chats/{roomId}/sendMessage") // app/chats/{roomId}/sendMessage
+    @SendTo("/topic/chats/{roomId}") // 다시보내는 경로? enableSimpleBroker
     public SignalResponse sendChatMessage(@DestinationVariable Long roomId, ChatMessageRequest request,
                                           @AuthenticationPrincipal SecurityMember member)  {
 

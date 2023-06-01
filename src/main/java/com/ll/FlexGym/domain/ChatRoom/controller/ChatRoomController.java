@@ -40,6 +40,9 @@ public class ChatRoomController {
     public String showRoom(@PathVariable Long roomId, Model model, @AuthenticationPrincipal SecurityMember member) {
 
         log.info("showRoom SecurityMember = {}", member);
+        log.info("member.getUsername = {}", member.getUsername());
+        log.info("member.getAuthorities = {}", member.getAuthorities());
+        log.info("member.getId = {}", member.getId());
 
         ChatRoomDto chatRoomDto = chatRoomService.getByIdAndUserId(roomId, member.getId());
 

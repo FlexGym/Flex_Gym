@@ -56,6 +56,7 @@ public class ChatRoom extends BaseEntity {
                 .member(owner)
                 .chatRoom(this)
                 .build();
+
         chatMembers.add(chatMember);
     }
 }

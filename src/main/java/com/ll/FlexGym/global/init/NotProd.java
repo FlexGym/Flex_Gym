@@ -28,11 +28,6 @@ public class NotProd {
 
                 ChatRoom chatRoom1 = chatRoomService.createAndSave("환영합니다.1", memberUser1.getId());
                 ChatRoom chatRoom2 = chatRoomService.createAndSave("환영합니다.2", memberUser2.getId());
-
-                chatRoom1.addChatUser(memberUser2);
-                chatRoom1.addChatUser(memberUser3);
-                chatRoom2.addChatUser(memberUser1);
-                chatRoom2.addChatUser(memberUser3);
             }
         };
     }
