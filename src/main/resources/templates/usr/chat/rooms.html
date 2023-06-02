@@ -8,8 +8,6 @@
         <th>id</th>
         <th>name</th>
         <th>owner_username</th>
-        <th>createdAt</th>
-        <th>updatedAt</th>
         <th>Enter</th>
     </tr>
     <tr th:each="chatRoom : ${chatRooms}">
@@ -17,8 +15,6 @@
         <td th:text="${chatRoom.id}"></td>
         <td th:text="${chatRoom.name}"></td>
         <td th:text="${chatRoom.owner.username}"></td>
-<!--        <td th:text="${chatRoom.createdAt}"></td>-->
-<!--        <td th:text="${chatRoom.updatedAt}"></td>-->
         <td>
             <a th:href="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}">Enter</a>
         </td>
