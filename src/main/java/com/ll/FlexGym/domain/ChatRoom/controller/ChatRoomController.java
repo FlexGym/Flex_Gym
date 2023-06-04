@@ -81,7 +81,7 @@ public class ChatRoomController {
      * 채팅방 삭제(Owner만 가능)
      */
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/rooms/{roomId}") // Delete 요청으로 변경
+    @PostMapping("/rooms/{roomId}")
     public String removeRoom(@PathVariable Long roomId, @AuthenticationPrincipal SecurityMember member) {
         chatRoomService.remove(roomId, member.getId());
         return "redirect:/usr/chat/rooms";
@@ -91,7 +91,7 @@ public class ChatRoomController {
      * Member가 채팅방 나가기
      */
 //    @PreAuthorize("isAuthenticated()")
-//    @PostMapping("/rooms/{roomId}")
+//    @DeleteMapping("/rooms/{roomId}")
 //    public String exitChatRoom(@PathVariable Long roomId, @AuthenticationPrincipal SecurityMember member){
 //        chatRoomService.exitChatRoom(roomId, member.getId());
 //
