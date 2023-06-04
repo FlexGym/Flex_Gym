@@ -1,6 +1,7 @@
 package com.ll.FlexGym.domain.ChatRoom.service;
 
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatMember.repository.ChatMemberRepository;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.repository.ChatRoomRepository;
@@ -21,6 +22,8 @@ import java.util.Optional;
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
+
+    private final ChatMemberRepository chatMemberRepository;
     private final MemberService memberService;
 
     @Transactional
@@ -57,14 +60,6 @@ public class ChatRoomService {
 
         addChatRoomMember(chatRoom, member, memberId);
 
-//        Optional<ChatMember> existingMember = chatRoom.getChatMembers().stream()
-//                .filter(chatMember -> chatMember.getMember().getId().equals(memberId))
-//                .findFirst();
-//
-//        if (existingMember.isEmpty()) {
-//            chatRoom.addChatUser(member);
-//        }
-
         chatRoom.getChatMembers().stream()
                 .filter(chatMember -> chatMember.getMember().getId().equals(memberId))
                 .findFirst()
@@ -88,5 +83,52 @@ public class ChatRoomService {
         }
     }
 
+    /**
+     * 채팅방 삭제
+     */
+    @Transactional
+    public void remove(Long roomId, Long OwnerId) {
+        Member owner = memberService.findByIdElseThrow(OwnerId);
+        log.info("roomId = {}", roomId);
+        log.info("OnwerId = {}", owner.getId());
 
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 방입니다."));
+
+        if(!chatRoom.getOwner().equals(owner)) {
+            throw new IllegalArgumentException("방 삭제 권한이 없습니다.");
+        }
+
+        removeChatRoom(chatRoom);
+    }
+
+    public void removeChatRoom(ChatRoom chatRoom) {
+        chatRoom.getChatMembers().clear();
+        chatRoomRepository.delete(chatRoom);
+    }
+
+
+    /**
+     * 유저가 방 나가기
+     * 현재는 사용안하고 있음!
+     */
+    @Transactional
+    public void exitChatRoom(Long roomId, Long memberId) {
+        ChatRoom chatRoom = findById(roomId);
+        log.info("memberId = {} ", memberId);
+
+        // 해당 유저의 ChatMember를 제거합니다.
+        ChatMember chatMember = findChatMemberByMemberId(chatRoom, memberId);
+        log.info("chatMember = {} ", chatMember);
+        if (chatMember != null) {
+            chatRoom.removeChatMember(chatMember);
+        }
+    }
+
+    private ChatMember findChatMemberByMemberId(ChatRoom chatRoom, Long memberId) {
+        return chatRoom.getChatMembers().stream()
+                .filter(chatMember -> chatMember.getMember().getId().equals(memberId))
+                .findFirst()
+                .orElse(null);
+    }
 }

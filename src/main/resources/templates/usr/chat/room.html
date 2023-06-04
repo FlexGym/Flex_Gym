@@ -86,6 +86,7 @@
             <th>방 이름</th>
             <th>Owner</th>
             <th>방 나가기</th>
+            <th>채팅방 삭제</th>
         </tr>
         </thead>
         <tbody>
@@ -95,6 +96,11 @@
             <td th:text="${chatRoom.owner.username}"></td>
             <td>
                 <button id="disconnectButton" onclick="disconnect()">나가기</button>
+            </td>
+            <td th:if="${chatRoom.owner.id == #authentication.principal.id}">
+                <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="return confirm('방을 삭제하시겠습니까?')">
+                    <button type="submit">삭제</button>
+                </form>
             </td>
         </tr>
         </tbody>

@@ -10,10 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +22,9 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
 
+    /**
+     * 방 조회
+     */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/rooms")
     public String showRooms(Model model) {
@@ -35,6 +35,9 @@ public class ChatRoomController {
         return "usr/chat/rooms";
     }
 
+    /**
+     * 방 입장
+     */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/rooms/{roomId}")
     public String showRoom(@PathVariable Long roomId, Model model, @AuthenticationPrincipal SecurityMember member) {
@@ -51,12 +54,18 @@ public class ChatRoomController {
         return "usr/chat/room";
     }
 
+    /**
+     * 방 생성
+     */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/rooms/new")
     public String showNewRoom() {
         return "usr/chat/newRoom";
     }
 
+    /**
+     * 방 생성
+     */
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/rooms")
     public String newRoom(String roomName, @AuthenticationPrincipal SecurityMember member) {
@@ -67,4 +76,26 @@ public class ChatRoomController {
 
         return "redirect:/usr/chat/rooms/" + chatRoom.getId();
     }
+
+    /**
+     * 채팅방 삭제(Owner만 가능)
+     */
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/rooms/{roomId}") // Delete 요청으로 변경
+    public String removeRoom(@PathVariable Long roomId, @AuthenticationPrincipal SecurityMember member) {
+        chatRoomService.remove(roomId, member.getId());
+        return "redirect:/usr/chat/rooms";
+    }
+
+    /**
+     * Member가 채팅방 나가기
+     */
+//    @PreAuthorize("isAuthenticated()")
+//    @PostMapping("/rooms/{roomId}")
+//    public String exitChatRoom(@PathVariable Long roomId, @AuthenticationPrincipal SecurityMember member){
+//        chatRoomService.exitChatRoom(roomId, member.getId());
+//
+//        return "redirect:/usr/chat/rooms";
+//    }
+
 }

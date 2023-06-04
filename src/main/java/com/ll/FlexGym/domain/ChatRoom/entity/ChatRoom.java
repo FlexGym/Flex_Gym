@@ -1,8 +1,9 @@
 package com.ll.FlexGym.domain.ChatRoom.entity;
 
+import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatMessage.entity.ChatMessage;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
-import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -14,10 +15,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
@@ -34,9 +38,12 @@ public class ChatRoom extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     private Member owner;
 
-    @OneToMany(mappedBy = "chatRoom", cascade = PERSIST)
+    @OneToMany(mappedBy = "chatRoom", cascade = PERSIST, orphanRemoval = true)
     @Builder.Default
     private Set<ChatMember> chatMembers = new HashSet<>();
+
+    @OneToMany(mappedBy = "chatRoom", cascade = REMOVE /*, orphanRemoval = true */) // orphanRemoval을 해주는게 좋을지, cascade = REMOVE를 해주는게 좋을지!
+    private List<ChatMessage> chatMessages = new ArrayList<>();
 
     public static ChatRoom create(String name, Member owner) {
 
@@ -58,5 +65,9 @@ public class ChatRoom extends BaseEntity {
                 .build();
 
         chatMembers.add(chatMember);
+    }
+
+    public void removeChatMember(ChatMember chatMember) {
+        chatMembers.remove(chatMember);
     }
 }
