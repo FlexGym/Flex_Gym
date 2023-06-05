@@ -52,4 +52,20 @@ public class MeetingController {
         meetingService.create(meetingForm.getSubject(), rq.getMember(), meetingForm.getCapacity(), meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
         return "redirect:/usr/meeting/list";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{id}")
+    public String cancel(@PathVariable Integer id) {
+        Meeting meeting = meetingService.getMeeting(id).orElse(null);
+
+        RsData canDeleteRsData = meetingService.canDelete(rq.getMember(), meeting);
+
+        if (canDeleteRsData.isFail()) return rq.historyBack(canDeleteRsData);
+
+        RsData deleteRsData = meetingService.delete(meeting);
+
+        if (deleteRsData.isFail()) return rq.historyBack(deleteRsData);
+
+        return rq.redirectWithMsg("/usr/meeting/list", deleteRsData);
+    }
 }
