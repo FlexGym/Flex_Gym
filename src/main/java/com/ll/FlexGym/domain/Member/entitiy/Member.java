@@ -2,6 +2,7 @@ package com.ll.FlexGym.domain.Member.entitiy;
 
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import jakarta.persistence.Entity;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Entity
 @SuperBuilder
+@EqualsAndHashCode(of = {"id"}, callSuper = true)
 public class Member extends BaseEntity {
 
     private String username;
