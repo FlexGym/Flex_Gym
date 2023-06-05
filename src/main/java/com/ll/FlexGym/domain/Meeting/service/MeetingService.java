@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +25,7 @@ public class MeetingService {
     }
 
     @Transactional
-    public void create(String subject, Integer capacity, String location, String dateTime, String content) {
+    public void create(String subject, Integer capacity, String location, LocalDateTime dateTime, String content) {
         Meeting meeting = Meeting
                 .builder()
                 .subject(subject)

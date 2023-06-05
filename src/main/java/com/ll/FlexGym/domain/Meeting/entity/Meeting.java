@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -35,7 +36,7 @@ public class Meeting extends BaseEntity {
     private String subject;
     private Integer capacity;
     private String location;
-    private String dateTime;
+    private LocalDateTime dateTime;
     private String content;
 
 }

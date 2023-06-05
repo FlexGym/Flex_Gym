@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -23,7 +24,6 @@ public class MeetingController {
 
     private final MeetingService meetingService;
 
-    @PreAuthorize("isAnonymous()")
     @GetMapping("/list")
     public String showList(Model model) {
         List<Meeting> meetingList = this.meetingService.getList();
@@ -37,16 +37,20 @@ public class MeetingController {
         model.addAttribute("meeting", meeting);
         return "usr/meeting/detail";
     }
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String meetingCreate(MeetingForm meetingForm) {
         return "usr/meeting/form";
     }
+
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String meetingCreate(@Valid MeetingForm meetingForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "usr/meeting/form";
         }
-        meetingService.create(meetingForm.getSubject(), meetingForm.getCapacity(), meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+        meetingService.create(meetingForm.getSubject(), meetingForm.getCapacity(), meetingForm.getLocation(), LocalDateTime.parse(meetingForm.getDateTime()), meetingForm.getContent());
         return "redirect:/usr/meeting/list";
     }
 }
