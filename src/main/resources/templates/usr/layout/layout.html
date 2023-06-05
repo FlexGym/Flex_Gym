@@ -14,6 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
     <link rel="stylesheet" href="https://jhs512.github.io/toastr/toastr.css">
 
+    <!-- 썸어트폰-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- 공통 JS 불러오기 -->
     <script src="/resource/common/common.js"></script>
     <!-- 공통 CSS 불러오기 -->
@@ -29,14 +31,27 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <!-- 공통 상단 -->
-<header layout:fragment="header" style="display: flex; justify-content: center; align-items: center;">
-    <a href="/" class="btn btn-link">메인</a>
-    <a href="/usr/member/login" th:if="${@rq.logout}" class="btn btn-link">로그인</a>
-    <a href="/usr/member/join" th:if="${@rq.logout}" class="btn btn-link">회원가입</a>
-    <a href="/usr/member/me" th:if="${@rq.login}" class="btn btn-link">내 정보</a>
-    <a href="javascript:;" th:if="${@rq.login}" onclick="$(this).next().submit();" class="btn btn-link">로그아웃</a>
-    <form th:if="${@rq.login}" hidden th:action="|/member/logout|" method="POST"></form>
-    <span th:if="${@rq.login}" th:text="|${@rq.member.username}님 환영합니다.|"></span>
+<header style="display: flex; justify-content: space-between; align-items: center; background-color: #f1f1f1; padding: 10px;">
+    <div>
+        <a href="/usr/main/home" style="text-decoration: none; margin-right: 10px; color: #333333;">Flex Gym</a>
+        <a href="/usr/meeting/list" style="text-decoration: none; margin-right: 10px; color: #333;">모임</a>
+        <a href="/usr/board/board_list" style="text-decoration: none; margin-right: 10px; color: #333;">커뮤니티</a>
+        <a href="/usr/information/info" style="text-decoration: none; margin-right: 10px; color: #333;">운동영상</a>
+        <a href="/usr/member/me" style="text-decoration: none; margin-right: 10px; color: #333;">마이페이지</a>
+        <a href="/usr/chat/rooms" style="text-decoration: none; margin-right: 10px; color: #333;">채팅방</a>
+    </div>
+    <div>
+        <a href="/usr/member/login" th:if="${@rq.logout}" style="text-decoration: none; margin-right: 10px; color: #333;" class="btn btn-link">로그인</a>
+        <a href="/usr/member/join" th:if="${@rq.logout}" style="text-decoration: none; margin-right: 10px; color: #333;" class="btn btn-link">회원가입</a>
+        <a th:if="${@rq.login}" href="javascript:" onclick="$(this).next().submit();" style="text-decoration: none; margin-right: 10px; color: #333;" class="btn btn-link">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> 로그아웃
+        </a>
+        <form th:if="${@rq.login}" hidden th:action="|/usr/member/logout|" method="POST"></form>
+
+
+        <form th:if="${@rq.login}" hidden th:action="|/member/logout|" method="POST"></form>
+        <span th:if="${@rq.login}" th:text="|${@rq.member.username}님 환영합니다.|"></span>
+    </div>
 </header>
 
 <main layout:fragment="main"></main>
