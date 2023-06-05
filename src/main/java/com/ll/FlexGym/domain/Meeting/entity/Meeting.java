@@ -34,9 +34,11 @@ public class Meeting extends BaseEntity {
     //ChatRoom 미반영
 
     private String subject;
-    private Integer capacity;
+    private Integer capacity; // 참여 가능 인원
+    private Integer nowParticipantsNum; // 현재 참여자 수
     private String location;
-    private LocalDateTime dateTime;
+    private String dateTime;
     private String content;
+    private LocalDateTime modifyDate;
 
 }

@@ -3,18 +3,16 @@ package com.ll.FlexGym.domain.Meeting.controller;
 import com.ll.FlexGym.domain.Meeting.MeetingForm;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Meeting.service.MeetingService;
+import com.ll.FlexGym.global.rq.Rq;
+import com.ll.FlexGym.global.rsData.RsData;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -22,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MeetingController {
 
+    private final Rq rq;
     private final MeetingService meetingService;
 
     @GetMapping("/list")
@@ -50,7 +49,7 @@ public class MeetingController {
         if (bindingResult.hasErrors()) {
             return "usr/meeting/form";
         }
-        meetingService.create(meetingForm.getSubject(), meetingForm.getCapacity(), meetingForm.getLocation(), LocalDateTime.parse(meetingForm.getDateTime()), meetingForm.getContent());
+        meetingService.create(meetingForm.getSubject(), rq.getMember(), meetingForm.getCapacity(), meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
         return "redirect:/usr/meeting/list";
     }
 }

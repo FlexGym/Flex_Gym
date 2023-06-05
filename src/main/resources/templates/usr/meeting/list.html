@@ -16,6 +16,7 @@
             <th>모집위치</th>
             <th>모집인원</th>
             <th>작성일시</th>
+            <th>작성자</th>
         </tr>
         </thead>
         <tbody>
@@ -24,10 +25,11 @@
             <td>
                 <a th:href="@{|/usr/meeting/detail/${meeting.id}|}" th:text="${meeting.subject}"></a>
             </td>
-            <td th:text="${#temporals.format(meeting.dateTime, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${meeting.dateTime}"></td>
             <td th:text="${meeting.location}"></td>
             <td th:text="${meeting.capacity}"></td>
-            <td th:text="${#temporals.format(meeting.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#temporals.format(meeting.createDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${meeting.member.username}"></td>
         </tr>
         </tbody>
     </table>
