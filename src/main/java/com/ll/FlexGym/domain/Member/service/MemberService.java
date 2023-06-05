@@ -54,4 +54,8 @@ public class MemberService {
 
         return join(providerTypeCode, username, "");
     }
+
+    public Member findByIdElseThrow(Long userId) {
+        return memberRepository.findById(userId).orElseThrow();
+    }
 }
