@@ -22,8 +22,6 @@ import java.util.Optional;
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
-
-    private final ChatMemberRepository chatMemberRepository;
     private final MemberService memberService;
 
     @Transactional
@@ -120,6 +118,8 @@ public class ChatRoomService {
         // 해당 유저의 ChatMember를 제거합니다.
         ChatMember chatMember = findChatMemberByMemberId(chatRoom, memberId);
         log.info("chatMember = {} ", chatMember);
+        chatMember.getChatMessages().clear();
+
         if (chatMember != null) {
             chatRoom.removeChatMember(chatMember);
         }

@@ -52,12 +52,9 @@ function connect() {
         console.log('Connected: ' + frame);
 
         stompClient.subscribe(`/topic/chats/${chatRoomId}`, function (data) {
+            // showGreeting(JSON.parse(chatMessage.body));
             getChatMessages();
         });
-
-        // UI 요소를 찾아서 이벤트 리스너를 추가합니다.
-        const disconnectButton = document.getElementById('disconnectButton');
-        disconnectButton.addEventListener('click', disconnect);
     });
 }
 
@@ -72,6 +69,11 @@ function disconnect() {
         stompClient.disconnect();
         console.log('Disconnected');
     }
-
-    window.location.href = '/usr/chat/rooms';
 }
+
+
+function showGreeting(chatMessage) {
+    console.log(chatMessage.name)
+    $("#chatting").append("<tr><td>" + "[" + chatMessage.name + "]" + chatMessage.message + "</td></tr>");
+}
+

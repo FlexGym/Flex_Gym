@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -28,6 +29,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @RequiredArgsConstructor
 @Entity
 @SuperBuilder
+@EqualsAndHashCode(of = {"id"}, callSuper = true)
 public class ChatRoom extends BaseEntity {
 
     private String name;
@@ -42,7 +44,7 @@ public class ChatRoom extends BaseEntity {
     @Builder.Default
     private Set<ChatMember> chatMembers = new HashSet<>();
 
-    @OneToMany(mappedBy = "chatRoom", cascade = REMOVE /*, orphanRemoval = true */) // orphanRemoval을 해주는게 좋을지, cascade = REMOVE를 해주는게 좋을지!
+    @OneToMany(mappedBy = "chatRoom", cascade = PERSIST, orphanRemoval = true )
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
     public static ChatRoom create(String name, Member owner) {

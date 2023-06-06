@@ -90,12 +90,12 @@ public class ChatRoomController {
     /**
      * Member가 채팅방 나가기
      */
-//    @PreAuthorize("isAuthenticated()")
-//    @DeleteMapping("/rooms/{roomId}")
-//    public String exitChatRoom(@PathVariable Long roomId, @AuthenticationPrincipal SecurityMember member){
-//        chatRoomService.exitChatRoom(roomId, member.getId());
-//
-//        return "redirect:/usr/chat/rooms";
-//    }
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/rooms/{roomId}")
+    public String exitChatRoom(@PathVariable Long roomId, @AuthenticationPrincipal SecurityMember member){
+        chatRoomService.exitChatRoom(roomId, member.getId());
+
+        return "redirect:/usr/chat/rooms";
+    }
 
 }
