@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -32,10 +33,12 @@ public class Meeting extends BaseEntity {
 
     //ChatRoom 미반영
 
-    private String meetingName;
-    private Integer capacity;
+    private String subject;
+    private Integer capacity; // 참여 가능 인원
+    private Integer nowParticipantsNum; // 현재 참여자 수
     private String location;
     private String dateTime;
     private String content;
+    private LocalDateTime modifyDate;
 
 }
