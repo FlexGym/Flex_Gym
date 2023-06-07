@@ -19,6 +19,10 @@ public class Information extends BaseEntity {
 
     private String content;
 
+    private String videoId;
+    private String title;
+    private String videoThumnailUrl;
+
     @OneToOne(fetch = LAZY)
     private Favorite favorite;
 }
