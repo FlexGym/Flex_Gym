@@ -2,6 +2,7 @@ package com.ll.FlexGym.domain.Board.service;
 
 
 import com.ll.FlexGym.domain.Board.entity.Board;
+import com.ll.FlexGym.domain.Board.entity.Category;
 import com.ll.FlexGym.domain.Board.repository.BoardRepository;
 import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.BoardLike.repository.BoardLikeRepository;
@@ -43,10 +44,11 @@ public class BoardService {
         return this.boardRepository.findAllByKeyword(kw,pageable);
     }
 
-    public void create(String title, String content, Member member){
+    public void create(String title, String category, String content, Member member){
         Board b = Board
             .builder()
             .title(title)
+                .category(Category.valueOf(category))
             .content(content)
             .member(member)
             .build();

@@ -36,7 +36,7 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
     private Long views;
-    private Category Category;
+    private Category category;
 
     public void updateTitle(String title){
         this.title = title;

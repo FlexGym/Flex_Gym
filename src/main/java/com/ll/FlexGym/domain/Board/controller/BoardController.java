@@ -67,7 +67,7 @@ public class BoardController {
         }
 
         Member member = this.memberService.getMember(rq.getMember().getUsername());
-        this.boardService.create(boardForm.getTitle(),boardForm.getContent(),member);
+        this.boardService.create(boardForm.getTitle(),boardForm.getCategory(),boardForm.getContent(),member);
         return "redirect:/usr/board/list";
 
     }
