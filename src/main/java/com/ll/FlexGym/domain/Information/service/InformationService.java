@@ -30,18 +30,22 @@ public class InformationService {
         for (String oo: sl) {
             System.out.println(oo);
         }
-        String[] titleAndThumnailurl = new String[2];
+        String[] titleAndThumnailurl = new String[10];
+        ArrayList<String> titleAndThumnailurl2 = new ArrayList<>();
         for(int i = 0; i < sl.size(); i++) {
             titleAndThumnailurl = sl.get(i).split("=");
+            titleAndThumnailurl[0] = titleAndThumnailurl[0].substring(1, titleAndThumnailurl[0].length());
+            titleAndThumnailurl[1] = titleAndThumnailurl[1].substring(0, titleAndThumnailurl[1].length()-1);
+            titleAndThumnailurl2.add(titleAndThumnailurl[0]);
+            titleAndThumnailurl2.add(titleAndThumnailurl[1]);
         }
-        titleAndThumnailurl[0] = titleAndThumnailurl[0].substring(1, titleAndThumnailurl[0].length());
-        titleAndThumnailurl[1] = titleAndThumnailurl[1].substring(0, titleAndThumnailurl[1].length()-1);
         String[] s = hs.keySet().toArray(new String[0]);
         for (String ssss: s){
             System.out.println(ssss);
         }
-        System.out.println(titleAndThumnailurl[0]);
-        System.out.println(titleAndThumnailurl[1]);
+        for(String sss : titleAndThumnailurl2){
+            System.out.println(sss);
+        }
     }
 
 }
