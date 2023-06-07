@@ -10,6 +10,7 @@ public class FlexGymApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FlexGymApplication.class, args);
+
 	}
 
 }

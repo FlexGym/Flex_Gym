@@ -1,0 +1,36 @@
+<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="">
+
+<head>
+    <title>게시글</title>
+</head>
+
+<body>
+
+<main layout:fragment="main">
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성일시</th>
+            <th>작성자</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board, loop : ${boardList}">
+            <td th:text="${loop.count}"></td>
+            <td>
+                <a th:href="@{|/usr/board/detail/${board.id}|}" th:text="${board.title}"></a>
+            </td>
+            <td th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${board.member.username}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/usr/board/create}" class="btn btn-primary">게시글 등록하기</a>
+</main>
+
+
+</body>
+
+</html>
