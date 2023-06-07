@@ -75,8 +75,11 @@ public class ChatRoomService {
         log.info("memberId = {}", memberId);
         log.info("member.getId = {}", member.getId());
 
+        Meeting meeting = chatRoom.getMeeting(); // 해당 채팅방의 모임 가져오기
+
         if (existingMember.isEmpty()) {
             chatRoom.addChatUser(member);
+            meeting.increaseParticipantsCount(); // 유저가 참여하면 '현재 참여자 수' 1 증가
         }
     }
 

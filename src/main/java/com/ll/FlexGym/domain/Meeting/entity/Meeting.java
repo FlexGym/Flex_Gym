@@ -36,7 +36,7 @@ public class Meeting extends BaseEntity {
 
     private String subject;
     private Integer capacity; // 참여 가능 인원
-    private Integer nowParticipantsNum; // 현재 참여자 수
+    private Integer participantsCount; // 현재 참여자 수
     private String location;
     private String dateTime;
     private String content;
@@ -50,5 +50,9 @@ public class Meeting extends BaseEntity {
         this.content = content;
 
         return RsData.of("S-1", "성공");
+    }
+
+    public void increaseParticipantsCount() {
+        this.participantsCount++;
     }
 }
