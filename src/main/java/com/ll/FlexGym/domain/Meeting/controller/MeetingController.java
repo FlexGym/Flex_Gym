@@ -68,4 +68,39 @@ public class MeetingController {
 
         return rq.redirectWithMsg("/usr/meeting/list", deleteRsData);
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
+    public String showModify(MeetingForm meetingForm,@PathVariable("id") Integer id, Model model) {
+
+        Meeting meeting = meetingService.getMeeting(id).orElse(null);
+
+//        RsData canModifyRsData = meetingService.canModify(rq.getMember(), meeting);
+//
+//        if (canModifyRsData.isFail()) return rq.historyBack(canModifyRsData);
+
+        model.addAttribute("meeting", meeting);
+
+        return "usr/meeting/form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
+    public  String questionModify(@Valid MeetingForm meetingForm, BindingResult bindingResult, @PathVariable("id") Integer id) {
+//        if (bindingResult.hasErrors()) {
+//            return "question_form";
+//        }
+//
+//        RsData<LikeablePerson> rsData = likeablePersonService.modifyAttractive(rq.getMember(), id, modifyForm.getAttractiveTypeCode());
+//
+//        if (rsData.isFail()) {
+//            return rq.historyBack(rsData);
+//        }
+
+        Meeting meeting = meetingService.getMeeting(id).orElse(null);
+
+        RsData<Meeting> rsData = meetingService.modify(meeting, meetingForm.getSubject(), meetingForm.getCapacity(), meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+
+        return rq.redirectWithMsg("/usr/meeting/list", rsData);
+    }
 }

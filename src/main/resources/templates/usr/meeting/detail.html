@@ -23,7 +23,7 @@
 
 <a th:if="${@rq.login} and ${@rq.getMember().username} != ${meeting.member.username}" class="btn btn-primary">참여하기</a>
 <a th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-primary">채팅방으로 이동</a>
-<a th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-primary">수정</a>
+<a th:href="@{|/usr/meeting/modify/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-primary">수정</a>
 <a th:href="@{|/usr/meeting/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-primary">삭제</a>
 </main>
 
