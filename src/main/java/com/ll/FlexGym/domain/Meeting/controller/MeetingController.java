@@ -1,13 +1,16 @@
 package com.ll.FlexGym.domain.Meeting.controller;
 
+import com.ll.FlexGym.domain.ChatRoom.service.ChatRoomService;
 import com.ll.FlexGym.domain.Meeting.MeetingForm;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Meeting.service.MeetingService;
 import com.ll.FlexGym.global.rq.Rq;
 import com.ll.FlexGym.global.rsData.RsData;
+import com.ll.FlexGym.global.security.SecurityMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +25,7 @@ public class MeetingController {
 
     private final Rq rq;
     private final MeetingService meetingService;
+    private final ChatRoomService chatRoomService;
 
     @GetMapping("/list")
     public String showList(Model model) {
@@ -45,11 +49,15 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String meetingCreate(@Valid MeetingForm meetingForm, BindingResult bindingResult) {
+    public String meetingCreate(@Valid MeetingForm meetingForm, BindingResult bindingResult,
+                                @AuthenticationPrincipal SecurityMember member) {
         if (bindingResult.hasErrors()) {
             return "usr/meeting/form";
         }
-        meetingService.create(meetingForm.getSubject(), rq.getMember(), meetingForm.getCapacity(), meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+        Meeting meeting = meetingService.create(meetingForm.getSubject(), rq.getMember(), meetingForm.getCapacity(), meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+
+        chatRoomService.createAndConnect(meetingForm.getSubject(), meeting, member.getId());
+
         return "redirect:/usr/meeting/list";
     }
 
