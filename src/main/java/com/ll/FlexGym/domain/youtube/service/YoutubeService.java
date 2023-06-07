@@ -25,37 +25,56 @@ import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
+import com.ll.FlexGym.domain.youtube.entity.YoutubeEntity;
+import com.ll.FlexGym.domain.youtube.repository.YoutubeRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Prints a list of videos based on a search term.
  *
  * @author Jeremy Walker
  */
+
+@Service
+@RequiredArgsConstructor
+@Transactional
 public class YoutubeService {
 
-    /** Global instance properties filename. */
+    /**
+     * Global instance properties filename.
+     */
     private static String PROPERTIES_FILENAME = "youtube.properties";
 
-    /** Global instance of the HTTP transport. */
+    /**
+     * Global instance of the HTTP transport.
+     */
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
-    /** Global instance of the JSON factory. */
+    /**
+     * Global instance of the JSON factory.
+     */
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 
-    /** Global instance of the max number of videos we want returned (50 = upper limit per page). */
-    private static final long NUMBER_OF_VIDEOS_RETURNED = 25;
+    /**
+     * Global instance of the max number of videos we want returned (50 = upper limit per page).
+     */
+    private static final long NUMBER_OF_VIDEOS_RETURNED = 5;
 
-    /** Global instance of Youtube object to make all API requests. */
+    /**
+     * Global instance of Youtube object to make all API requests.
+     */
     private static YouTube youtube;
 
+    //유튜브 리포지터리 생성
+    private final YoutubeRepository youtubeRepository;
 
     /**
      * Initializes YouTube object to search for videos on YouTube (Youtube.Search.List). The program
@@ -74,7 +93,7 @@ public class YoutubeService {
             System.err.println("There was an error reading " + PROPERTIES_FILENAME + ": " + e.getCause()
                     + " : " + e.getMessage());
             System.exit(1);
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("null error");
         }
 
@@ -85,7 +104,8 @@ public class YoutubeService {
              * the interface and provide a no-op function.
              */
             youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
-                public void initialize(HttpRequest request) throws IOException {}
+                public void initialize(HttpRequest request) throws IOException {
+                }
             }).setApplicationName("youtube-cmdline-search-sample").build();
 
             // Get query term from user.
@@ -98,7 +118,7 @@ public class YoutubeService {
              * console.developers.google.com/). This is good practice and increased your quota.
              */
             String apiKey = "AIzaSyBNO6ksEF9AgbLOB2fzWX5Cdl4mGkQPx6c";
-                    //properties.getProperty("AIzaSyBNO6ksEF9AgbLOB2fzWX5Cdl4mGkQPx6c"); 임시로제거 후 직접주입
+            //properties.getProperty("AIzaSyBNO6ksEF9AgbLOB2fzWX5Cdl4mGkQPx6c"); 임시로제거 후 직접주입
             search.setKey(apiKey);
             search.setQ(queryTerm);
             /*
@@ -156,7 +176,7 @@ public class YoutubeService {
      *
      * @param query Search query (String)
      */
-    private static void prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
+    private static HashMap prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
 
         System.out.println("\n=============================================================");
         System.out.println(
@@ -166,7 +186,7 @@ public class YoutubeService {
         if (!iteratorSearchResults.hasNext()) {
             System.out.println(" There aren't any results for your query.");
         }
-
+        HashMap<String, HashMap<String, String>> videoList = new HashMap<>();
         while (iteratorSearchResults.hasNext()) {
 
             SearchResult singleVideo = iteratorSearchResults.next();
@@ -176,11 +196,76 @@ public class YoutubeService {
             if (rId.getKind().equals("youtube#video")) {
                 Thumbnail thumbnail = (Thumbnail) singleVideo.getSnippet().getThumbnails().get("default");
 
+                videoList.put(rId.getVideoId(), getMap(singleVideo.getSnippet().getTitle(), thumbnail.getUrl()));
+                System.out.println(videoList);
                 System.out.println(" Video Id" + rId.getVideoId());
                 System.out.println(" Title: " + singleVideo.getSnippet().getTitle());
                 System.out.println(" Thumbnail: " + thumbnail.getUrl());
                 System.out.println("\n-------------------------------------------------------------\n");
             }
         }
+        return videoList;
+
+    }
+
+    public HashMap<String, HashMap<String, String>> getYoutubeData() throws IOException {
+        //HashMap<String, HashMap<String, String>> videoList = new HashMap<>();
+        try {
+            youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
+                public void initialize(HttpRequest request) throws IOException {
+                }
+            }).setApplicationName("youtube-cmdline-search-sample").build();
+
+            // Get query term from user.
+            String queryTerm = getInputQuery();
+
+            YouTube.Search.List search = youtube.search().list("id,snippet");
+            /*
+             * It is important to set your API key from the Google Developer Console for
+             * non-authenticated requests (found under the Credentials tab at this link:
+             * console.developers.google.com/). This is good practice and increased your quota.
+             */
+            String apiKey = "AIzaSyBNO6ksEF9AgbLOB2fzWX5Cdl4mGkQPx6c";
+            //properties.getProperty("AIzaSyBNO6ksEF9AgbLOB2fzWX5Cdl4mGkQPx6c"); 임시로제거 후 직접주입
+            search.setKey(apiKey);
+            search.setQ(queryTerm);
+            /*
+             * We are only searching for videos (not playlists or channels). If we were searching for
+             * more, we would add them as a string like this: "video,playlist,channel".
+             */
+            search.setType("video");
+            /*
+             * This method reduces the info returned to only the fields we need and makes calls more
+             * efficient.
+             */
+            search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
+            search.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
+            SearchListResponse searchResponse = search.execute();
+
+            List<SearchResult> searchResultList = searchResponse.getItems();
+
+//            if (searchResultList != null) {
+//                prettyPrint(searchResultList.iterator(), "운동영상");
+//            }
+
+            SearchResult singleVideo = searchResultList.iterator().next();
+            ResourceId rId = singleVideo.getId();
+            return prettyPrint(searchResultList.iterator(), "운동영상");
+        } catch (GoogleJsonResponseException e) {
+            System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
+                    + e.getDetails().getMessage());
+        } catch (IOException e) {
+            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public static HashMap<String, String> getMap(String title, String url) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put(title, url);
+        return map;
     }
 }
