@@ -57,14 +57,9 @@ public class MemberService {
     }
 
 
-    public Member getMember(String username){
-        Optional<Member> member = this.memberRepository.findByUsername(username);
-        if(member.isPresent())
-        {
-            return member.get();
-        }
-        else {
-            throw new DataNotFoundException("member not found");
-        }
+
+    public Member findByIdElseThrow(Long userId) {
+        return memberRepository.findById(userId).orElseThrow();
+
     }
 }
