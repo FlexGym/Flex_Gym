@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -13,6 +14,7 @@ public class HomeController {
     @GetMapping("/")
     public String showMain() {
 //        if (rq.isLogout()) return "redirect:/usr/main/home";
+
         if (rq.isLogout()) return "redirect:/usr/main/home";
 
         return "redirect:/usr/main/home";

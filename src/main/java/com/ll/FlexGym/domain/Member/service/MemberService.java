@@ -2,6 +2,7 @@ package com.ll.FlexGym.domain.Member.service;
 
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.repository.MemberRepository;
+import com.ll.FlexGym.global.exception.DataNotFoundException;
 import com.ll.FlexGym.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,7 +56,10 @@ public class MemberService {
         return join(providerTypeCode, username, "");
     }
 
+
+
     public Member findByIdElseThrow(Long userId) {
         return memberRepository.findById(userId).orElseThrow();
+
     }
 }
