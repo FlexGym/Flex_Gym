@@ -4,6 +4,7 @@ import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.Participant.entity.Participant;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
+import com.ll.FlexGym.global.rsData.RsData;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,4 +42,14 @@ public class Meeting extends BaseEntity {
     private String content;
     private LocalDateTime modifyDate;
 
+    public RsData update(String subject, Integer capacity, String location, String dateTime, String content) {
+
+        this.subject = subject;
+        this.capacity = capacity;
+        this.location = location;
+        this.dateTime = dateTime;
+        this.content = content;
+
+        return RsData.of("S-1", "성공");
+    }
 }

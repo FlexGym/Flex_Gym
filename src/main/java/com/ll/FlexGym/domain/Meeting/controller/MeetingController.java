@@ -39,13 +39,13 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String meetingCreate(MeetingForm meetingForm) {
+    public String create(MeetingForm meetingForm) {
         return "usr/meeting/form";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String meetingCreate(@Valid MeetingForm meetingForm, BindingResult bindingResult) {
+    public String create(@Valid MeetingForm meetingForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "usr/meeting/form";
         }
@@ -71,7 +71,7 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String showModify(MeetingForm meetingForm,@PathVariable("id") Integer id, Model model) {
+    public String modify(MeetingForm meetingForm, @PathVariable("id") Integer id) {
 
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
 
@@ -79,14 +79,18 @@ public class MeetingController {
 //
 //        if (canModifyRsData.isFail()) return rq.historyBack(canModifyRsData);
 
-        model.addAttribute("meeting", meeting);
+        meetingForm.setSubject(meeting.getSubject());
+        meetingForm.setCapacity(meeting.getCapacity());
+        meetingForm.setLocation(meeting.getLocation());
+        meetingForm.setDateTime(meeting.getDateTime());
+        meetingForm.setContent(meeting.getContent());
 
         return "usr/meeting/form";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public  String questionModify(@Valid MeetingForm meetingForm, BindingResult bindingResult, @PathVariable("id") Integer id) {
+    public  String Modify(@Valid MeetingForm meetingForm, BindingResult bindingResult, @PathVariable("id") Integer id) {
 //        if (bindingResult.hasErrors()) {
 //            return "question_form";
 //        }

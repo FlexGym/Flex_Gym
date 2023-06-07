@@ -65,15 +65,9 @@ public class MeetingService {
         return RsData.of("S-1", "취소가 가능합니다.");
     }
 
+    @Transactional
     public RsData<Meeting> modify(Meeting meeting, String subject, Integer capacity, String location, String dateTime, String content) {
-        meeting = Meeting
-                .builder()
-                .subject(subject)
-                .capacity(capacity)
-                .location(location)
-                .dateTime(dateTime)
-                .content(content)
-                .build();
+        meeting.update(subject, capacity, location, dateTime, content);
 
         meetingRepository.save(meeting);
         return RsData.of("S-1", "모임 내용을 수정합니다.", meeting);
