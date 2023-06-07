@@ -52,12 +52,13 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String meetingCreate(@Valid MeetingForm meetingForm, BindingResult bindingResult,
+    public String create(@Valid MeetingForm meetingForm, BindingResult bindingResult,
                                 @AuthenticationPrincipal SecurityMember member) {
         if (bindingResult.hasErrors()) {
             return "usr/meeting/form";
         }
-        Meeting meeting = meetingService.create(meetingForm.getSubject(), rq.getMember(), meetingForm.getCapacity(), meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+        Meeting meeting = meetingService.create(meetingForm.getSubject(), rq.getMember(), meetingForm.getCapacity(),
+                meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
 
         chatRoomService.createAndConnect(meetingForm.getSubject(), meeting, member.getId());
 
@@ -66,7 +67,7 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
-    public String cancel(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id) {
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
 
         RsData canDeleteRsData = meetingService.canDelete(rq.getMember(), meeting);
@@ -105,7 +106,8 @@ public class MeetingController {
 
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
 
-        RsData<Meeting> rsData = meetingService.modify(meeting, meetingForm.getSubject(), meetingForm.getCapacity(), meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+        RsData<Meeting> rsData = meetingService.modify(meeting, meetingForm.getSubject(), meetingForm.getCapacity(),
+                meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
 
         return rq.redirectWithMsg("/usr/meeting/detail/%s".formatted(id), rsData);
     }

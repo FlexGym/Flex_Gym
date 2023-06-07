@@ -70,7 +70,7 @@ public class MeetingService {
         meeting.update(subject, capacity, location, dateTime, content);
 
         meetingRepository.save(meeting);
-        return RsData.of("S-1", "모임 내용을 수정합니다.", meeting);
+        return RsData.of("S-1", "모임 내용을 수정하였습니다.", meeting);
     }
 
     public RsData canModify(Member actor, Meeting meeting) {

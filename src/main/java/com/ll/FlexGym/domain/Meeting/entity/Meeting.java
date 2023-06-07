@@ -25,7 +25,7 @@ public class Meeting extends BaseEntity {
     @JoinColumn(name = "user_id")
     private Member member;
 
-    @OneToOne(mappedBy = "meeting", fetch = LAZY)
+    @OneToOne(mappedBy = "meeting", fetch = LAZY, cascade = CascadeType.REMOVE)
     private ChatRoom chatRoom;
 
     //Participant
