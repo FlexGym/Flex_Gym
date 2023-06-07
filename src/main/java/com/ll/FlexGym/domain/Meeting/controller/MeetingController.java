@@ -52,12 +52,8 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-<<<<<<< HEAD
-    public String create(@Valid MeetingForm meetingForm, BindingResult bindingResult) {
-=======
     public String meetingCreate(@Valid MeetingForm meetingForm, BindingResult bindingResult,
                                 @AuthenticationPrincipal SecurityMember member) {
->>>>>>> cd876989a27b63c2f8443ed05af2d8abf6f7efaa
         if (bindingResult.hasErrors()) {
             return "usr/meeting/form";
         }
