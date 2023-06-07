@@ -8,7 +8,8 @@
 
 <main layout:fragment="main">
   <h5 class="my-3 border-bottom pb-2">모임등록</h5>
-  <form th:action="@{/usr/meeting/create}" th:object="${meetingForm}" method="post">
+  <form th:object="${meetingForm}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
       <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
     </div>

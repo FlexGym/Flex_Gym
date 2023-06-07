@@ -14,7 +14,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -43,18 +46,19 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String meetingCreate(MeetingForm meetingForm) {
+    public String create(MeetingForm meetingForm) {
         return "usr/meeting/form";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String meetingCreate(@Valid MeetingForm meetingForm, BindingResult bindingResult,
+    public String create(@Valid MeetingForm meetingForm, BindingResult bindingResult,
                                 @AuthenticationPrincipal SecurityMember member) {
         if (bindingResult.hasErrors()) {
             return "usr/meeting/form";
         }
-        Meeting meeting = meetingService.create(meetingForm.getSubject(), rq.getMember(), meetingForm.getCapacity(), meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+        Meeting meeting = meetingService.create(meetingForm.getSubject(), rq.getMember(), meetingForm.getCapacity(),
+                meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
 
         chatRoomService.createAndConnect(meetingForm.getSubject(), meeting, member.getId());
 
@@ -63,7 +67,7 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
-    public String cancel(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id) {
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
 
         RsData canDeleteRsData = meetingService.canDelete(rq.getMember(), meeting);
@@ -75,5 +79,36 @@ public class MeetingController {
         if (deleteRsData.isFail()) return rq.historyBack(deleteRsData);
 
         return rq.redirectWithMsg("/usr/meeting/list", deleteRsData);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
+    public String showModify(MeetingForm meetingForm, @PathVariable("id") Integer id) {
+
+        Meeting meeting = meetingService.getMeeting(id).orElse(null);
+
+        RsData canModifyRsData = meetingService.canModify(rq.getMember(), meeting);
+
+        if (canModifyRsData.isFail()) return rq.historyBack(canModifyRsData);
+
+        meetingForm.setSubject(meeting.getSubject());
+        meetingForm.setCapacity(meeting.getCapacity());
+        meetingForm.setLocation(meeting.getLocation());
+        meetingForm.setDateTime(meeting.getDateTime());
+        meetingForm.setContent(meeting.getContent());
+
+        return "usr/meeting/form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
+    public String modify(@Valid MeetingForm meetingForm, @PathVariable("id") Integer id) {
+
+        Meeting meeting = meetingService.getMeeting(id).orElse(null);
+
+        RsData<Meeting> rsData = meetingService.modify(meeting, meetingForm.getSubject(), meetingForm.getCapacity(),
+                meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+
+        return rq.redirectWithMsg("/usr/meeting/detail/%s".formatted(id), rsData);
     }
 }
