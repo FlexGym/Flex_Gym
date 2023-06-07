@@ -40,7 +40,6 @@ public class Meeting extends BaseEntity {
     private String location;
     private String dateTime;
     private String content;
-    private LocalDateTime modifyDate;
 
     public RsData update(String subject, Integer capacity, String location, String dateTime, String content) {
 
