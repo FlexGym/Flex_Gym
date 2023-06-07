@@ -46,6 +46,9 @@ public class Board extends BaseEntity {
         this.content = content;
     }
 
+    public void addToBoardLikes(BoardLike boardLike){
+        boardLikes.add(0,boardLike);
+    }
 
 
 }

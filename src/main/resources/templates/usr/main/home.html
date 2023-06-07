@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Flex Gym</title>
+    <style>
+        .banner {
+            background-color: #f2f2f2;
+            padding: 10px;
+            height: 250px;
+            width: 2000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: fixed;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .dic {
+            padding: 10px;
+            height: 250px;
+            width: 2000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 55%; /* 수정: 적절한 값으로 조정 */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin-bottom: 150px;
+            /*border-bottom-width: 20px;*/
+            /*border-bottom-color: white;*/
+
+        }
+
+        .dic2 {
+            padding: 10px;
+            height: 250px;
+            width: 2000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 55%; /* 수정: 적절한 값으로 조정 */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin-top: 250px;
+            border-top-style: solid;
+            border-top-width: 3px;
+            border-top-color: #ff0000;
+        }
+
+        .circle {
+            margin: 0 auto;
+            width: 100px;
+            height: 100px;
+            border: 5px solid rgb(163, 151, 198);
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .recta {
+            /*margin: 0 auto;*/
+            margin-top: 120px;
+            width: 100px;
+            height: 100px;
+            border: 5px solid rgb(163, 151, 198);
+            justify-content: center;
+
+        }
+
+        .explain {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 55%; /* 수정: 적절한 값으로 조정 */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .txt {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 41%; /* 수정: 적절한 값으로 조정 */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .txt2 {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .dsc {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .chunk {
+            margin-left: 150px;
+            margin-right: 150px;
+        }
+
+        .hr-line {
+            border: solid 10px red;
+        }
+
+        hr {
+            color: #4c51bf;
+        }
+
+    </style>
+</head>
+<body>
+<div layout:fragment="main" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="banner">
+        Flex Gym에 오신 것을 환영합니다.
+    </div>
+    <section>
+        <div class="txt">Flex Gym 설명</div>
+        <div class="explain">
+            <div class="dic">
+                <div class="chunk">
+                    <div class="circle"></div>
+                    <div class="dsc">
+                        </br>
+                        모임</br>
+                        여기는 모임입니다.</br>
+                        자주 이용해주세요.</br>
+                    </div>
+                </div>
+
+                <div></div>
+
+                <div class="chunk">
+                    <div class="circle"></div>
+                    <div class="dsc">
+                        </br>
+                        커뮤니티</br>
+                        여기는 커뮤니티입니다.</br>
+                        자주 이용해주세요.</br>
+                    </div>
+                </div>
+
+                <div class="chunk">
+                    <div class="circle"></div>
+                    <div class="dsc">
+                        </br>
+                        운동영상</br>
+                        여기는 운동영상입니다.</br>
+                        자주 이용해주세요.</br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="dic2">
+            <div class="txt2">인기 동영상</div>
+            <div class="chunk">
+                <div class="recta"></div>
+                <div class="dsc">
+                    </br>
+                    영상</br>
+                    하체 영상</br>
+                </div>
+            </div>
+
+            <div></div>
+
+            <div class="chunk">
+                <div class="recta"></div>
+                <div class="dsc">
+                    </br>
+                    영상 2</br>
+                    영상</br>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+</body>
+</html>

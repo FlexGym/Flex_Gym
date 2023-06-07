@@ -1,6 +1,7 @@
 package com.ll.FlexGym.domain.Board.repository;
 
 import com.ll.FlexGym.domain.Board.entity.Board;
+import com.ll.FlexGym.domain.Member.entitiy.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,6 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
             + "   or c.content like %:kw% "
             + "   or m2.username like %:kw% ")
     Page<Board> findAllByKeyword(String kw, Pageable pageable);
+
+
 }

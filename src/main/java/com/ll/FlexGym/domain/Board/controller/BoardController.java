@@ -20,8 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 
-@RequestMapping("/board")
+@RequestMapping("/usr")
 @RequiredArgsConstructor
 @Controller
 public class BoardController {
@@ -31,23 +32,34 @@ public class BoardController {
 
     private final Rq rq;
 
-    @GetMapping("/list")
+    @GetMapping("/board/list")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0")int page, @RequestParam(value = "kw", defaultValue = "")String kw){
+        List<Board> boardList = this.boardService.getBoardList();
         Page<Board> paging = this.boardService.getList(page,kw);
         model.addAttribute("paging",paging);
         model.addAttribute("kw",kw);
+        model.addAttribute("boardList",boardList);
+
                 return "/usr/board/board_list";
     }
 
-    @GetMapping(value="/detail/{id}")
+    @GetMapping("/board/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, CommentForm commentForm){
         Board board = this.boardService.getBoard(id);
         model.addAttribute("board", board);
-        return "board_detail";
+        return "/usr/board/board_detail";
     }
 
+
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/create")
+    @GetMapping("/board/create")
+    public String boardCreate(BoardForm boardForm) {
+        return "/usr/board/board_form";
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/board/create")
     public String boardCreate(@Valid BoardForm boardForm,
                               BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -61,7 +73,7 @@ public class BoardController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/modify/{id}")
+    @PostMapping("/board/modify/{id}")
     public String boardModify(@Valid BoardForm boardForm, BindingResult bindingResult,
                               Rq rq, @PathVariable("id") Integer id){
         Board board = this.boardService.getBoard(id);
@@ -70,6 +82,28 @@ public class BoardController {
         }
         this.boardService.modify(board, boardForm.getTitle(),boardForm.getContent());
         return String.format("redirect:/usr/board/detail/%s",id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/board/delete/{id}")
+    public String boardDelete(Principal principal, @PathVariable("id") Integer id){
+        Board board = this.boardService.getBoard(id);
+        if( !board.getMember().getUsername().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"삭제권한이 없습니다.");
+        }
+        this.boardService.delete(board);
+        return "redirect:/";
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/board/like/{id}")
+    public String boardLike(Principal principal, @PathVariable("id") Integer id){
+        Board board = this.boardService.getBoard(id);
+        Member member = this.memberService.getMember(principal.getName());
+        this.boardService.likeBoard(board,member);
+        return String.format("redirect:/usr/board/detail/%s",id);
+
     }
 
 
