@@ -2,7 +2,6 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.0'
 	id 'io.spring.dependency-management' version '1.1.0'
-//	id 'application'
 }
 
 group = 'com.ll'
@@ -17,16 +16,6 @@ configurations {
 
 repositories {
 	mavenCentral()
-//	maven {
-//		url 'http://google-api-client-libraries.appspot.com/mavenrepo'
-//		allowInsecureProtocol true
-////		http링크 강제하는 방법 시도
-//		//https추가해보아도 안됨
-//	}
-//	maven {
-//		url 'http://repository.codehaus.org/org/codehaus'
-//		allowInsecureProtocol true
-//	}
 }
 
 dependencies {
@@ -43,27 +32,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' // 타임리프에서 layout.html 사용하려고
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
 	implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.4'
-	//implementation 'com.google.api-client:google-api-client:1.30.4'
 	implementation 'com.google.apis:google-api-services-youtube:v3-rev222-1.25.0'
 }
 
-//	implementation "com.google.apis:google-api-services-youtube"
-//	implementation "com.google.http-client:google-http-client-jackson2:${project.properties['project.http.version']}"
-
-
-//application {
-////	mainClass = 'com.google.api.services.samples.youtube.cmdline.youtube_cmdline_topics_sample.Topics'
-//}
-
-//compileJava.options.encoding = 'UTF-8'
-
-//java {
-//	sourceCompatibility = JavaVersion.VERSION_1_6
-//	targetCompatibility = JavaVersion.VERSION_1_6
-//}
 tasks.named('test') {
 	useJUnitPlatform()
 }
