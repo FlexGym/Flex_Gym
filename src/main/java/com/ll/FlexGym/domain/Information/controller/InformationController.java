@@ -2,6 +2,7 @@ package com.ll.FlexGym.domain.Information.controller;
 
 //import com.ll.FlexGym.domain.Information.service.InformationService;
 
+import com.ll.FlexGym.domain.Information.service.InformationService;
 import com.ll.FlexGym.domain.youtube.controller.YoutubeController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +19,7 @@ import java.util.List;
 @Controller
 public class InformationController {
 
-    //private final InformationService informationService;
+    private final InformationService informationService;
     private final YoutubeController youtubeController;
 
     @PreAuthorize("isAnonymous()")
@@ -30,8 +31,10 @@ public class InformationController {
 
     @PreAuthorize("isAnonymous()")//나중에 관리자로 바꿔야함
     @GetMapping("/usr/information/getYoutube")
-    public void saveYoutube() throws IOException {
-        youtubeController.injectYoutubeData();
+    @ResponseBody
+    public String saveYoutube() throws IOException {
+        informationService.setYoutubeData(youtubeController.injectYoutubeData());
+        return "데이터가 입력됐습니다";
     }
 
     @ResponseBody // 값 받아오기
