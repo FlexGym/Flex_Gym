@@ -55,29 +55,6 @@ public class ChatRoomController {
     }
 
     /**
-     * 방 생성
-     */
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/rooms/new")
-    public String showNewRoom() {
-        return "usr/chat/newRoom";
-    }
-
-    /**
-     * 방 생성
-     */
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/rooms")
-    public String newRoom(String roomName, @AuthenticationPrincipal SecurityMember member) {
-
-        log.info("newRoom SecurityMember = {}", member);
-
-        ChatRoom chatRoom = chatRoomService.createAndSave(roomName, member.getId());
-
-        return "redirect:/usr/chat/rooms/" + chatRoom.getId();
-    }
-
-    /**
      * 채팅방 삭제(Owner만 가능)
      */
     @PreAuthorize("isAuthenticated()")

@@ -47,13 +47,14 @@ public class ChatRoom extends BaseEntity {
     @OneToMany(mappedBy = "chatRoom", cascade = PERSIST, orphanRemoval = true )
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
-    public static ChatRoom create(String name, Member owner) {
+    public static ChatRoom create(String name, Meeting meeting, Member owner) {
 
         Assert.notNull(name, "name는 널일 수 없습니다.");
         Assert.notNull(owner, "owner는 널일 수 없습니다.");
 
         ChatRoom chatRoom = ChatRoom.builder()
                 .name(name)
+                .meeting(meeting)
                 .owner(owner)
                 .build();
 

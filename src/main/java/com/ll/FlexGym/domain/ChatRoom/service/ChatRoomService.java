@@ -5,6 +5,7 @@ import com.ll.FlexGym.domain.ChatMember.repository.ChatMemberRepository;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.repository.ChatRoomRepository;
+import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -25,17 +26,15 @@ public class ChatRoomService {
     private final MemberService memberService;
 
     @Transactional
-    public ChatRoom createAndSave(String name, Long ownerId) {
-
+    public ChatRoom createAndConnect(String subject, Meeting meeting, Long ownerId) {
         Member owner = memberService.findByIdElseThrow(ownerId);
-
-        ChatRoom chatRoom = ChatRoom.create(name, owner);
+        ChatRoom chatRoom = ChatRoom.create(subject, meeting, owner);
 
         ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
 
         log.info("savedChatRoom = {} ", savedChatRoom);
-
         log.info("Owner = {} ", owner);
+        log.info("meeting = {}", meeting);
 
         savedChatRoom.addChatUser(owner);
 
