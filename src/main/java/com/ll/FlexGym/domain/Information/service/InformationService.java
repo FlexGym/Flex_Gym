@@ -43,4 +43,5 @@ public class InformationService {
         System.out.println(titleAndThumnailurl[0]);
         System.out.println(titleAndThumnailurl[1]);
     }
+
 }
