@@ -23,4 +23,5 @@ public class CommentLike extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     private Member member;
 
+
 }

@@ -2,6 +2,7 @@ package com.ll.FlexGym.domain.Member.service;
 
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.repository.MemberRepository;
+import com.ll.FlexGym.global.exception.DataNotFoundException;
 import com.ll.FlexGym.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,7 @@ public class MemberService {
     public RsData<Member> join(String username, String password) {
         return join("Flex_Gym", username, password);
     }
+
     private RsData<Member> join(String providerTypeCode, String username, String password) {
         if (findByUsername(username).isPresent()) {
             return RsData.of("F-1", "해당 아이디(%s)는 이미 사용중입니다.".formatted(username));
@@ -46,6 +48,7 @@ public class MemberService {
         return RsData.of("S-1", "회원가입이 완료되었습니다.", member);
     }
 
+
     @Transactional
     public RsData<Member> whenSocialLogin(String providerTypeCode, String username) {
         Optional<Member> opMember = findByUsername(username);
@@ -54,4 +57,23 @@ public class MemberService {
 
         return join(providerTypeCode, username, "");
     }
+
+
+    public Member findByIdElseThrow(Long userId) {
+        return memberRepository.findById(userId).orElseThrow();
+
+    }
+
+
+    public Member getMember(String username) {
+        Optional<Member> member = this.memberRepository.findByUsername(username);
+        if (member.isPresent()) {
+            return member.get();
+        } else {
+            throw new DataNotFoundException("member not found");
+        }
+
+    }
+
+
 }

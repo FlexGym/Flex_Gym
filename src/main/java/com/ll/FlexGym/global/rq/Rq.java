@@ -3,6 +3,7 @@ package com.ll.FlexGym.global.rq;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.service.MemberService;
 import com.ll.FlexGym.global.rsData.RsData;
+import com.ll.FlexGym.global.security.SecurityMember;
 import com.ll.FlexGym.standard.Ut;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,7 +11,6 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
@@ -30,8 +30,9 @@ public class Rq {
     private final HttpServletRequest req;
     private final HttpServletResponse resp;
     private final HttpSession session;
-    private final User user;
+    private final SecurityMember securityMember;
     private Member member = null; // 레이지 로딩, 처음부터 넣지 않고, 요청이 들어올 때 넣는다.
+
 
     public Rq(MemberService memberService, MessageSource messageSource, LocaleResolver localeResolver, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
         this.memberService = memberService;
@@ -44,18 +45,18 @@ public class Rq {
         // 현재 로그인한 회원의 인증정보를 가져옴
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication.getPrincipal() instanceof User) {
-            this.user = (User) authentication.getPrincipal();
+        if (authentication.getPrincipal() instanceof SecurityMember) {
+            this.securityMember = (SecurityMember) authentication.getPrincipal();
         } else {
-            this.user = null;
+            this.securityMember = null;
         }
     }
 
-    public boolean isAdmin() {
-        if (isLogout()) return false;
-
-        return getMember().isAdmin();
-    }
+//    public boolean isAdmin() {
+//        if (isLogout()) return false;
+//
+//        return getMember().isAdmin();
+//    }
 
     public boolean isRefererAdminPage() {
         SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
@@ -68,7 +69,7 @@ public class Rq {
 
     // 로그인 되어 있는지 체크
     public boolean isLogin() {
-        return user != null;
+        return securityMember != null;
     }
 
     // 로그아웃 되어 있는지 체크
@@ -82,7 +83,7 @@ public class Rq {
 
         // 데이터가 없는지 체크
         if (member == null) {
-            member = memberService.findByUsername(user.getUsername()).orElseThrow();
+            member = memberService.findByUsername(securityMember.getUsername()).orElseThrow();
         }
 
         return member;

@@ -2,6 +2,26 @@
 
 <head>
     <title>로그인</title>
+    <style>
+        .hr-sect {
+            display: flex;
+            flex-basis: 100%;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 20px;
+            margin: 8px 0px;
+        }
+        .hr-sect::before,
+        .hr-sect::after {
+            content: "";
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.35);
+            height: 1px;
+            font-size: 0px;
+            line-height: 0px;
+            margin: 0px 16px;
+        }
+    </style>
 </head>
 
 <body>
@@ -47,9 +67,9 @@
     </script>
 
     <div class="max-w-2xl w-full px-4">
-        <h1 class="mb-4">
+        <h1 class="mb-4" style="text-align: center; font-size: 32px; font-family: 'Arial', sans-serif; font-weight: bold;">
             <i class="fa-solid fa-arrow-right-to-bracket"></i>
-            로그인
+            Flex Gym
         </h1>
 
         <form th:action method="POST" class="flex flex-col gap-6" onsubmit="LoginForm__submit(this); return false;">
@@ -71,11 +91,12 @@
                     <i class="fa-solid fa-arrow-right-to-bracket"></i>
                     <span>로그인</span>
                 </button>
-            </th:block>
 
-            <a href="/oauth2/authorization/kakao" class="btn btn-block btn-outline gap-1">
-                <i class="fa-solid fa-comment text-[color:#ffe812]"></i>
-                <span>카카오 로그인</span>
+            <div class="hr-sect">간편 로그인</div>
+
+            <a href="/oauth2/authorization/kakao" class="btn btn-block btn-outline gap-1" style="background-color: yellow;">
+                <i class="fa-solid fa-comment" style="color: #333333;"></i>
+                <span style="color: #333333;">카카오 로그인</span>
             </a>
         </form>
     </div>

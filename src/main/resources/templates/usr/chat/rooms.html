@@ -1,0 +1,25 @@
+<html>
+<head>
+
+</head>
+<body>
+<table class="tb_col">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>owner_username</th>
+        <th>Enter</th>
+    </tr>
+    <tr th:each="chatRoom : ${chatRooms}">
+
+        <td th:text="${chatRoom.id}"></td>
+        <td th:text="${chatRoom.name}"></td>
+        <td th:text="${chatRoom.owner.username}"></td>
+        <td>
+            <a th:href="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}">Enter</a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
