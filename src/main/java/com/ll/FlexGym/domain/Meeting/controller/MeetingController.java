@@ -11,7 +11,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -71,13 +74,13 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String modify(MeetingForm meetingForm, @PathVariable("id") Integer id) {
+    public String showModify(MeetingForm meetingForm, @PathVariable("id") Integer id) {
 
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
 
-//        RsData canModifyRsData = meetingService.canModify(rq.getMember(), meeting);
-//
-//        if (canModifyRsData.isFail()) return rq.historyBack(canModifyRsData);
+        RsData canModifyRsData = meetingService.canModify(rq.getMember(), meeting);
+
+        if (canModifyRsData.isFail()) return rq.historyBack(canModifyRsData);
 
         meetingForm.setSubject(meeting.getSubject());
         meetingForm.setCapacity(meeting.getCapacity());
@@ -90,21 +93,12 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public  String Modify(@Valid MeetingForm meetingForm, BindingResult bindingResult, @PathVariable("id") Integer id) {
-//        if (bindingResult.hasErrors()) {
-//            return "question_form";
-//        }
-//
-//        RsData<LikeablePerson> rsData = likeablePersonService.modifyAttractive(rq.getMember(), id, modifyForm.getAttractiveTypeCode());
-//
-//        if (rsData.isFail()) {
-//            return rq.historyBack(rsData);
-//        }
+    public String modify(@Valid MeetingForm meetingForm, @PathVariable("id") Integer id) {
 
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
 
         RsData<Meeting> rsData = meetingService.modify(meeting, meetingForm.getSubject(), meetingForm.getCapacity(), meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
 
-        return rq.redirectWithMsg("/usr/meeting/list", rsData);
+        return rq.redirectWithMsg("/usr/meeting/detail/%s".formatted(id), rsData);
     }
 }

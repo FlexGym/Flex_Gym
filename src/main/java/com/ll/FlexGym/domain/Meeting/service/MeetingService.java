@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -71,5 +71,15 @@ public class MeetingService {
 
         meetingRepository.save(meeting);
         return RsData.of("S-1", "모임 내용을 수정합니다.", meeting);
+    }
+
+    public RsData canModify(Member actor, Meeting meeting) {
+        long actorMemberId = actor.getId();
+
+        if (!Objects.equals(actorMemberId, meeting.getMember().getId())) {
+            return RsData.of("F-1", "해당 모임을 수정할 권한이 없습니다.");
+        }
+
+        return RsData.of("S-1", "모임 수정이 가능합니다.");
     }
 }
