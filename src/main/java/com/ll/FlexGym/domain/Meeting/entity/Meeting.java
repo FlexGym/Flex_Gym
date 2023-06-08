@@ -1,8 +1,8 @@
 package com.ll.FlexGym.domain.Meeting.entity;
 
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
-import com.ll.FlexGym.domain.Participant.entity.Participant;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
+import com.ll.FlexGym.domain.Participant.entity.Participant;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import com.ll.FlexGym.global.rsData.RsData;
 import jakarta.persistence.*;
@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -54,5 +53,9 @@ public class Meeting extends BaseEntity {
 
     public void increaseParticipantsCount() {
         this.participantsCount++;
+    }
+
+    public boolean canAddParticipant() {
+        return this.participantsCount < this.capacity;
     }
 }

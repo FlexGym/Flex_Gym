@@ -1,13 +1,13 @@
 package com.ll.FlexGym.domain.ChatRoom.service;
 
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
-import com.ll.FlexGym.domain.ChatMember.repository.ChatMemberRepository;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.repository.ChatRoomRepository;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.service.MemberService;
+import com.ll.FlexGym.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -65,8 +65,7 @@ public class ChatRoomService {
         return ChatRoomDto.fromChatRoom(chatRoom);
     }
 
-    private void addChatRoomMember(ChatRoom chatRoom, Member member, Long memberId) {
-
+    private Optional<ChatMember> getChatUser(ChatRoom chatRoom, Member member, Long memberId) {
         // 만약에 방에 해당 유저가 없다면 추가한다. 방법1
         Optional<ChatMember> existingMember = chatRoom.getChatMembers().stream()
                 .filter(chatMember -> chatMember.getMember().getId().equals(memberId))
@@ -75,12 +74,28 @@ public class ChatRoomService {
         log.info("memberId = {}", memberId);
         log.info("member.getId = {}", member.getId());
 
+        return existingMember;
+    }
+
+    private void addChatRoomMember(ChatRoom chatRoom, Member member, Long memberId) {
+
         Meeting meeting = chatRoom.getMeeting(); // 해당 채팅방의 모임 가져오기
 
-        if (existingMember.isEmpty()) {
+        if (getChatUser(chatRoom, member, memberId).isEmpty()) {
             chatRoom.addChatUser(member);
             meeting.increaseParticipantsCount(); // 유저가 참여하면 '현재 참여자 수' 1 증가
         }
+    }
+
+    public RsData canAddChatRoomMember(ChatRoom chatRoom, Long memberId, Meeting meeting) {
+
+        Member member = memberService.findByIdElseThrow(memberId);
+
+        if (!getChatUser(chatRoom, member, memberId).isEmpty()) return RsData.of("S-1", "기존 모임 채팅방에 참여합니다.");
+
+        if (!meeting.canAddParticipant()) return RsData.of("F-1", "참여자 수 초과로 해당 모임에 참여할 수 없습니다.");
+
+        return RsData.of("S-1", "새로운 모임 채팅방에 참여합니다.");
     }
 
     /**

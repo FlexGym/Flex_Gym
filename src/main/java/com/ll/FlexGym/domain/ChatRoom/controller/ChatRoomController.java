@@ -3,6 +3,9 @@ package com.ll.FlexGym.domain.ChatRoom.controller;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.service.ChatRoomService;
+import com.ll.FlexGym.domain.Meeting.entity.Meeting;
+import com.ll.FlexGym.global.rq.Rq;
+import com.ll.FlexGym.global.rsData.RsData;
 import com.ll.FlexGym.global.security.SecurityMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +23,7 @@ import java.util.List;
 @RequestMapping("/usr/chat")
 public class ChatRoomController {
 
+    private final Rq rq;
     private final ChatRoomService chatRoomService;
 
     /**
@@ -46,6 +50,13 @@ public class ChatRoomController {
         log.info("member.getUsername = {}", member.getUsername());
         log.info("member.getAuthorities = {}", member.getAuthorities());
         log.info("member.getId = {}", member.getId());
+
+        ChatRoom chatRoom = chatRoomService.findById(roomId);
+        Meeting meeting = chatRoom.getMeeting();
+
+        RsData rsData = chatRoomService.canAddChatRoomMember(chatRoom, member.getId(), meeting);
+
+        if (rsData.isFail()) return rq.redirectWithMsg("/usr/meeting/detail/%s".formatted(roomId), rsData);
 
         ChatRoomDto chatRoomDto = chatRoomService.getByIdAndUserId(roomId, member.getId());
 
