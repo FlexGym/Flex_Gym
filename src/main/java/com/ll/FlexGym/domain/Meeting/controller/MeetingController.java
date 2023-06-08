@@ -54,7 +54,7 @@ public class MeetingController {
     public String create(@Valid MeetingForm meetingForm, @AuthenticationPrincipal SecurityMember member) {
 
         Meeting meeting = meetingService.create(meetingForm.getSubject(), rq.getMember(), meetingForm.getCapacity(),
-                meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+                meetingForm.getLocation(), meetingForm.getDate(), meetingForm.getTime(), meetingForm.getContent());
 
         chatRoomService.createAndConnect(meetingForm.getSubject(), meeting, member.getId());
 
@@ -90,7 +90,8 @@ public class MeetingController {
         meetingForm.setSubject(meeting.getSubject());
         meetingForm.setCapacity(meeting.getCapacity());
         meetingForm.setLocation(meeting.getLocation());
-        meetingForm.setDateTime(meeting.getDateTime());
+        meetingForm.setDate(meeting.getDate());
+        meetingForm.setTime(meeting.getTime());
         meetingForm.setContent(meeting.getContent());
 
         return "usr/meeting/form";
@@ -107,7 +108,7 @@ public class MeetingController {
         if (checkCapaRsData.isFail()) return rq.historyBack(checkCapaRsData);
 
         RsData<Meeting> rsData = meetingService.modify(meeting, meetingForm.getSubject(), meetingForm.getCapacity(),
-                meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+                meetingForm.getLocation(), meetingForm.getDate(), meetingForm.getTime(), meetingForm.getContent());
 
         return rq.redirectWithMsg("/usr/meeting/detail/%s".formatted(id), rsData);
     }

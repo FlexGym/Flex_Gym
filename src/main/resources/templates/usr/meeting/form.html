@@ -7,7 +7,7 @@
 <body>
 
 <main layout:fragment="main">
-  <h5 class="my-3 border-bottom pb-2">모임등록</h5>
+  <h1 class="my-3 border-bottom pb-2">모임 등록</h1>
   <form th:object="${meetingForm}" method="post">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     </div>
@@ -17,15 +17,19 @@
     </div>
     <div class="mb-3">
       <label for="capacity" class="form-label">모집인원</label>
-      <input type="number" th:field="*{capacity}" class="form-control" required>
+      <input type="number" min="3" max="20" th:field="*{capacity}" class="form-control" required>
     </div>
     <div class="mb-3">
       <label for="location" class="form-label">장소</label>
       <input type="text" th:field="*{location}" class="form-control" required>
     </div>
     <div class="mb-3">
-      <label for="dateTime" class="form-label">날짜/시간</label>
-      <input type="datetime-local" th:field="*{dateTime}" class="form-control" required>
+      <label for="date" class="form-label">날짜</label>
+      <input type="date" th:field="*{date}" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label for="time" class="form-label">시간</label>
+      <input type="time" th:field="*{time}" class="form-control" required>
     </div>
     <div class="mb-3">
       <label for="content" class="form-label">모임소개</label>

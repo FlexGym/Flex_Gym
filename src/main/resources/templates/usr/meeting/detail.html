@@ -13,7 +13,8 @@
 <div th:text="${#temporals.format(meeting.createDate, 'yyyy-MM-dd HH:mm')}"></div><br><br>
 
 <div th:text="|모집 인원 : ${meeting.capacity}명|"></div>
-<div th:text="|모임 일시 : ${meeting.dateTime}|"></div>
+<div th:text="|모임 날짜 : ${meeting.date}|"></div>
+<div th:text="|모임 시간 : ${meeting.time}|"></div>
 <div th:text="|모임 장소 : ${meeting.location}|"></div><br>
 
 <div> 모임 소개</div>

@@ -37,15 +37,17 @@ public class Meeting extends BaseEntity {
     private Integer capacity; // 참여 가능 인원
     private Integer participantsCount; // 현재 참여자 수
     private String location;
-    private String dateTime;
+    private String date;
+    private String time;
     private String content;
 
-    public RsData update(String subject, Integer capacity, String location, String dateTime, String content) {
+    public RsData update(String subject, Integer capacity, String location, String date, String time, String content) {
 
         this.subject = subject;
         this.capacity = capacity;
         this.location = location;
-        this.dateTime = dateTime;
+        this.date = date;
+        this.time = time;
         this.content = content;
 
         return RsData.of("S-1", "성공");
