@@ -22,7 +22,7 @@ public class MeetingService {
         return this.meetingRepository.findAll();
     }
 
-    public Optional<Meeting> getMeeting(Integer id) {
+    public Optional<Meeting> getMeeting(Long id) {
         return meetingRepository.findById(id);
     }
 
@@ -33,7 +33,7 @@ public class MeetingService {
                 .subject(subject)
                 .member(member)
                 .capacity(capacity)
-                .nowParticipantsNum(0)
+                .participantsCount(1)
                 .location(location)
                 .dateTime(dateTime)
                 .content(content)
@@ -66,7 +66,9 @@ public class MeetingService {
     }
 
     @Transactional
-    public RsData<Meeting> modify(Meeting meeting, String subject, Integer capacity, String location, String dateTime, String content) {
+    public RsData<Meeting> modify(Meeting meeting, String subject, Integer capacity,
+                                  String location, String dateTime, String content) {
+
         meeting.update(subject, capacity, location, dateTime, content);
 
         meetingRepository.save(meeting);
