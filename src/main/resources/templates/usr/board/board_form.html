@@ -1,6 +1,7 @@
 <html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="">
 
 <head>
+    <meta charset="UTF-8">
     <title>모임 등록</title>
 </head>
 
@@ -16,13 +17,16 @@
             <label for="title" class="form-label">제목</label>
             <input type="text" th:field="*{title}" class="form-control">
         </div>
-        <div class="mb-3">
-            <label for="category" class="form-label">카테고리</label>
-<!--            <input type="checkbox" th:field="*{title}" class="form-control">-->
-            <select th:field="*{category}">
 
-            </select>
+        <div class="mb-3">
+            <div>&lt;카테고리&gt;</div>
+            <div th:each="cate : ${category}">
+                <input type="checkbox" th:field="*{category}" th:value="${cate.key}" />
+                <label th:for="${#ids.prev('category')}" th:text="${cate.value}" />
+            </div>
         </div>
+
+
 
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>

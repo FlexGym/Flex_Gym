@@ -15,10 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
@@ -51,10 +48,24 @@ public class CommentController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
+    public String commentModify(CommentForm commentForm, @PathVariable("id") Integer id, Principal principal) {
+        Comment comment = this.commentService.getComment(id);
+
+        if (!comment.getMember().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+
+        commentForm.setContent(comment.getContent());
+        return "usr/comment/comment_form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
     public String commentModify(@Valid CommentForm commentForm, BindingResult bindingResult,
-                                @PathVariable("id") Integer id, Principal principal){
+                                @PathVariable("id") Integer id, Principal principal)
+    {
         if(bindingResult.hasErrors()){
-            return "comment_form";
+            return "usr/comment/comment_form";
         }
 
         Comment comment = this.commentService.getComment(id);
@@ -66,6 +77,7 @@ public class CommentController {
         this.commentService.modify(comment,  commentForm.getContent());
         return String.format("redirect:/usr/board/detail/%s#comment_%s",
                 comment.getBoard().getId(), comment.getId());
+
     }
 
 
@@ -75,7 +87,8 @@ public class CommentController {
         Comment comment = this.commentService.getComment(id);
         Member member = this.memberService.getMember(principal.getName());
         this.commentService.likeComment(comment,member);
-        return String.format("redirect:/usr/comment/detail/%s",id);
+
+        return String.format("redirect:/usr/board/detail/%s",comment.getBoard().getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -88,5 +101,9 @@ public class CommentController {
         this.commentService.delete(comment);
         return String.format("redirect:/usr/board/detail/%s", comment.getBoard().getId());
     }
+
+
+
+
 
 }

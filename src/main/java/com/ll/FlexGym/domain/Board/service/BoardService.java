@@ -2,13 +2,11 @@ package com.ll.FlexGym.domain.Board.service;
 
 
 import com.ll.FlexGym.domain.Board.entity.Board;
-import com.ll.FlexGym.domain.Board.entity.Category;
 import com.ll.FlexGym.domain.Board.repository.BoardRepository;
 import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.BoardLike.repository.BoardLikeRepository;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.global.exception.DataNotFoundException;
-import com.ll.FlexGym.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -47,9 +45,7 @@ public class BoardService {
     public void create(String title, String category, String content, Member member){
         Board b = Board
             .builder()
-            .title(title)
-                .category(Category.valueOf(category))
-            .content(content)
+            .title(title).category(category).content(content)
             .member(member)
             .build();
         this.boardRepository.save(b);
@@ -65,7 +61,8 @@ public class BoardService {
         }
     }
 
-    public void modify(Board board, String title, String content) {
+    public void modify(Board board,String category, String title, String content) {
+        board.updateCategory(category);
         board.updateTitle(title);
         board.updateContent(content);
         this.boardRepository.save(board);
