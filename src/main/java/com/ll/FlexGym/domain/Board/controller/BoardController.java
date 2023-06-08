@@ -88,8 +88,6 @@ public class BoardController {
 
         this.boardService.create(boardForm.getTitle(),category, boardForm.getContent(), mem);
 
-
-
         return "redirect:/usr/board/list";
     }
 
@@ -103,6 +101,7 @@ public class BoardController {
         if(!board.getMember().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다.");
         }
+
         Map<Integer,String> category = new LinkedHashMap<>();
         category.put(1,"운동일지");
         category.put(2,"상체운동");
@@ -110,6 +109,7 @@ public class BoardController {
         category.put(4,"바디프로필");
         category.put(5,"식단");
         model.addAttribute("category",category);
+
         boardForm.setCategory(board.getCategory());
         boardForm.setContent(board.getContent());
         boardForm.setTitle(board.getTitle());
