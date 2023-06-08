@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +16,31 @@ import java.util.Iterator;
 public class InformationService {
 
     private final InformationRepository informationRepository;
+
+    @Transactional
+    public Information create(String videoId, String title, String videoThumnailUrl){
+        Information information = Information
+                .builder()
+                .videoId(videoId)
+                .title(title)
+                .videoThumnailUrl(videoThumnailUrl)
+                .build();
+        informationRepository.save(information);
+
+        return information;
+    }
+
+    public List<Information> getList(){
+        List<Information> informationList = this.informationRepository.findAll();
+
+        return informationList;
+    }
+    public Information getInformation(Long id){
+        Optional<Information> information = informationRepository.findById(id);
+
+        return information.get();
+    }
+
     @Transactional
     public void setYoutubeData(HashMap youtubeData){
 //        String videoId;
@@ -60,11 +82,6 @@ public class InformationService {
             log.info("sss = {}", sss);
         }
 
-//        private String content;
-//
-//        private String videoId;
-//        private String title;
-//        private String videoThumnailUrl;
         for(int i = 0; i < 5; i++) {
             Information information = Information
                     .builder()
