@@ -24,7 +24,12 @@ function drawMessages(messages) {
     messages.forEach((message) => {
 
         const newItem = document.createElement("li");
-        newItem.textContent = `${message.sender.username} : ${message.content}`;
+        console.log(message);
+        if (message.type == "ENTER"){
+            newItem.textContent = `${message.content}`;
+        } else {
+            newItem.textContent = `${message.sender.username} : ${message.content}`;
+        }
 
         ChatMessageUl.appendChild(newItem);
     });

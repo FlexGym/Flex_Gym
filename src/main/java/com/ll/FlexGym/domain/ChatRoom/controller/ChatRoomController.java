@@ -69,7 +69,8 @@ public class ChatRoomController {
         ChatRoomDto chatRoomDto = chatRoomService.getByIdAndUserId(roomId, member.getId());
 
         if (chatRoomDto.isNew()) {
-            chatMessageService.createAndSave(member.getUsername() + "님이 입장하셨습니다.", member.getId(), roomId, ENTER);
+            chatMessageService.createAndSave(" < " + member.getUsername() + "님이 입장하셨습니다. >", member.getId(), roomId, ENTER);
+            // Enter 로 들어올 경우!
             SignalResponse signalResponse = SignalResponse.builder()
                     .type(NEW_MESSAGE)
                     .build();
