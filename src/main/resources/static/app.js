@@ -28,7 +28,14 @@ function drawMessages(messages) {
         if (message.type == "ENTER"){
             newItem.textContent = `${message.content}`;
         } else {
-            newItem.textContent = `${message.sender.username} : ${message.content}`;
+            const createdAt = new Date(message.created_at);
+
+            // 가공된 시간 표시 형식 (MM:SS)
+            const hours = String(createdAt.getHours()).padStart(2, '0');
+            const minutes = String(createdAt.getMinutes()).padStart(2, '0');
+            const formattedTime = `${hours}:${minutes}`;
+
+            newItem.textContent = `${message.sender.username} : ${message.content} <${formattedTime}>`;
         }
 
         ChatMessageUl.appendChild(newItem);
