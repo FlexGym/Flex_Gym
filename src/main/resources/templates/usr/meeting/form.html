@@ -7,6 +7,24 @@
 <body>
 
 <main layout:fragment="main">
+  <script>
+    // Get the current date
+    var today = new Date();
+
+    // Calculate tomorrow's date
+    var tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    // Format tomorrow's date as yyyy-mm-dd
+    var tomorrowFormatted = tomorrow.toISOString().split('T')[0];
+
+    // Set the min attribute of the date input to tomorrow's date
+    document.addEventListener('DOMContentLoaded', function() {
+      var dateInput = document.getElementById('date');
+      dateInput.setAttribute('min', tomorrowFormatted);
+    });
+  </script>
+
   <h1 class="my-3 border-bottom pb-2">모임 등록</h1>
   <form th:object="${meetingForm}" method="post">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
