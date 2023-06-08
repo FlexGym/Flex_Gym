@@ -56,7 +56,7 @@ public class ChatRoomController {
 
         RsData rsData = chatRoomService.canAddChatRoomMember(chatRoom, member.getId(), meeting);
 
-        if (rsData.isFail()) return rq.redirectWithMsg("/usr/meeting/detail/%s".formatted(roomId), rsData);
+        if (rsData.isFail()) return rq.historyBack(rsData);
 
         ChatRoomDto chatRoomDto = chatRoomService.getByIdAndUserId(roomId, member.getId());
 

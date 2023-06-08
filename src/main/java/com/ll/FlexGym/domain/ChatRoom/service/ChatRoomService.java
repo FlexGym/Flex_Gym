@@ -87,11 +87,12 @@ public class ChatRoomService {
         }
     }
 
+    // 참여자 추가 가능한지 확인하는 메서드
     public RsData canAddChatRoomMember(ChatRoom chatRoom, Long memberId, Meeting meeting) {
 
         Member member = memberService.findByIdElseThrow(memberId);
 
-        if (!getChatUser(chatRoom, member, memberId).isEmpty()) return RsData.of("S-1", "기존 모임 채팅방에 참여합니다.");
+        if (!getChatUser(chatRoom, member, memberId).isEmpty()) return RsData.of("S-2", "기존 모임 채팅방에 참여합니다.");
 
         if (!meeting.canAddParticipant()) return RsData.of("F-1", "참여자 수 초과로 해당 모임에 참여할 수 없습니다.");
 
