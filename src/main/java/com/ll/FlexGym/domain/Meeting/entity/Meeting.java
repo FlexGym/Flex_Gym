@@ -1,8 +1,8 @@
 package com.ll.FlexGym.domain.Meeting.entity;
 
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
-import com.ll.FlexGym.domain.Participant.entity.Participant;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
+import com.ll.FlexGym.domain.Participant.entity.Participant;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import com.ll.FlexGym.global.rsData.RsData;
 import jakarta.persistence.*;
@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -36,11 +35,10 @@ public class Meeting extends BaseEntity {
 
     private String subject;
     private Integer capacity; // 참여 가능 인원
-    private Integer nowParticipantsNum; // 현재 참여자 수
+    private Integer participantsCount; // 현재 참여자 수
     private String location;
     private String dateTime;
     private String content;
-    private LocalDateTime modifyDate;
 
     public RsData update(String subject, Integer capacity, String location, String dateTime, String content) {
 
@@ -51,5 +49,13 @@ public class Meeting extends BaseEntity {
         this.content = content;
 
         return RsData.of("S-1", "성공");
+    }
+
+    public void increaseParticipantsCount() {
+        this.participantsCount++;
+    }
+
+    public boolean canAddParticipant() {
+        return this.participantsCount < this.capacity;
     }
 }
