@@ -16,11 +16,27 @@
     <div>게시글 내용</div>
     <div th:text="${board.content}"></div><br><br>
 
+
+
+    <div>카테고리</div>
+    <div th:text="${board.category}"></div><br><br>
+
+
     <div th:text="|현재 좋아요 한 인원 수 : ${board.boardLikes}}|"></div><br><br>
 
     <a class="btn btn-primary">좋아요 누르기</a>
-    <a th:if="${@rq.login} and ${@rq.getMember()} == ${board.member}" class="btn btn-primary">수정</a>
-    <a th:href="@{|/usr/board/${board.id}|}" th:if="${@rq.login} and ${@rq.getMember()} == ${board.member}" class="btn btn-primary">삭제</a>
+
+    <a th:href="@{|/usr/board/modify/${board.id}|}" class="btn btn-sm btn-outline-secondary"
+       sec:memberize="isAuthenticated()"
+       th:if="${board.member != null and #authentication.getPrincipal().getUsername() == board.member.username}"
+       th:text="수정"></a>
+
+    <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/usr/board/delete/${board.id}|}"
+       class="btn btn-sm btn-outline-secondary"
+       sec:memberize="isAuthenticated()"
+       th:if="${board.member != null and #authentication.getPrincipal().getUsername() == board.member.username}"
+       th:text="삭제"></a>
+   
 </main>
 
 </body>
