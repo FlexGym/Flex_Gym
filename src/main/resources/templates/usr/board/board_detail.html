@@ -24,8 +24,25 @@
 
     <div th:text="|현재 좋아요 한 인원 수 : ${board.boardLikes}}|"></div><br><br>
 
-    <a class="btn btn-primary">좋아요 누르기</a>
+<!--    게시판 - 좋아요 , 수정 , 삭제 -->
+    <div class="my-3">
+        <a onclick="return confirm('좋아요 하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
+           th:href="@{|/usr/board/like/${board.id}|}">
+            좋아요
+            <span class="badge rounded-pill bg-success" th:text="${#lists.size(board.boardLikes)}"></span>
+        </a>
 
+        <a th:href="@{|/usr/board/modify/${board.id}|}" class="btn btn-sm btn-outline-secondary"
+           sec:authorize="isAuthenticated()"
+           th:if="${board.member != null and #authentication.getPrincipal().getUsername() == board.member.username}"
+           th:text="수정"></a>
+
+        <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/usr/board/delete/${board.id}|}"
+           class="btn btn-sm btn-outline-secondary"
+           sec:authorize="isAuthenticated()"
+           th:if="${board.member != null and #authentication.getPrincipal().getUsername() == board.member.username}"
+           th:text="삭제"></a>
+    </div>
 
 
 
