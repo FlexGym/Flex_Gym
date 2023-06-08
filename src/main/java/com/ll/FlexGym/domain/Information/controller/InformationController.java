@@ -22,7 +22,7 @@ public class InformationController {
     private final InformationService informationService;
     private final YoutubeController youtubeController;
 
-    @PreAuthorize("isAnonymous()")
+
     @GetMapping("/usr/information/info")
     public String showInfo() {
         return "/usr/information/info";
