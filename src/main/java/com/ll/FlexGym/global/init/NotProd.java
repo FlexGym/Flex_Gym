@@ -31,11 +31,11 @@ public class NotProd {
                 Member memberUser3 = memberService.join("user3", "1234").getData();
                 Member memberUser4 = memberService.join("user4", "1234").getData();
 
-                Meeting meeting1 = meetingService.create("오늘 한강에서 러닝하실 분 구합니다.",
+                Meeting meeting1 = meetingService.create("오늘 한강에서 러닝하실 분 구합니다!!",
                         memberUser1, 8, "여의도", "2023-07-08", "14:00",
                         "한강에서 2시간 정도 같이 달리실 분 구합니다!");
 
-                Meeting meeting2 = meetingService.create("이번주 토요일 바이크 타실 분 구합니다.",
+                Meeting meeting2 = meetingService.create("이번주 토요일 바이크 타실 분 구합니다 :)",
                         memberUser2,3, "마포구", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
 
