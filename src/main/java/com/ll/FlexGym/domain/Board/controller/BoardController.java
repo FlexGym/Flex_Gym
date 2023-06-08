@@ -1,18 +1,20 @@
 package com.ll.FlexGym.domain.Board.controller;
 
 import com.ll.FlexGym.domain.Board.entity.Board;
-import com.ll.FlexGym.domain.Board.entity.Category;
 import com.ll.FlexGym.domain.Board.form.BoardForm;
 import com.ll.FlexGym.domain.Board.service.BoardService;
 import com.ll.FlexGym.domain.Comment.entity.CommentForm;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.service.MemberService;
 import com.ll.FlexGym.global.rq.Rq;
+import com.ll.FlexGym.global.security.SecurityMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.Banner;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
-import java.util.List;
+import java.util.*;
 
 @RequestMapping("/usr")
 @RequiredArgsConstructor
@@ -40,48 +42,92 @@ public class BoardController {
         model.addAttribute("kw",kw);
         model.addAttribute("boardList",boardList);
 
-                return "/usr/board/board_list";
+                return "usr/board/board_list";
     }
 
     @GetMapping("/board/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, CommentForm commentForm){
         Board board = this.boardService.getBoard(id);
         model.addAttribute("board", board);
-        return "/usr/board/board_detail";
+        return "usr/board/board_detail";
     }
 
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/board/create")
-    public String boardCreate(BoardForm boardForm) {
-        return "/usr/board/board_form";
+    public String boardCreate(BoardForm boardForm, Model model) {
+
+        Map<Integer,String> category = new LinkedHashMap<>();
+        category.put(1,"운동일지");
+        category.put(2,"상체운동");
+        category.put(3,"하체운동");
+        category.put(4,"바디프로필");
+        category.put(5,"식단");
+
+        model.addAttribute("category", category);
+        return "usr/board/board_form";
     }
 
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/board/create")
     public String boardCreate(@Valid BoardForm boardForm,
-                              BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return "/usr/board/board_form";
+                              BindingResult bindingResult,
+                              Model model, @AuthenticationPrincipal SecurityMember member) {
+        if (bindingResult.hasErrors()) {
+            return "usr/board/board_form";
         }
 
-        Member member = this.memberService.getMember(rq.getMember().getUsername());
-        this.boardService.create(boardForm.getTitle(),boardForm.getCategory(),boardForm.getContent(),member);
-        return "redirect:/usr/board/list";
+        Member mem = this.memberService.getMember(member.getUsername());
+        String category = boardForm.getCategory(); // 선택한 카테고리 값 가져오기
+        if (category == null || category.isEmpty()) {
+            // 카테고리를 선택하지 않은 경우 에러 처리
+            bindingResult.rejectValue("category", "error.category", "카테고리를 선택해주세요.");
+            return "usr/board/board_form";
+        }
 
+        this.boardService.create(boardForm.getTitle(),category, boardForm.getContent(), mem);
+
+        return "redirect:/usr/board/list";
+    }
+
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/board/modify/{id}")
+    public String boardModify(BoardForm boardForm,Model model,
+                              Principal principal, @PathVariable("id") Integer id){
+        Board board = this.boardService.getBoard(id);
+        if(!board.getMember().getUsername().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다.");
+        }
+
+        Map<Integer,String> category = new LinkedHashMap<>();
+        category.put(1,"운동일지");
+        category.put(2,"상체운동");
+        category.put(3,"하체운동");
+        category.put(4,"바디프로필");
+        category.put(5,"식단");
+        model.addAttribute("category",category);
+
+        boardForm.setCategory(board.getCategory());
+        boardForm.setContent(board.getContent());
+        boardForm.setTitle(board.getTitle());
+
+        model.addAttribute("category",category);
+        return "usr/board/board_form";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/board/modify/{id}")
     public String boardModify(@Valid BoardForm boardForm, BindingResult bindingResult,
-                              Rq rq, @PathVariable("id") Integer id){
+                             Principal principal, @PathVariable("id") Integer id){
         Board board = this.boardService.getBoard(id);
-        if(!board.getMember().getUsername().equals(rq.getMember().getUsername())){
+        if(!board.getMember().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다.");
         }
-        this.boardService.modify(board, boardForm.getTitle(),boardForm.getContent());
-        return String.format("redirect:/usr/board/detail/%s",id);
+        this.boardService.modify(board, board.getCategory(), boardForm.getTitle(),boardForm.getContent());
+        return "redirect:/usr/board/detail/%d".formatted(id);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -92,7 +138,7 @@ public class BoardController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"삭제권한이 없습니다.");
         }
         this.boardService.delete(board);
-        return "redirect:/";
+        return "redirect:/usr/board/list";
     }
 
 
