@@ -158,4 +158,11 @@ public class ChatRoomService {
                 .findFirst()
                 .orElse(null);
     }
+
+    @Transactional
+    public void updateChatRoomName(ChatRoom chatRoom, String subject) {
+        log.info("update subject = {}", subject);
+        chatRoom.updateName(subject);
+        chatRoomRepository.save(chatRoom);
+    }
 }

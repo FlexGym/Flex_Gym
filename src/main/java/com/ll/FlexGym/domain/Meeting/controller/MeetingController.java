@@ -109,6 +109,8 @@ public class MeetingController {
         RsData<Meeting> rsData = meetingService.modify(meeting, meetingForm.getSubject(), meetingForm.getCapacity(),
                 meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
 
+        chatRoomService.updateChatRoomName(meeting.getChatRoom(), meetingForm.getSubject());
+
         return rq.redirectWithMsg("/usr/meeting/detail/%s".formatted(id), rsData);
     }
 }
