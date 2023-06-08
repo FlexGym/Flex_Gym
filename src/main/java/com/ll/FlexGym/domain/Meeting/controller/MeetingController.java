@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,17 +51,14 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String create(@Valid MeetingForm meetingForm, BindingResult bindingResult,
-                                @AuthenticationPrincipal SecurityMember member) {
-        if (bindingResult.hasErrors()) {
-            return "usr/meeting/form";
-        }
+    public String create(@Valid MeetingForm meetingForm, @AuthenticationPrincipal SecurityMember member) {
+
         Meeting meeting = meetingService.create(meetingForm.getSubject(), rq.getMember(), meetingForm.getCapacity(),
                 meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
 
         chatRoomService.createAndConnect(meetingForm.getSubject(), meeting, member.getId());
 
-        return "redirect:/usr/meeting/list";
+        return rq.redirectWithMsg("/usr/meeting/list", "새로운 모임이 등록되었습니다.");
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -105,6 +101,10 @@ public class MeetingController {
     public String modify(@Valid MeetingForm meetingForm, @PathVariable("id") Long id) {
 
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
+
+        // 모집인원(capacity) >= 모임 참여자 수(participantsCount) 되도록
+        RsData checkCapaRsData = meetingService.checkCapacity(meetingForm.getCapacity(), meeting.getParticipantsCount());
+        if (checkCapaRsData.isFail()) return rq.historyBack(checkCapaRsData);
 
         RsData<Meeting> rsData = meetingService.modify(meeting, meetingForm.getSubject(), meetingForm.getCapacity(),
                 meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
