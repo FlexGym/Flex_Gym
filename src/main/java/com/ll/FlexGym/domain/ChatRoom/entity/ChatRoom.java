@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 
 import static jakarta.persistence.CascadeType.PERSIST;
-import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
@@ -34,7 +33,7 @@ public class ChatRoom extends BaseEntity {
 
     private String name;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = PERSIST, orphanRemoval = true)
     private Meeting meeting;
 
     @ManyToOne(fetch = LAZY)
@@ -72,5 +71,9 @@ public class ChatRoom extends BaseEntity {
 
     public void removeChatMember(ChatMember chatMember) {
         chatMembers.remove(chatMember);
+    }
+
+    public void updateName(String name){
+        this.name = name;
     }
 }

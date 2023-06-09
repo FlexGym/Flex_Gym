@@ -101,7 +101,7 @@
                 </form>
             </td>
             <td th:if="${chatRoom.owner.id == #authentication.principal.id}">
-                <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="return confirm('방을 삭제하시겠습니까?')">
+                <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="return confirm('채팅방을 삭제하시겠습니까?\n채팅방을 삭제한다면 모임도 같이 삭제됩니다.')">
                     <button type="submit">삭제</button>
                 </form>
             </td>

@@ -1,6 +1,8 @@
 package com.ll.FlexGym.domain.ChatRoom.service;
 
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatMessage.dto.response.SignalResponse;
+import com.ll.FlexGym.domain.ChatMessage.dto.response.SignalType;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.repository.ChatRoomRepository;
@@ -10,6 +12,8 @@ import com.ll.FlexGym.domain.Member.service.MemberService;
 import com.ll.FlexGym.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,8 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final MemberService memberService;
+    private final SimpMessageSendingOperations template;
+    private final ApplicationEventPublisher publisher;
 
     @Transactional
     public ChatRoom createAndConnect(String subject, Meeting meeting, Long ownerId) {
@@ -55,14 +61,14 @@ public class ChatRoomService {
 
         ChatRoom chatRoom = findById(roomId);
 
-        addChatRoomMember(chatRoom, member, memberId);
+        boolean isNew = addChatRoomMember(chatRoom, member, memberId);
 
         chatRoom.getChatMembers().stream()
                 .filter(chatMember -> chatMember.getMember().getId().equals(memberId))
                 .findFirst()
                 .orElseThrow();
 
-        return ChatRoomDto.fromChatRoom(chatRoom);
+        return ChatRoomDto.fromChatRoom(chatRoom, isNew);
     }
 
     private Optional<ChatMember> getChatUser(ChatRoom chatRoom, Member member, Long memberId) {
@@ -77,12 +83,15 @@ public class ChatRoomService {
         return existingMember;
     }
 
-    private void addChatRoomMember(ChatRoom chatRoom, Member member, Long memberId) {
+    private boolean addChatRoomMember(ChatRoom chatRoom, Member member, Long memberId) {
 
         if (getChatUser(chatRoom, member, memberId).isEmpty()) {
             chatRoom.addChatUser(member);
             chatRoom.getMeeting().increaseParticipantsCount(); // 유저가 참여하면 '현재 참여자 수' 1 증가
+            return true;
         }
+
+        return false;
     }
 
     // 참여자 추가 가능한지 확인하는 메서드
@@ -148,5 +157,12 @@ public class ChatRoomService {
                 .filter(chatMember -> chatMember.getMember().getId().equals(memberId))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Transactional
+    public void updateChatRoomName(ChatRoom chatRoom, String subject) {
+        log.info("update subject = {}", subject);
+        chatRoom.updateName(subject);
+        chatRoomRepository.save(chatRoom);
     }
 }
