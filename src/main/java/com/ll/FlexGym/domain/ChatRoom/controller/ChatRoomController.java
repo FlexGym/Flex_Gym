@@ -1,5 +1,7 @@
 package com.ll.FlexGym.domain.ChatRoom.controller;
 
+import com.ll.FlexGym.domain.ChatMessage.dto.response.SignalResponse;
+import com.ll.FlexGym.domain.ChatMessage.service.ChatMessageService;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.service.ChatRoomService;
@@ -9,6 +11,7 @@ import com.ll.FlexGym.global.rsData.RsData;
 import com.ll.FlexGym.global.security.SecurityMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.ll.FlexGym.domain.ChatMessage.dto.response.SignalType.*;
+import static com.ll.FlexGym.domain.ChatMessage.entity.ChatMessageType.ENTER;
 
 @Controller
 @Slf4j
@@ -25,6 +31,8 @@ public class ChatRoomController {
 
     private final Rq rq;
     private final ChatRoomService chatRoomService;
+    private final ChatMessageService chatMessageService;
+    private final SimpMessageSendingOperations template;
 
     /**
      * 방 조회
@@ -60,6 +68,15 @@ public class ChatRoomController {
 
         ChatRoomDto chatRoomDto = chatRoomService.getByIdAndUserId(roomId, member.getId());
 
+        if (chatRoomDto.isNew()) {
+            chatMessageService.createAndSave(" < " + member.getUsername() + "님이 입장하셨습니다. >", member.getId(), roomId, ENTER);
+            // Enter 로 들어올 경우!
+            SignalResponse signalResponse = SignalResponse.builder()
+                    .type(NEW_MESSAGE)
+                    .build();
+            template.convertAndSend("/topic/chats/room/" + chatRoom.getId(), signalResponse);
+        }
+
         model.addAttribute("chatRoom", chatRoomDto);
 
         return "usr/chat/room";
@@ -72,7 +89,7 @@ public class ChatRoomController {
     @PostMapping("/rooms/{roomId}")
     public String removeRoom(@PathVariable Long roomId, @AuthenticationPrincipal SecurityMember member) {
         chatRoomService.remove(roomId, member.getId());
-        return "redirect:/usr/chat/rooms";
+        return "redirect:/usr/meeting/list";
     }
 
     /**
@@ -83,7 +100,7 @@ public class ChatRoomController {
     public String exitChatRoom(@PathVariable Long roomId, @AuthenticationPrincipal SecurityMember member){
         chatRoomService.exitChatRoom(roomId, member.getId());
 
-        return "redirect:/usr/chat/rooms";
+        return "redirect:/usr/meeting/list";
     }
 
 }

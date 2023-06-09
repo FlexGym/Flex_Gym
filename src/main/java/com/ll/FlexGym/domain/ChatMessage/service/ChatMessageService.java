@@ -33,12 +33,7 @@ public class ChatMessageService {
                 .findFirst()
                 .orElseThrow();
 
-        ChatMessage chatMessage = ChatMessage.builder()
-                .content(content)
-                .sender(sender)
-                .type(type)
-                .chatRoom(chatRoom)
-                .build();
+        ChatMessage chatMessage = ChatMessage.create(content, sender, type, chatRoom);
 
         return chatMessageRepository.save(chatMessage);
     }

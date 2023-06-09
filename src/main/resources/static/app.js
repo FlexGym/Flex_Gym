@@ -24,7 +24,19 @@ function drawMessages(messages) {
     messages.forEach((message) => {
 
         const newItem = document.createElement("li");
-        newItem.textContent = `${message.sender.username} : ${message.content}`;
+        console.log(message);
+        if (message.type == "ENTER"){
+            newItem.textContent = `${message.content}`;
+        } else {
+            const createdAt = new Date(message.created_at);
+
+            // 가공된 시간 표시 형식 (MM:SS)
+            const hours = String(createdAt.getHours()).padStart(2, '0');
+            const minutes = String(createdAt.getMinutes()).padStart(2, '0');
+            const formattedTime = `${hours}:${minutes}`;
+
+            newItem.textContent = `${message.sender.username} : ${message.content} <${formattedTime}>`;
+        }
 
         ChatMessageUl.appendChild(newItem);
     });
