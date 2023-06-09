@@ -66,7 +66,7 @@ public class ChatRoomService {
     }
 
     private Optional<ChatMember> getChatUser(ChatRoom chatRoom, Member member, Long memberId) {
-        // 만약에 방에 해당 유저가 없다면 추가한다. 방법1
+        // 방에 해당 유저가 있으면 가져오기
         Optional<ChatMember> existingMember = chatRoom.getChatMembers().stream()
                 .filter(chatMember -> chatMember.getMember().getId().equals(memberId))
                 .findFirst();
@@ -79,11 +79,9 @@ public class ChatRoomService {
 
     private void addChatRoomMember(ChatRoom chatRoom, Member member, Long memberId) {
 
-        Meeting meeting = chatRoom.getMeeting(); // 해당 채팅방의 모임 가져오기
-
         if (getChatUser(chatRoom, member, memberId).isEmpty()) {
             chatRoom.addChatUser(member);
-            meeting.increaseParticipantsCount(); // 유저가 참여하면 '현재 참여자 수' 1 증가
+            chatRoom.getMeeting().increaseParticipantsCount(); // 유저가 참여하면 '현재 참여자 수' 1 증가
         }
     }
 
@@ -141,6 +139,8 @@ public class ChatRoomService {
         if (chatMember != null) {
             chatRoom.removeChatMember(chatMember);
         }
+
+        chatRoom.getMeeting().decreaseParticipantsCount(); // 유저가 나가면 '현재 참여자 수' 1 감소
     }
 
     private ChatMember findChatMemberByMemberId(ChatRoom chatRoom, Long memberId) {

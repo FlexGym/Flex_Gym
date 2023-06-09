@@ -57,6 +57,10 @@ public class Meeting extends BaseEntity {
         this.participantsCount++;
     }
 
+    public void decreaseParticipantsCount() {
+        this.participantsCount--;
+    }
+
     public boolean canAddParticipant() {
         return this.participantsCount < this.capacity;
     }
