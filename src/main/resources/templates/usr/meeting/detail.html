@@ -23,6 +23,7 @@
 
 <main layout:fragment="main">
     <div class="ui-button">
+        <a th:href="@{|/usr/meeting/manage/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-dark">참여자 관리</a>
         <a th:href="@{|/usr/meeting/modify/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-dark">수정</a>
         <a th:href="@{|/usr/meeting/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-dark">삭제</a>
     </div>

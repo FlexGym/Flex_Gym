@@ -1,5 +1,7 @@
 package com.ll.FlexGym.domain.Meeting.controller;
 
+import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatMember.service.ChatMemberService;
 import com.ll.FlexGym.domain.ChatRoom.service.ChatRoomService;
 import com.ll.FlexGym.domain.Meeting.MeetingForm;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
@@ -28,10 +30,11 @@ public class MeetingController {
     private final Rq rq;
     private final MeetingService meetingService;
     private final ChatRoomService chatRoomService;
+    private final ChatMemberService chatMemberService;
 
     @GetMapping("/list")
     public String showList(Model model) {
-        List<Meeting> meetingList = this.meetingService.getList();
+        List<Meeting> meetingList = meetingService.getList();
         model.addAttribute("meetingList", meetingList);
         return "usr/meeting/list";
     }
@@ -111,5 +114,13 @@ public class MeetingController {
                 meetingForm.getLocation(), meetingForm.getDate(), meetingForm.getTime(), meetingForm.getContent());
 
         return rq.redirectWithMsg("/usr/meeting/detail/%s".formatted(id), rsData);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/manage/{id}")
+    public String manage(Model model, @PathVariable("id") Long id) {
+        List<ChatMember> chatMemberList = chatMemberService.getList();
+        model.addAttribute("chatMemberList", chatMemberList);
+        return "usr/meeting/manage";
     }
 }

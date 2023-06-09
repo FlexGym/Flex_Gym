@@ -1,0 +1,50 @@
+<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="">
+
+<head>
+    <title>참여자 관리</title>
+    <style>
+        .table {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<main layout:fragment="main">
+    <div style="display: flex; justify-content: center;">
+        <table class="table">
+            <thead class="table-dark">
+            <tr>
+                <th>번호</th>
+                <th>아이디</th>
+                <th>입장일시</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="chatMember, loop : ${chatMemberList}">
+                <td th:text="${loop.count}"></td>
+                <td th:text="${chatMember.member.username}"></td>
+                <td th:text="${#temporals.format(chatMember.createDate, 'yyyy/MM/dd hh:mm')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="header">
+        <a th:href="@{/usr/meeting/create}" class="btn btn-dark">강퇴</a>
+    </div>
+</main>
+
+</body>
+
+</html>
