@@ -34,6 +34,7 @@ function drawMessages(messages) {
         }
 
         if (message.type == "ENTER"){
+            newItem.classList.add("center");
             newItem.textContent = `${message.content}`;
         } else {
             const createdAt = new Date(message.created_at);
@@ -72,7 +73,6 @@ function connect() {
         console.log('Connected: ' + frame);
 
         stompClient.subscribe(`/topic/chats/${chatRoomId}`, function (data) {
-            // showGreeting(JSON.parse(chatMessage.body));
             getChatMessages();
         });
     });
@@ -89,9 +89,4 @@ function disconnect() {
         stompClient.disconnect();
         console.log('Disconnected');
     }
-}
-
-function showGreeting(chatMessage) {
-    console.log(chatMessage.name)
-    $("#chatting").append("<tr><td>" + "[" + chatMessage.name + "]" + chatMessage.message + "</td></tr>");
 }
