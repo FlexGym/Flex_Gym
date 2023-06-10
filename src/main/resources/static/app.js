@@ -25,6 +25,14 @@ function drawMessages(messages) {
 
         const newItem = document.createElement("li");
         console.log(message);
+        console.log("memberId : " + memberId);
+
+        if (message.sender.user_id === memberId) {
+            newItem.classList.add("sender");
+        } else {
+            newItem.classList.add("receiver");
+        }
+
         if (message.type == "ENTER"){
             newItem.textContent = `${message.content}`;
         } else {
@@ -83,9 +91,7 @@ function disconnect() {
     }
 }
 
-
 function showGreeting(chatMessage) {
     console.log(chatMessage.name)
     $("#chatting").append("<tr><td>" + "[" + chatMessage.name + "]" + chatMessage.message + "</td></tr>");
 }
-

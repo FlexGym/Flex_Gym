@@ -8,6 +8,7 @@
     <script th:inline="javascript">
         const chatRoomId = /*[[${chatRoom.id}]]*/ '';
         const token = /*[[${_csrf.token}]]*/ '';
+        const memberId = /*[[${member.id}]]*/ '';
     </script>
     <script th:src="@{/app.js}"></script>
 
@@ -103,6 +104,13 @@
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border: 1px solid #fff;
+        }
+        .sender {
+            text-align: right;
+        }
+
+        .receiver {
+            text-align: left;
         }
     </style>
 </head>
