@@ -18,9 +18,10 @@
 
 
 
+<!--    <div>카테고리</div>-->
+<!--    <div th:text="${board.category}"></div><br><br>-->
     <div>카테고리</div>
-    <div th:text="${board.category}"></div><br><br>
-
+    <div th:text="${board.category == '1' ? '운동일지' : (board.category == '2' ? '상체운동' : (board.category == '3' ? '하체운동' : (board.category == '4' ? '바디프로필' : (board.category == '5' ? '식단' : ''))))}"></div><br><br>
 
     <div th:text="|현재 좋아요 한 인원 수 : ${board.boardLikes}}|"></div><br><br>
 

@@ -64,6 +64,13 @@ public class BoardController {
         category.put(4,"바디프로필");
         category.put(5,"식단");
 
+//        List<String> category = new ArrayList<>();
+//        category.add("운동일지");
+//        category.add("상체운동");
+//        category.add("하체운동");
+//        category.add("바디프로필");
+//        category.add("식단");
+
         model.addAttribute("category", category);
         return "usr/board/board_form";
     }
@@ -86,7 +93,7 @@ public class BoardController {
             return "usr/board/board_form";
         }
 
-        this.boardService.create(boardForm.getTitle(),category, boardForm.getContent(), mem);
+        this.boardService.create(boardForm.getTitle(), category, boardForm.getContent(), mem);
 
         return "redirect:/usr/board/list";
     }
@@ -116,6 +123,7 @@ public class BoardController {
 
         model.addAttribute("category",category);
         return "usr/board/board_form";
+
     }
 
     @PreAuthorize("isAuthenticated()")
