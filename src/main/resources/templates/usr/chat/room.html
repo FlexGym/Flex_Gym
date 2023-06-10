@@ -10,112 +10,153 @@
         const token = /*[[${_csrf.token}]]*/ '';
     </script>
     <script th:src="@{/app.js}"></script>
-<!--    <style>-->
-<!--        body {-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            background-color: #f7fafc;-->
-<!--        }-->
 
-<!--        .container {-->
-<!--            max-width: 800px;-->
-<!--            margin: 0 auto;-->
-<!--            padding: 20px;-->
-<!--        }-->
+    <style>
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            color: #f1f1f1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-<!--        table {-->
-<!--            width: 100%;-->
-<!--            border-collapse: collapse;-->
-<!--            margin-bottom: 20px;-->
-<!--            background-color: #fff;-->
-<!--            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);-->
-<!--        }-->
+        .container2 {
+            max-width: 72%;
+            max-height: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            color: #f1f1f1;
+            height: 80%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-<!--        th, td {-->
-<!--            padding: 12px 16px;-->
-<!--            text-align: left;-->
-<!--            border-bottom: 1px solid #ddd;-->
-<!--        }-->
+        .room-info {
+            flex: 0 0 auto;
+            max-width: 100%;
+        }
 
-<!--        th {-->
-<!--            background-color: #f2f2f2;-->
-<!--        }-->
+        .chat-messages {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            height: 700px;
+        }
 
-<!--        .chat__write-message {-->
-<!--            display: flex;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
+        .chat-input {
+            flex: 0 0 auto;
+            position: fixed;
+        }
 
-<!--        .chat__write-message input[type="text"] {-->
-<!--            flex: 1;-->
-<!--            padding: 8px;-->
-<!--            border: 1px solid #ddd;-->
-<!--            border-radius: 4px;-->
-<!--            margin-right: 10px;-->
-<!--        }-->
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
-<!--        .chat__write-message input[type="submit"],-->
-<!--        .chat__write-message button {-->
-<!--            padding: 8px 16px;-->
-<!--            background-color: #4c51bf;-->
-<!--            color: #fff;-->
-<!--            border: none;-->
-<!--            border-radius: 4px;-->
-<!--            cursor: pointer;-->
-<!--        }-->
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
 
-<!--        .chat__message-ul {-->
-<!--            list-style-type: none;-->
-<!--            padding: 0;-->
-<!--            margin: 0;-->
-<!--        }-->
+        .chat__write-message {
+            display: flex;
+            margin-top: 20px;
+            position: fixed;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            padding: 10px 0;
+            box-sizing: border-box;
+        }
 
-<!--        .chat__message {-->
-<!--            margin-bottom: 10px;-->
-<!--            padding: 10px;-->
-<!--            background-color: #edf2f7;-->
-<!--            border-radius: 4px;-->
-<!--        }-->
-<!--    </style>-->
+        <!-- -->
+        .chat__write-message input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .chat__write-message input[type="submit"] {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .chat__message-ul {
+            list-style-type: none;
+            position: center;
+            padding: 0;
+            height: 80%;
+        }
+
+        .chat__message-ul li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #fff;
+        }
+    </style>
 </head>
 <body>
 
 <main layout:fragment="main">
+    <section class="container">
+        <div class="room-info">
+            <table>
+                <thead>
+                <tr>
+                    <th>방 이름</th>
+                    <th>Owner</th>
+                    <th>방 나가기</th>
+                    <th>채팅방 삭제</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${chatRoom.name}"></td>
+                    <td th:text="${chatRoom.owner.username}"></td>
+                    <td>
+                        <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="if ( !confirm('방을 나가시겠습니까?') ) return false; disconnect()">
+                            <input type="hidden" name="_method" value="delete">
+                            <button id="disconnectButton">나가기</button>
+                        </form>
+                    </td>
+                    <td th:if="${chatRoom.owner.id == #authentication.principal.id}">
+                        <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="return confirm('채팅방을 삭제하시겠습니까?\n채팅방을 삭제한다면 모임도 같이 삭제됩니다.')">
+                            <button type="submit">삭제</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-<div class="container">
-    <table>
-        <thead>
-        <tr>
-            <th>id</th>
-            <th>방 이름</th>
-            <th>Owner</th>
-            <th>방 나가기</th>
-            <th>채팅방 삭제</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td th:text="${chatRoom.id}"></td>
-            <td th:text="${chatRoom.name}"></td>
-            <td th:text="${chatRoom.owner.username}"></td>
-            <td>
-                <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="if ( !confirm('방을 나가시겠습니까?') ) return false; disconnect()">
-                    <input type="hidden" name="_method" value="delete">
-                    <button id="disconnectButton">나가기</button>
-                </form>
-            </td>
-            <td th:if="${chatRoom.owner.id == #authentication.principal.id}">
-                <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="return confirm('채팅방을 삭제하시겠습니까?\n채팅방을 삭제한다면 모임도 같이 삭제됩니다.')">
-                    <button type="submit">삭제</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <form class="chat__write-message" onsubmit="ChatWriteMessage(this); return false;">
-        <input type="text" placeholder="내용을 입력해주세요." name="content">
-        <input type="submit" value="작성">
-    </form>
-    <ul class="chat__message-ul"></ul>
-</div>
+    <section class="container2">
+        <section class="chat-messages">
+            <div>
+                <ul class="chat__message-ul"></ul>
+            </div>
+        </section>
+    </section>
+
+    <section class="container">
+        <section class="chat-input">
+            <form class="chat__write-message" onsubmit="ChatWriteMessage(this); return false;">
+                <input type="text" placeholder="내용을 입력해주세요." name="content">
+                <input type="submit" value="작성">
+            </form>
+        </section>
+    </section>
+</main>
 </body>
 </html>
