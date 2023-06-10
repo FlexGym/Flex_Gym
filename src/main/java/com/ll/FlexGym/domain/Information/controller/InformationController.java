@@ -28,10 +28,6 @@ public class InformationController {
     private final YoutubeController youtubeController;
 
 
-    @GetMapping("/usr/information/info")
-    public String showInfo() {
-        return "/usr/information/info";
-    }
 
 
     @PreAuthorize("isAnonymous()")//나중에 관리자로 바꿔야함
@@ -45,6 +41,15 @@ public class InformationController {
     //관리자페이지
     @GetMapping("/usr/information/admin")
     public String showAdmin(Model model) {
+        List<Information> informationList = this.informationService.getList();
+        log.info("ssss = {}", informationList);
+        model.addAttribute("informationList", informationList);
+
+        return "usr/information/admin";
+        //y.id, title, jpg
+    }
+    @GetMapping("/usr/information/info")
+    public String showInfo(Model model) {
         List<Information> informationList = this.informationService.getList();
         log.info("ssss = {}", informationList);
         model.addAttribute("informationList", informationList);

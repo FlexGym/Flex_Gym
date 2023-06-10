@@ -60,12 +60,15 @@
         }
 
     </script>
-
     <div class="max-w-2xl w-full px-4">
         <h1 class="mb-4">
             <i class="fa-solid fa-arrow-right-to-bracket"></i>
             회원가입
         </h1>
+
+        <div class="relative flex justify-center text-sm">
+            <span>회원가입에 필요한 기본정보를 입력해주세요.</span>
+        </div>
 
         <form th:action method="POST" class="flex flex-col gap-6" onsubmit="JoinFormDto__submit(this); return false;">
             <div class="form-control">
@@ -89,10 +92,23 @@
                 <input type="password" name="passwordValidation" placeholder="비빌번호 확인" class="input input-bordered"/>
             </div>
 
+            <div class="flex justify-center">
+                <div class="flex items-center p-2 text-sm leading-none">
+                    <a class="px-6 font-medium text-blue-500 hover:text-blue-400" target="_blank" href="">서비스이용약관</a>
+                    <div class="inline-block h-3 w-0.5 bg-gray-200"></div>
+                    <a class="px-6 font-medium text-blue-500 hover:text-blue-400" target="_blank" href="">Flex Gym</a>
+                </div>
+            </div>
+
             <button id="btn-login-1" class="btn btn-block btn-primary gap-1">
                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
                 <span>회원가입</span>
             </button>
+
+            <p class="flex items-center justify-center space-x-1 text-sm">
+                <span>이미 회원이신가요?</span>
+                <a class="flex items-center text-blue-500 underline hover:text-blue-400" href="/usr/member/login">로그인</a>
+            </p>
 
         </form>
     </div>
