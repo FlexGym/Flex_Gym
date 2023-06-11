@@ -44,7 +44,8 @@ function drawMessages(messages) {
             const minutes = String(createdAt.getMinutes()).padStart(2, '0');
             const formattedTime = `${hours}:${minutes}`;
 
-            newItem.textContent = `${message.sender.username} : ${message.content} <${formattedTime}>`;
+            // newItem.textContent = `${message.sender.username} : ${message.content} <${formattedTime}>`;
+            newItem.innerHTML = `${message.sender.username} : ${message.content} <span class="message-time"><${formattedTime}></span>`;
         }
 
         ChatMessageUl.appendChild(newItem);

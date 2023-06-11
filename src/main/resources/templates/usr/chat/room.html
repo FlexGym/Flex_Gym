@@ -73,7 +73,6 @@
             box-sizing: border-box;
         }
 
-        <!-- -->
         .chat__write-message input[type="text"] {
             flex: 1;
             padding: 10px;
@@ -96,6 +95,7 @@
             position: center;
             padding: 0;
             height: 80%;
+            word-break: break-all;
         }
 
         .chat__message-ul li {
@@ -104,15 +104,26 @@
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border: 1px solid #fff;
+            width: max-content;
+            max-width: 45%;
+            word-break: break-all;
         }
-        .sender {
-            text-align: right;
-        }
-        .receiver {
+        .chat__message-ul li.sender {
+            margin-left: auto; /* 수정: 오른쪽 정렬 */
             text-align: left;
         }
-        .center {
+
+        .chat__message-ul li.receiver {
+            margin-right: auto; /* 수정: 왼쪽 정렬 */
+            text-align: left;
+        }
+        .chat__message-ul li.center {
+            margin-left: auto;
+            margin-right: auto;
             text-align: center;
+        }
+        .chat__message-ul li .message-time {
+            font-size: 10px; /* 폰트 크기 조정 */
         }
     </style>
 </head>
