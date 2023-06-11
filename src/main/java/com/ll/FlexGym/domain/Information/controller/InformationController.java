@@ -76,7 +76,7 @@ public class InformationController {
         Optional<Information> video =
                 this.informationService.getInformation(videoId);
         if (video.isPresent()) {
-            model.addAttribute("video", video);
+            model.addAttribute("video", video.get());
         }
         return "/usr/information/adminToInfo_form";
     }

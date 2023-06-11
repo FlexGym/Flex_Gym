@@ -3,15 +3,17 @@
 <main layout:fragment="main">
 <div layout:fragment="content" class="container">
     <h5 class="my-3 border-bottom pb-2">제목</h5>
-    <form th:action="@{여기가 보낼값}" method="post">
+    <form th:action="@{info.html}" method="post">
         <div class="mb-3">
             <label for="subject" class="form-label"></label>
-            <input type="text" th:value="${video.get().title}" name="subject" id="subject" class="form-control" style="width:500px">
+            <input type="text" th:value="${video.title}" name="subject" id="subject" class="form-control" style="width:500px">
         </div>
         <div class="mb-3">
             <label for="content" class="form-label" >내용</label>
             <textarea name="content" id="content" class="form-control" rows="10 " style="width:500px"></textarea>
         </div>
+        <h5 class="my-3 border-bottom pb-2">미리보기</h5>
+        <img th:src="${video.videoThumnailUrl}" style="width: 500px; height: 300px">
         <input type="submit" value="저장하기" class="btn btn-primary my-2">
     </form>
 </div>
