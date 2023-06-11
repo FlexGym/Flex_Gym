@@ -3,7 +3,7 @@
 <main layout:fragment="main">
 <div layout:fragment="content" class="container">
     <h5 class="my-3 border-bottom pb-2">제목</h5>
-    <form th:action="@{info.html}" method="post">
+    <form th:action="@{/usr/information/adminToInfo_form}" method="post">
         <div class="mb-3">
             <label for="subject" class="form-label"></label>
             <input type="text" th:value="${video.title}" name="subject" id="subject" class="form-control" style="width:500px">

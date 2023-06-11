@@ -57,7 +57,6 @@ public class InformationController {
         //y.id, title, jpg
     }
 
-
     //api확인 페이지
     @ResponseBody
     @GetMapping("/usr/information/showYoutube")
@@ -80,4 +79,13 @@ public class InformationController {
         }
         return "/usr/information/adminToInfo_form";
     }
+
+    @ResponseBody
+    @PostMapping("/usr/information/adminToInfo_form")
+    public String submitForm() {
+        //여기에 각자 위치 구현
+
+        return "제출되었습니다!";
+    }
+
 }
