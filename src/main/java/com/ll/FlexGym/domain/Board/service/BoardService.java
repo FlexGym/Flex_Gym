@@ -92,4 +92,7 @@ public class BoardService {
     }
 
 
+    public List<Board> getBoardListByCategory(String kw) {
+       return boardRepository.findAllByCategory(kw);
+    }
 }

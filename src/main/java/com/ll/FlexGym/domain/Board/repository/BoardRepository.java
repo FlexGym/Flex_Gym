@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     @Query("select "
@@ -22,6 +24,8 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
             + "   or c.content like %:kw% "
             + "   or m2.username like %:kw% ")
     Page<Board> findAllByKeyword(String kw, Pageable pageable);
+
+    List<Board> findAllByCategory(String category);
 
 
 }
