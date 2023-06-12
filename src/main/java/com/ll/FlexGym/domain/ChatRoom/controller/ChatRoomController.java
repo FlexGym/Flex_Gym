@@ -78,6 +78,7 @@ public class ChatRoomController {
         }
 
         model.addAttribute("chatRoom", chatRoomDto);
+        model.addAttribute("member", member);
 
         return "usr/chat/room";
     }
