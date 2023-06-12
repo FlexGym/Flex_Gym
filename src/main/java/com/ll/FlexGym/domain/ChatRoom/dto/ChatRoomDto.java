@@ -31,7 +31,9 @@ public class ChatRoomDto {
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
 
-    public static ChatRoomDto fromChatRoom(ChatRoom chatRoom) {
+    private boolean isNew;
+
+    public static ChatRoomDto fromChatRoom(ChatRoom chatRoom, boolean isNew) {
         MemberDto userDto = MemberDto.fromUser(chatRoom.getOwner());
 
         ChatRoomDto chatRoomDto = ChatRoomDto.builder()
@@ -40,6 +42,7 @@ public class ChatRoomDto {
                 .owner(userDto)
                 .createdAt(chatRoom.getCreateDate())
                 .updatedAt(chatRoom.getModifyDate())
+                .isNew(isNew)
                 .build();
 
         return chatRoomDto;

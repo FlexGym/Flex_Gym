@@ -38,7 +38,7 @@ public class MeetingController {
     }
 
     @GetMapping(value = "/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id) {
+    public String detail(Model model, @PathVariable("id") Long id) {
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
         model.addAttribute("meeting", meeting);
         return "usr/meeting/detail";
@@ -67,7 +67,7 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Long id) {
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
 
         RsData canDeleteRsData = meetingService.canDelete(rq.getMember(), meeting);
@@ -83,7 +83,7 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String showModify(MeetingForm meetingForm, @PathVariable("id") Integer id) {
+    public String showModify(MeetingForm meetingForm, @PathVariable("id") Long id) {
 
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
 
@@ -102,12 +102,14 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public String modify(@Valid MeetingForm meetingForm, @PathVariable("id") Integer id) {
+    public String modify(@Valid MeetingForm meetingForm, @PathVariable("id") Long id) {
 
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
 
         RsData<Meeting> rsData = meetingService.modify(meeting, meetingForm.getSubject(), meetingForm.getCapacity(),
                 meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+
+        chatRoomService.updateChatRoomName(meeting.getChatRoom(), meetingForm.getSubject());
 
         return rq.redirectWithMsg("/usr/meeting/detail/%s".formatted(id), rsData);
     }
