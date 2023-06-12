@@ -34,15 +34,63 @@ public class BoardController {
 
     private final Rq rq;
 
-    @GetMapping("/board/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0")int page, @RequestParam(value = "kw", defaultValue = "")String kw){
-        List<Board> boardList = this.boardService.getBoardList();
-        Page<Board> paging = this.boardService.getList(page,kw);
-        model.addAttribute("paging",paging);
-        model.addAttribute("kw",kw);
-        model.addAttribute("boardList",boardList);
+//    @GetMapping("/board/list")
+//    public String list(Model model, @RequestParam(value = "page", defaultValue = "0")int page, @RequestParam(value = "kw", defaultValue = "")String kw){
+//        List<Board> boardList = this.boardService.getBoardList();
+//        Page<Board> paging = this.boardService.getList(page,kw);
+//        model.addAttribute("paging",paging);
+//        model.addAttribute("kw",kw);
+//        model.addAttribute("boardList",boardList);
+//
+//                return "usr/board/board_list";
+//    }
 
-                return "usr/board/board_list";
+//    @GetMapping("/board/list")
+//    public String list(Model model, @RequestParam(value = "page", defaultValue = "0")int page, @RequestParam(value = "kw", defaultValue = "")String kw){
+//        List<Board> boardList = this.boardService.getBoardList();
+//        Page<Board> paging = this.boardService.getList(page, kw);
+//
+//        Map<Integer, String> category = new LinkedHashMap<>();
+//        category.put(1, "운동일지");
+//        category.put(2, "상체운동");
+//        category.put(3, "하체운동");
+//        category.put(4, "바디프로필");
+//        category.put(5, "식단");
+//
+//        model.addAttribute("paging", paging);
+//        model.addAttribute("kw", kw);
+//        model.addAttribute("boardList", boardList);
+//        model.addAttribute("category", category);
+//
+//        return "usr/board/board_list";
+//    }
+
+    @GetMapping("/board/list")
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "kw", defaultValue = "") String kw) {
+        List<Board> boardList;
+        Page<Board> paging;
+
+        if (kw.isEmpty()) {
+            boardList = boardService.getBoardList();
+            paging = boardService.getList(page, kw);
+        } else {
+            boardList = boardService.getBoardListByCategory(kw);
+//            paging = boardService.getListByCategory(page, kw);
+        }
+
+        Map<Integer, String> category = new LinkedHashMap<>();
+        category.put(1, "운동일지");
+        category.put(2, "상체운동");
+        category.put(3, "하체운동");
+        category.put(4, "바디프로필");
+        category.put(5, "식단");
+
+//        model.addAttribute("paging", paging);
+        model.addAttribute("kw", kw);
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("category", category);
+
+        return "usr/board/board_list";
     }
 
     @GetMapping("/board/detail/{id}")

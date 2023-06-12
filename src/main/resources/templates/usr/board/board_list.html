@@ -1,4 +1,4 @@
-<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="">
+<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="http://www.thymeleaf.org">
 
 <head>
     <title>게시글</title>
@@ -7,6 +7,15 @@
 <body>
 
 <main layout:fragment="main">
+    <div>
+        <h3>카테고리</h3>
+        <ul>
+            <li th:each="entry : ${category}">
+                <a th:href="@{|/usr/board/list?kw=${entry.key}|}" th:text="${entry.value}"></a>
+            </li>
+        </ul>
+    </div>
+
     <table class="table">
         <thead class="table-dark">
         <tr>
