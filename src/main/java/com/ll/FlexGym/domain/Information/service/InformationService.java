@@ -1,5 +1,6 @@
 package com.ll.FlexGym.domain.Information.service;
 
+import com.ll.FlexGym.domain.Information.entity.InfoStatus;
 import com.ll.FlexGym.domain.Information.entity.Information;
 import com.ll.FlexGym.domain.Information.repository.InformationRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class InformationService {
                 .videoId(videoId)
                 .title(title)
                 .videoThumnailUrl(videoThumnailUrl)
+                .status(InfoStatus.WAIT)
                 .build();
         informationRepository.save(information);
 
@@ -47,6 +49,7 @@ public class InformationService {
                 .title(infoData.getTitle())
                 .videoThumnailUrl(infoData.getVideoThumnailUrl())
                 .content(content)
+                .status(InfoStatus.ON)
                 .build();
         informationRepository.save(information);
 
