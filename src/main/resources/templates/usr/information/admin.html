@@ -1,38 +1,22 @@
-
-<!--인포메이션 페이지-->
 <!DOCTYPE html>
 <html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
     <title>Title</title>
-    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">-->
 </head>
-<body style="display:flex; flex-direction: column; flex-wrap: wrap;">
-
-<main layout:fragment="main">
-
-<tr th:each="loop : ${informationList}" >
-    <td>
-        <div class="card" style="width: 15rem; ">
-            <img th:src="${loop.videoThumnailUrl}" class="card-img-top" alt="" height="100px">
-            <!--            <img src="https://i.ytimg.com/vi/H-AcDBLqxi4/default.jpg" class="card-img-top" alt="">&lt;!&ndash;src에 썸네일링크가 들어가야함&ndash;&gt;-->
-            <!--            <img src="..." class="card-img-top" alt="...">&lt;!&ndash;src에 썸네일링크가 들어가야함&ndash;&gt;-->
+<body>
+<main layout:fragment="main" style="display: flex; flex-direction: row; width: 15rem; flex-wrap: wrap; align-content: center;">
+    <container style="display: flex; flex-direction: row;">
+        <div class="card items-center text-center" th:each="loop : ${informationList}"style="margin-left: 20px; margin-top: 50px; width: 230px; border-color: #dddddd">
+            <img th:src="${loop.videoThumnailUrl}" class="card-img-top" alt="" width="230px" height="100px">
             <div class="card-body">
                 <h3 class="card-title" th:text="${loop.title}">운동영상</h3>
                 <p class="card-text">이 영상은 이렇습니다</p>
-                <!--여기서 폼으로 넘어가야함-->
-<!--                <a th:href="@{'https://www.youtube.com/watch?v=' + ${loop.videoId}}" class="btn btn-primary" target='_blank'>영상으로 가기</a>-->
-                <a th:href="@{adminToInfo_form + '?videoId=' +${loop.videoId}}" method="post" class="btn btn-primary" target='_blank'>글 작성하기</a>
-<!--  리팩토링 참조링크 https://amongthestar.tistory.com/178#:~:text=jsp%EC%97%90%EC%84%9C%20%ED%83%9C%EA%B7%B8%EC%97%90,%EC%95%88%EC%97%90%EC%84%9C%20post%EB%A1%9C%20%EB%84%98%EA%B8%B0%EB%A9%B4%20%EB%90%9C%EB%8B%A4-->
+                <a th:href="@{adminToInfo_form + '?videoId=' +${loop.videoId}}" class="btn btn-primary" target='_blank'>글 작성하기</a>
             </div>
         </div>
-    </td>
-</tr>
+    </container>
 </main>
 </body>
 </html>
