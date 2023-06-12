@@ -1,5 +1,7 @@
 package com.ll.FlexGym.domain.Meeting.controller;
 
+import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatMember.service.ChatMemberService;
 import com.ll.FlexGym.domain.ChatRoom.service.ChatRoomService;
 import com.ll.FlexGym.domain.Meeting.MeetingForm;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
@@ -13,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +30,11 @@ public class MeetingController {
     private final Rq rq;
     private final MeetingService meetingService;
     private final ChatRoomService chatRoomService;
+    private final ChatMemberService chatMemberService;
 
     @GetMapping("/list")
     public String showList(Model model) {
-        List<Meeting> meetingList = this.meetingService.getList();
+        List<Meeting> meetingList = meetingService.getList();
         model.addAttribute("meetingList", meetingList);
         return "usr/meeting/list";
     }
@@ -52,17 +54,14 @@ public class MeetingController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String create(@Valid MeetingForm meetingForm, BindingResult bindingResult,
-                                @AuthenticationPrincipal SecurityMember member) {
-        if (bindingResult.hasErrors()) {
-            return "usr/meeting/form";
-        }
+    public String create(@Valid MeetingForm meetingForm, @AuthenticationPrincipal SecurityMember member) {
+
         Meeting meeting = meetingService.create(meetingForm.getSubject(), rq.getMember(), meetingForm.getCapacity(),
-                meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+                meetingForm.getLocation(), meetingForm.getDate(), meetingForm.getTime(), meetingForm.getContent());
 
         chatRoomService.createAndConnect(meetingForm.getSubject(), meeting, member.getId());
 
-        return "redirect:/usr/meeting/list";
+        return rq.redirectWithMsg("/usr/meeting/list", "새로운 모임이 등록되었습니다.");
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -94,7 +93,8 @@ public class MeetingController {
         meetingForm.setSubject(meeting.getSubject());
         meetingForm.setCapacity(meeting.getCapacity());
         meetingForm.setLocation(meeting.getLocation());
-        meetingForm.setDateTime(meeting.getDateTime());
+        meetingForm.setDate(meeting.getDate());
+        meetingForm.setTime(meeting.getTime());
         meetingForm.setContent(meeting.getContent());
 
         return "usr/meeting/form";
@@ -106,11 +106,23 @@ public class MeetingController {
 
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
 
+        // 모집인원(capacity) >= 모임 참여자 수(participantsCount) 되도록
+        RsData checkCapaRsData = meetingService.checkCapacity(meetingForm.getCapacity(), meeting.getParticipantsCount());
+        if (checkCapaRsData.isFail()) return rq.historyBack(checkCapaRsData);
+
         RsData<Meeting> rsData = meetingService.modify(meeting, meetingForm.getSubject(), meetingForm.getCapacity(),
-                meetingForm.getLocation(), meetingForm.getDateTime(), meetingForm.getContent());
+                meetingForm.getLocation(), meetingForm.getDate(), meetingForm.getTime(), meetingForm.getContent());
 
         chatRoomService.updateChatRoomName(meeting.getChatRoom(), meetingForm.getSubject());
 
         return rq.redirectWithMsg("/usr/meeting/detail/%s".formatted(id), rsData);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/manage/{id}")
+    public String manage(Model model, @PathVariable("id") Long id) {
+        List<ChatMember> chatMemberList = chatMemberService.findByChatRoomId(id);
+        model.addAttribute("chatMemberList", chatMemberList);
+        return "usr/meeting/manage";
     }
 }

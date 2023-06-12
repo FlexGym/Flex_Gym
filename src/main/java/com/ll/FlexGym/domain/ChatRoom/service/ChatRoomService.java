@@ -1,8 +1,7 @@
 package com.ll.FlexGym.domain.ChatRoom.service;
 
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
-import com.ll.FlexGym.domain.ChatMessage.dto.response.SignalResponse;
-import com.ll.FlexGym.domain.ChatMessage.dto.response.SignalType;
+import com.ll.FlexGym.domain.ChatMember.service.ChatMemberService;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.repository.ChatRoomRepository;
@@ -30,6 +29,7 @@ public class ChatRoomService {
     private final MemberService memberService;
     private final SimpMessageSendingOperations template;
     private final ApplicationEventPublisher publisher;
+    private final ChatMemberService chatMemberService;
 
     @Transactional
     public ChatRoom createAndConnect(String subject, Meeting meeting, Long ownerId) {
@@ -72,7 +72,7 @@ public class ChatRoomService {
     }
 
     private Optional<ChatMember> getChatUser(ChatRoom chatRoom, Member member, Long memberId) {
-        // 만약에 방에 해당 유저가 없다면 추가한다. 방법1
+        // 방에 해당 유저가 있으면 가져오기
         Optional<ChatMember> existingMember = chatRoom.getChatMembers().stream()
                 .filter(chatMember -> chatMember.getMember().getId().equals(memberId))
                 .findFirst();
@@ -85,11 +85,9 @@ public class ChatRoomService {
 
     private boolean addChatRoomMember(ChatRoom chatRoom, Member member, Long memberId) {
 
-        Meeting meeting = chatRoom.getMeeting(); // 해당 채팅방의 모임 가져오기
-
         if (getChatUser(chatRoom, member, memberId).isEmpty()) {
             chatRoom.addChatUser(member);
-            meeting.increaseParticipantsCount(); // 유저가 참여하면 '현재 참여자 수' 1 증가
+            chatRoom.getMeeting().increaseParticipantsCount(); // 유저가 참여하면 '현재 참여자 수' 1 증가
             return true;
         }
 
@@ -103,7 +101,7 @@ public class ChatRoomService {
 
         if (!getChatUser(chatRoom, member, memberId).isEmpty()) return RsData.of("S-2", "기존 모임 채팅방에 참여합니다.");
 
-        if (!meeting.canAddParticipant()) return RsData.of("F-1", "참여자 수 초과로 해당 모임에 참여할 수 없습니다.");
+        if (!meeting.canAddParticipant()) return RsData.of("F-1", "모임 정원 초과!");
 
         return RsData.of("S-1", "새로운 모임 채팅방에 참여합니다.");
     }
@@ -150,6 +148,8 @@ public class ChatRoomService {
         if (chatMember != null) {
             chatRoom.removeChatMember(chatMember);
         }
+
+        chatRoom.getMeeting().decreaseParticipantsCount(); // 유저가 나가면 '현재 참여자 수' 1 감소
     }
 
     private ChatMember findChatMemberByMemberId(ChatRoom chatRoom, Long memberId) {
@@ -164,5 +164,15 @@ public class ChatRoomService {
         log.info("update subject = {}", subject);
         chatRoom.updateName(subject);
         chatRoomRepository.save(chatRoom);
+    }
+
+    // 유저 강퇴하기
+    @Transactional
+    public void kickChatMember(Long chatMemberId) {
+
+        ChatMember chatMember = chatMemberService.findById(chatMemberId);
+        ChatRoom chatRoom = chatMember.getChatRoom();
+
+        exitChatRoom(chatRoom.getId(), chatMember.getMember().getId());
     }
 }

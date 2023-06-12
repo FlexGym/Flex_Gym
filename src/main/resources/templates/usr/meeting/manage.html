@@ -1,0 +1,49 @@
+<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="">
+
+<head>
+    <title>참여자 관리</title>
+    <style>
+        .table {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+<main layout:fragment="main">
+    <div style="display: flex; justify-content: center;">
+        <table class="table">
+            <thead class="table-dark">
+            <tr>
+                <th>번호</th>
+                <th>아이디</th>
+                <th>입장일시</th>
+                <th>선택</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="chatMember, loop : ${chatMemberList}">
+                <td th:text="${loop.count}"></td>
+                <td th:text="${chatMember.member.username}"></td>
+                <td th:text="${#temporals.format(chatMember.createDate, 'yyyy/MM/dd hh:mm')}"></td>
+                <td>
+                    <form th:action="@{/usr/chat/rooms/kick/{id}(id=${chatMember.id})}" th:if="${chatMember.chatRoom.owner.id != chatMember.id}"
+                          method="post" onsubmit="if ( !confirm('강퇴하시겠습니까?') ) return false; disconnect()">
+                        <input type="hidden" name="_method" value="delete">
+                        <button class="btn btn-primary">강퇴</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</main>
+
+</body>
+
+</html>

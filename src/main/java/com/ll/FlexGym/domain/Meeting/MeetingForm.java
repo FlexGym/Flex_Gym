@@ -20,7 +20,10 @@ public class MeetingForm {
     private String location;
 
     @NotEmpty(message = "모임날짜는 필수항목입니다.")
-    private String dateTime;
+    private String date;
+
+    @NotEmpty(message = "모임시간은 필수항목입니다.")
+    private String time;
 
     @NotEmpty(message = "모임소개는 필수항목입니다.")
     private String content;
