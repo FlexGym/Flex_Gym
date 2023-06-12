@@ -9,6 +9,7 @@
         const chatRoomId = /*[[${chatRoom.id}]]*/ '';
         const token = /*[[${_csrf.token}]]*/ '';
         const memberId = /*[[${member.id}]]*/ '';
+        const memberName = /*[[${member.username}]]*/ '';
     </script>
     <script th:src="@{/app.js}"></script>
 
@@ -65,7 +66,7 @@
             display: flex;
             margin-top: 20px;
             position: fixed;
-            bottom: 5%;
+            bottom: 2%;
             left: 50%;
             transform: translateX(-50%);
             width: 70%;
@@ -125,18 +126,54 @@
         .chat__message-ul li .message-time {
             font-size: 10px; /* 폰트 크기 조정 */
         }
+        /*.custom-margin {*/
+        /*    margin-left: 10px;*/
+        /*    margin-top: 10px;*/
+        /*}*/
+        .participant-list {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .participant {
+            display: block;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
 
 <main layout:fragment="main">
+    <div class="ui-button">
+        <a th:href="@{|/usr/chat/${chatRoom.id}/memberList|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${member.username}" class="btn btn-dark">참여자 목록</a>
+    </div>
+<!--    <button class="btn btn-secondary dropdown-toggle" type="button" id="participantButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--        참가자 목록-->
+<!--    </button>-->
+<!--    <div class="dropdown-menu custom-margin" aria-labelledby="participantButton">-->
+<!--        <div id="userList"></div>-->
+<!--    </div>-->
+
     <section class="container">
         <div class="room-info">
             <table>
+<!--                <div class="dropdown">-->
+<!--                    <button class="btn btn-secondary dropdown-toggle" type="button" id="participantButton" data-toggle="dropdown"-->
+<!--                            aria-haspopup="true" aria-expanded="false">-->
+<!--                        참가한 유저-->
+<!--                    </button>-->
+<!--                    <div id="list" class="dropdown-menu" aria-labelledby="participantButton">-->
+
+<!--                    </div>-->
                 <thead>
                 <tr>
                     <th>방 이름</th>
-                    <th>Owner</th>
                     <th>방 나가기</th>
                     <th>채팅방 삭제</th>
                 </tr>
@@ -144,7 +181,6 @@
                 <tbody>
                 <tr>
                     <td th:text="${chatRoom.name}"></td>
-                    <td th:text="${chatRoom.owner.username}"></td>
                     <td>
                         <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="if ( !confirm('방을 나가시겠습니까?') ) return false; disconnect()">
                             <input type="hidden" name="_method" value="delete">
