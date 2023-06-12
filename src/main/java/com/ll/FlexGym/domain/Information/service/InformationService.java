@@ -35,10 +35,11 @@ public class InformationService {
 
         return informationList;
     }
-    public Information getInformation(Long id){
-        Optional<Information> information = informationRepository.findById(id);
+    public Optional getInformation(String videoId){
+        Optional<Information> oi = informationRepository.findByVideoId(videoId);
 
-        return information.get();
+        return oi;
+
     }
 
     @Transactional
