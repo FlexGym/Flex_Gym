@@ -73,19 +73,23 @@ public class InformationController {
     @GetMapping("/usr/information/adminToInfo_form")
     public String getForm(@RequestParam(required=false) String videoId, Model model) {
         Optional<Information> video =
-                this.informationService.getInformation(videoId);
+                this.informationService.getInformationByVideoId(videoId);
         if (video.isPresent()) {
             model.addAttribute("video", video.get());
         }
         return "/usr/information/adminToInfo_form";
     }
 
-    @ResponseBody
-    @PostMapping("/usr/information/adminToInfo_form")
-    public String submitForm() {
-        //여기에 각자 위치 구현
 
-        return "제출되었습니다!";
+    @PostMapping("/usr/information/adminToInfo_form")
+    public String submitForm(@RequestParam Long id, @RequestParam String content) {
+        //여기에 각자 위치 구현
+        Information video = this.informationService.getInformation(id);
+
+        informationService.create(id, content);
+        //model.addAttribute("informationList", video);
+
+        return "redirect:/usr/information/info";
     }
 
 }

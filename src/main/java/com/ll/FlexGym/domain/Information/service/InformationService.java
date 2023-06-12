@@ -30,16 +30,47 @@ public class InformationService {
         return information;
     }
 
+    @Transactional
+    public Information create(Long id, String content){
+        Optional<Information> oi = informationRepository.findById(id);
+        Information infoData = null;
+        if(oi.isPresent()){
+             infoData = oi.get();
+        }
+
+
+        //videoId title 재설정할 필요가 있나?
+        Information information = Information
+                .builder()
+                .id(infoData.getId())
+                .videoId(infoData.getVideoId())
+                .title(infoData.getTitle())
+                .videoThumnailUrl(infoData.getVideoThumnailUrl())
+                .content(content)
+                .build();
+        informationRepository.save(information);
+
+        return information;
+    }
+
     public List<Information> getList(){
         List<Information> informationList = this.informationRepository.findAll();
 
         return informationList;
     }
-    public Optional getInformation(String videoId){
+    public Optional getInformationByVideoId(String videoId){
         Optional<Information> oi = informationRepository.findByVideoId(videoId);
 
         return oi;
+    }
 
+    public Information getInformation(Long id){
+        Optional<Information> oi = informationRepository.findById(id);
+        Information information = null;
+        if(oi.isPresent()){
+            information = oi.get();
+        }
+        return information;
     }
 
     @Transactional

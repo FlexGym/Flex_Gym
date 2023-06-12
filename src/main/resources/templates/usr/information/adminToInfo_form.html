@@ -3,10 +3,11 @@
 <main layout:fragment="main">
 <div layout:fragment="content" class="container">
     <h5 class="my-3 border-bottom pb-2">제목</h5>
-    <form th:action="@{/usr/information/adminToInfo_form}" method="post">
+        <form th:action="@{adminToInfo_form +'?id='+ ${video.id}}" method="post">
+<!--    <form th:action="@{adminToInfo_form +'?id='+ ${video.id}${content}}" method="post">-->
         <div class="mb-3">
-            <label for="subject" class="form-label"></label>
-            <input type="text" th:value="${video.title}" name="subject" id="subject" class="form-control" style="width:500px">
+            <label for="title" class="form-label"></label>
+            <input type="text" th:value="${video.title}" name="title" id="title" class="form-control" style="width:500px">
         </div>
         <div class="mb-3">
             <label for="content" class="form-label" >내용</label>
