@@ -56,11 +56,17 @@ public class InformationService {
         return information;
     }
 
-    public List<Information> getList(){
-        List<Information> informationList = this.informationRepository.findAll();
+    @Transactional
+    public List<Information> getList(InfoStatus status){
+        //Optional informationList = this.informationRepository.findByStatus(status);
+        System.out.println(status);
+//        List<Information> oi = this.informationRepository.findByStatus(status);
+        List<Information> informationList = this.informationRepository.findByStatus(status);
+
 
         return informationList;
     }
+
     public Optional getInformationByVideoId(String videoId){
         Optional<Information> oi = informationRepository.findByVideoId(videoId);
 

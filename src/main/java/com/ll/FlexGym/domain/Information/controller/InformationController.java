@@ -2,6 +2,7 @@ package com.ll.FlexGym.domain.Information.controller;
 
 //import com.ll.FlexGym.domain.Information.service.InformationService;
 
+import com.ll.FlexGym.domain.Information.entity.InfoStatus;
 import com.ll.FlexGym.domain.Information.entity.Information;
 import com.ll.FlexGym.domain.Information.service.InformationService;
 import com.ll.FlexGym.domain.youtube.controller.YoutubeController;
@@ -39,7 +40,7 @@ public class InformationController {
     //관리자페이지
     @GetMapping("/usr/information/admin")
     public String showAdmin(Model model) {
-        List<Information> informationList = this.informationService.getList();
+        List<Information> informationList = this.informationService.getList(InfoStatus.WAIT);
         log.info("ssss = {}", informationList);
         model.addAttribute("informationList", informationList);
 
@@ -49,7 +50,7 @@ public class InformationController {
 
     @GetMapping("/usr/information/info")
     public String showInfo(Model model) {
-        List<Information> informationList = this.informationService.getList();
+        List<Information> informationList = this.informationService.getList(InfoStatus.ON);
         log.info("ssss = {}", informationList);
         model.addAttribute("informationList", informationList);
 
