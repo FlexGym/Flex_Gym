@@ -3,9 +3,12 @@ package com.ll.FlexGym.domain.Comment.controller;
 
 import com.ll.FlexGym.domain.Board.entity.Board;
 import com.ll.FlexGym.domain.Board.service.BoardService;
+import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.Comment.entity.Comment;
 import com.ll.FlexGym.domain.Comment.entity.CommentForm;
 import com.ll.FlexGym.domain.Comment.service.CommentService;
+import com.ll.FlexGym.domain.CommentLIke.entity.CommentLike;
+import com.ll.FlexGym.domain.CommentLIke.repository.CommentLikeRepository;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.service.MemberService;
 import jakarta.validation.Valid;
@@ -28,6 +31,8 @@ public class CommentController {
     private final CommentService commentService;
     private final BoardService boardService;
     private final MemberService memberService;
+
+    private final CommentLikeRepository commentLikeRepository;
 
     @PreAuthorize("isAuthenticated")
     @PostMapping("/create/{id}")
@@ -86,10 +91,45 @@ public class CommentController {
     public String commentLike(Principal principal, @PathVariable("id") Integer id){
         Comment comment = this.commentService.getComment(id);
         Member member = this.memberService.getMember(principal.getName());
-        this.commentService.likeComment(comment,member);
 
-        return String.format("redirect:/usr/board/detail/%s",comment.getBoard().getId());
+        try{
+            this.commentService.likeComment(comment,member);
+        }catch (ResponseStatusException e){
+            if (HttpStatus.FORBIDDEN.equals(e.getStatusCode())) {
+                // Display an alert using JavaScript
+                return String.format("redirect:/usr/board/detail/%s#comment_%s",
+                        comment.getBoard().getId(), comment.getId());
+            } else {
+                // Handle other exceptions
+                throw e;
+            }
+        }
+
+       return String.format("redirect:/usr/board/detail/%s#comment_%s",
+                comment.getBoard().getId(), comment.getId());
+
     }
+
+    public void likeComment(Comment comment, Member member){
+        // Check if the post has already been liked by the member
+        boolean isLiked = commentLikeRepository.existsByCommentAndMember(comment, member);
+        if(isLiked){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "이미 좋아요 누른 댓글 입니다.");
+        }
+
+       CommentLike commentLike = CommentLike.builder()
+                .comment(comment)
+                .member(member)
+                .build();
+       commentLikeRepository.save(commentLike);
+        comment.addToCommentLikes(commentLike);
+    }
+
+
+
+
+
+
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
