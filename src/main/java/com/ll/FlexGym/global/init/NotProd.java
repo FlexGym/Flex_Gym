@@ -1,5 +1,7 @@
 package com.ll.FlexGym.global.init;
 
+import com.ll.FlexGym.domain.Board.entity.Board;
+import com.ll.FlexGym.domain.Board.service.BoardService;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.service.ChatRoomService;
 import com.ll.FlexGym.domain.Information.entity.Information;
@@ -22,7 +24,8 @@ public class NotProd {
             MemberService memberService,
             ChatRoomService chatRoomService,
             MeetingService meetingService,
-            InformationService informationService
+            InformationService informationService,
+            BoardService boardService
 
     ) {
         return new CommandLineRunner() {
@@ -50,6 +53,13 @@ public class NotProd {
                 Information information3 = informationService.create("gMaB-fG4u4g","전신 다이어트 최고의 운동 [칼소폭 찐 핵핵매운맛]","https://i.ytimg.com/vi/gMaB-fG4u4g/default.jpg");
                 Information information4 = informationService.create("0uixp1vmKKY","최초공개 흑자헬스 운동영상 - 스쾃","https://i.ytimg.com/vi/0uixp1vmKKY/default.jpg");
                 Information information5 = informationService.create("Hx8Lc_0hUaI","운동할 시간이 없다는 사람에게 보여주세요... 제발","https://i.ytimg.com/vi/Hx8Lc_0hUaI/default.jpg");
+
+                boardService.create("오늘도 운동 열심히!","1","꾸준히 하는 것이 중요합니다~", memberUser1);
+                boardService.create("상체상체상체","2","상체운동최고", memberUser2);
+                boardService.create("하체하체하체","3","하체운동최고", memberUser1);
+                boardService.create("바디프로필","4","바디프로필이 목표입니다",memberUser3);
+                boardService.create("오늘의 식단~","5","닭가슴살과 당근쥬스",memberUser4);
+
             }
         };
     }
