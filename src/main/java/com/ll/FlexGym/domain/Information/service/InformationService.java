@@ -1,5 +1,6 @@
 package com.ll.FlexGym.domain.Information.service;
 
+import com.ll.FlexGym.domain.Information.entity.InfoStatus;
 import com.ll.FlexGym.domain.Information.entity.Information;
 import com.ll.FlexGym.domain.Information.repository.InformationRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,22 +25,61 @@ public class InformationService {
                 .videoId(videoId)
                 .title(title)
                 .videoThumnailUrl(videoThumnailUrl)
+                .status(InfoStatus.WAIT)
                 .build();
         informationRepository.save(information);
 
         return information;
     }
 
-    public List<Information> getList(){
-        List<Information> informationList = this.informationRepository.findAll();
+    @Transactional
+    public Information create(Long id, String content){
+        Optional<Information> oi = informationRepository.findById(id);
+        Information infoData = null;
+        if(oi.isPresent()){
+             infoData = oi.get();
+        }
+
+
+        //videoId title 재설정할 필요가 있나?
+        Information information = Information
+                .builder()
+                .id(infoData.getId())
+                .videoId(infoData.getVideoId())
+                .title(infoData.getTitle())
+                .videoThumnailUrl(infoData.getVideoThumnailUrl())
+                .content(content)
+                .status(InfoStatus.ON)
+                .build();
+        informationRepository.save(information);
+
+        return information;
+    }
+
+    @Transactional
+    public List<Information> getList(InfoStatus status){
+        //Optional informationList = this.informationRepository.findByStatus(status);
+        System.out.println(status);
+//        List<Information> oi = this.informationRepository.findByStatus(status);
+        List<Information> informationList = this.informationRepository.findByStatus(status);
+
 
         return informationList;
     }
-    public Optional getInformation(String videoId){
+
+    public Optional getInformationByVideoId(String videoId){
         Optional<Information> oi = informationRepository.findByVideoId(videoId);
 
         return oi;
+    }
 
+    public Information getInformation(Long id){
+        Optional<Information> oi = informationRepository.findById(id);
+        Information information = null;
+        if(oi.isPresent()){
+            information = oi.get();
+        }
+        return information;
     }
 
     @Transactional

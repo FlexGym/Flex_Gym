@@ -24,7 +24,7 @@
                 <!--            <img src="..." class="card-img-top" alt="...">&lt;!&ndash;src에 썸네일링크가 들어가야함&ndash;&gt;-->
                 <div class="card-body">
                     <h3 class="card-title" th:text="${loop.title}">운동영상</h3>
-                    <p class="card-text">이 영상은 이렇습니다</p>
+                    <p class="card-text" th:text="${loop.content}"></p>
                     <a th:href="@{'https://www.youtube.com/watch?v=' + ${loop.videoId}}" class="btn btn-primary" target='_blank'>영상으로 가기</a>
                 </div>
             </div>
