@@ -2,7 +2,10 @@ package com.ll.FlexGym.domain.Board.controller;
 
 import com.ll.FlexGym.domain.Board.entity.Board;
 import com.ll.FlexGym.domain.Board.form.BoardForm;
+import com.ll.FlexGym.domain.Board.repository.BoardRepository;
 import com.ll.FlexGym.domain.Board.service.BoardService;
+import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
+import com.ll.FlexGym.domain.BoardLike.repository.BoardLikeRepository;
 import com.ll.FlexGym.domain.Comment.entity.CommentForm;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.service.MemberService;
@@ -31,9 +34,9 @@ public class BoardController {
 
     private final BoardService boardService;
     private final MemberService memberService;
-
     private final Rq rq;
 
+    private final BoardLikeRepository boardLikeRepository;
     @GetMapping("/board/list")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "kw", defaultValue = "") String kw) {
         List<Board> boardList;
@@ -54,11 +57,31 @@ public class BoardController {
         category.put(4, "바디프로필");
         category.put(5, "식단");
 
+
 //        model.addAttribute("paging", paging);
         model.addAttribute("kw", kw);
         model.addAttribute("boardList", boardList);
         model.addAttribute("category", category);
 
+        return "usr/board/board_list";
+    }
+
+    @GetMapping("/board/popular")
+    public String popular(Model model) {
+        List<Board> popularBoardList = boardService.getPopularBoardList();
+
+        Map<Integer, String> category = new LinkedHashMap<>();
+        category.put(1, "운동일지");
+        category.put(2, "상체운동");
+        category.put(3, "하체운동");
+        category.put(4, "바디프로필");
+        category.put(5, "식단");
+
+
+        model.addAttribute("category", category);
+
+
+        model.addAttribute("boardList", popularBoardList);
         return "usr/board/board_list";
     }
 
@@ -81,12 +104,6 @@ public class BoardController {
         category.put(4,"바디프로필");
         category.put(5,"식단");
 
-//        List<String> category = new ArrayList<>();
-//        category.add("운동일지");
-//        category.add("상체운동");
-//        category.add("하체운동");
-//        category.add("바디프로필");
-//        category.add("식단");
 
         model.addAttribute("category", category);
         return "usr/board/board_form";
@@ -132,6 +149,7 @@ public class BoardController {
         category.put(3,"하체운동");
         category.put(4,"바디프로필");
         category.put(5,"식단");
+
         model.addAttribute("category",category);
 
         boardForm.setCategory(board.getCategory());
@@ -165,6 +183,15 @@ public class BoardController {
         this.boardService.delete(board);
         return "redirect:/usr/board/list";
     }
+//    @PreAuthorize("isAuthenticated()")
+//    @GetMapping("/board/like/{id}")
+//    public String boardLike(Principal principal, @PathVariable("id") Integer id){
+//        Board board = this.boardService.getBoard(id);
+//        Member member = this.memberService.getMember(principal.getName());
+//        this.boardService.likeBoard(board,member);
+//        return String.format("redirect:/usr/board/detail/%s",id);
+//
+//    }
 
 
     @PreAuthorize("isAuthenticated()")
@@ -172,10 +199,36 @@ public class BoardController {
     public String boardLike(Principal principal, @PathVariable("id") Integer id){
         Board board = this.boardService.getBoard(id);
         Member member = this.memberService.getMember(principal.getName());
-        this.boardService.likeBoard(board,member);
-        return String.format("redirect:/usr/board/detail/%s",id);
 
+        try {
+            this.boardService.likeBoard(board, member);
+        } catch (ResponseStatusException e) {
+            // Catch the exception thrown when the user has already liked the post
+            if (HttpStatus.FORBIDDEN.equals(e.getStatusCode())) {
+                // Display an alert using JavaScript
+                return "redirect:/usr/board/detail/" + id + "?alert=liked";
+            } else {
+                // Handle other exceptions
+                throw e;
+            }
+        }
+
+        return "redirect:/usr/board/detail/" + id;
     }
 
+    public void likeBoard(Board board, Member member){
+        // Check if the post has already been liked by the member
+        boolean isLiked = boardLikeRepository.existsByBoardAndMember(board, member);
+        if(isLiked){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "이미 좋아요 누른 게시글입니다.");
+        }
+
+        BoardLike boardLike = BoardLike.builder()
+                .board(board)
+                .member(member)
+                .build();
+        boardLikeRepository.save(boardLike);
+        board.addToBoardLikes(boardLike);
+    }
 
 }

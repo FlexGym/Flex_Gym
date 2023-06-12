@@ -95,4 +95,8 @@ public class BoardService {
     public List<Board> getBoardListByCategory(String kw) {
        return boardRepository.findAllByCategory(kw);
     }
+
+    public List<Board> getPopularBoardList() {
+        return boardRepository.findTop10ByOrderByLikes();
+    }
 }

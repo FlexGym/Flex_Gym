@@ -18,14 +18,14 @@
 
 
 
-<!--    <div>카테고리</div>-->
-<!--    <div th:text="${board.category}"></div><br><br>-->
+    <!--    <div>카테고리</div>-->
+    <!--    <div th:text="${board.category}"></div><br><br>-->
     <div>카테고리</div>
     <div th:text="${board.category == '1' ? '운동일지' : (board.category == '2' ? '상체운동' : (board.category == '3' ? '하체운동' : (board.category == '4' ? '바디프로필' : (board.category == '5' ? '식단' : ''))))}"></div><br><br>
 
 
 
-<!--    게시판 - 좋아요 , 수정 , 삭제 -->
+    <!--    게시판 - 좋아요 , 수정 , 삭제 -->
     <div class="my-3">
         <a onclick="return confirm('좋아요 하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
            th:href="@{|/usr/board/like/${board.id}|}">
@@ -88,11 +88,11 @@
         </div>
     </div>
     <!-- 댓글 반복 끝  -->
-    
 
-<!--    댓글 작성   -->
+
+    <!--    댓글 작성   -->
     <form th:action="@{|/comment/create/${board.id}|}" th:object="${commentForm}" method="post" class="my-3">
-<!--        <div th:replace="~{form_errors :: formErrorsFragment}"></div>-->
+        <!--        <div th:replace="~{form_errors :: formErrorsFragment}"></div>-->
 
         <textarea sec:authorize="isAnonymous()" disabled required maxlength="20000" placeholder="로그인 후 이용해주세요."
                   th:field="*{content}" rows="10" class="form-control"></textarea>
@@ -102,10 +102,10 @@
         <input sec:authorize="isAnonymous()" disabled type="submit" value="댓글등록" class="btn btn-primary my-2">
         <input sec:authorize="isAuthenticated()" type="submit" value="댓글등록" class="btn btn-primary my-2">
     </form>
-    
-    
-    
-<!--게시글 수정-->
+
+
+
+    <!--게시글 수정-->
     <a th:href="@{|/usr/board/modify/${board.id}|}" class="btn btn-sm btn-outline-secondary"
        sec:memberize="isAuthenticated()"
        th:if="${board.member != null and #authentication.getPrincipal().getUsername() == board.member.username}"
@@ -116,8 +116,10 @@
        sec:memberize="isAuthenticated()"
        th:if="${board.member != null and #authentication.getPrincipal().getUsername() == board.member.username}"
        th:text="삭제"></a>
-   
+
 </main>
 
 </body>
+
+
 </html>
