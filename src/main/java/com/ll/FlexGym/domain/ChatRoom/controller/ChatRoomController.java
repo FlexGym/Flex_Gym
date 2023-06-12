@@ -122,12 +122,14 @@ public class ChatRoomController {
     public String memberList(Model model, @PathVariable Long roomId,
                              @AuthenticationPrincipal SecurityMember member) {
         List<ChatMember> chatMemberList = chatMemberService.findByChatRoomIdAndChatMember(roomId, member.getId());
+        ChatRoom chatRoom = chatRoomService.findById(roomId);
 
         if (chatMemberList == null) {
             return rq.historyBack("해당 방에 참가하지 않았습니다.");
         }
 
         model.addAttribute("chatMemberList", chatMemberList);
+        model.addAttribute("chatRoom", chatRoom);
         return "usr/chat/memberList";
     }
 }

@@ -20,20 +20,20 @@
       <tr>
         <th>아이디</th>
         <th>입장일시</th>
+        <th>방장</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="chatMember, loop : ${chatMemberList}">
         <td th:text="${chatMember.member.username}"></td>
         <td th:text="${#temporals.format(chatMember.createDate, 'yyyy/MM/dd hh:mm')}"></td>
+        <td>
+          <span th:if="${chatMember.member.id == chatRoom.owner.id}">방장</span>
+        </td>
       </tr>
       </tbody>
     </table>
   </div>
-
-
 </main>
-
 </body>
-
 </html>
