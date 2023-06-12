@@ -28,8 +28,6 @@ public class InformationController {
     private final YoutubeController youtubeController;
 
 
-
-
     @PreAuthorize("isAnonymous()")//나중에 관리자로 바꿔야함
     @GetMapping("/usr/information/getYoutube")
     @ResponseBody
@@ -48,6 +46,7 @@ public class InformationController {
         return "usr/information/admin";
         //y.id, title, jpg
     }
+
     @GetMapping("/usr/information/info")
     public String showInfo(Model model) {
         List<Information> informationList = this.informationService.getList();
@@ -58,7 +57,6 @@ public class InformationController {
         //y.id, title, jpg
     }
 
-
     //api확인 페이지
     @ResponseBody
     @GetMapping("/usr/information/showYoutube")
@@ -68,6 +66,26 @@ public class InformationController {
 
         return hs;
         //y.id, title, jpg
+    }
+
+    //값을 받아왔다면 해당 uri에 대한 정보를 jpa를 통해 데이터호출 후 폼에 자동입력
+    //값이 없다면 일반입력
+    @GetMapping("/usr/information/adminToInfo_form")
+    public String getForm(@RequestParam(required=false) String videoId, Model model) {
+        Optional<Information> video =
+                this.informationService.getInformation(videoId);
+        if (video.isPresent()) {
+            model.addAttribute("video", video.get());
+        }
+        return "/usr/information/adminToInfo_form";
+    }
+
+    @ResponseBody
+    @PostMapping("/usr/information/adminToInfo_form")
+    public String submitForm() {
+        //여기에 각자 위치 구현
+
+        return "제출되었습니다!";
     }
 
 }
