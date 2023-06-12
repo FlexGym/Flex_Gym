@@ -31,7 +31,6 @@ public class BoardController {
 
     private final BoardService boardService;
     private final MemberService memberService;
-
     private final Rq rq;
 
     @GetMapping("/board/list")
@@ -54,11 +53,31 @@ public class BoardController {
         category.put(4, "바디프로필");
         category.put(5, "식단");
 
+
 //        model.addAttribute("paging", paging);
         model.addAttribute("kw", kw);
         model.addAttribute("boardList", boardList);
         model.addAttribute("category", category);
 
+        return "usr/board/board_list";
+    }
+
+    @GetMapping("/board/popular")
+    public String popular(Model model) {
+        List<Board> popularBoardList = boardService.getPopularBoardList();
+
+        Map<Integer, String> category = new LinkedHashMap<>();
+        category.put(1, "운동일지");
+        category.put(2, "상체운동");
+        category.put(3, "하체운동");
+        category.put(4, "바디프로필");
+        category.put(5, "식단");
+
+
+        model.addAttribute("category", category);
+
+
+        model.addAttribute("boardList", popularBoardList);
         return "usr/board/board_list";
     }
 
@@ -81,12 +100,6 @@ public class BoardController {
         category.put(4,"바디프로필");
         category.put(5,"식단");
 
-//        List<String> category = new ArrayList<>();
-//        category.add("운동일지");
-//        category.add("상체운동");
-//        category.add("하체운동");
-//        category.add("바디프로필");
-//        category.add("식단");
 
         model.addAttribute("category", category);
         return "usr/board/board_form";
@@ -132,6 +145,7 @@ public class BoardController {
         category.put(3,"하체운동");
         category.put(4,"바디프로필");
         category.put(5,"식단");
+
         model.addAttribute("category",category);
 
         boardForm.setCategory(board.getCategory());

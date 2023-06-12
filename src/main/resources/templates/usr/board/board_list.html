@@ -15,6 +15,9 @@
                 <a th:href="@{|/usr/board/list?kw=${entry.key}|}" th:text="${entry.value}"></a>
             </li>
         </ul>
+
+        <!-- 인기글보기 버튼 -->
+        <a th:href="@{/usr/board/popular}" class="btn btn-primary">인기글보기</a>
     </div>
 
     <table class="table">
