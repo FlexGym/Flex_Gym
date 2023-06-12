@@ -7,10 +7,11 @@
 <body>
 
 <main layout:fragment="main">
+
     <div>
-        <h3>카테고리</h3>
+        <h3>카테고리에 따라 게시글을 확인하세요.</h3>
         <ul>
-            <li th:each="entry : ${category}">
+            <li th:each="entry : ${category}" style="display: inline-block; margin-right: 10px;">
                 <a th:href="@{|/usr/board/list?kw=${entry.key}|}" th:text="${entry.value}"></a>
             </li>
         </ul>

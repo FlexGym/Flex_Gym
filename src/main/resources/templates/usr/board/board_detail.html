@@ -23,14 +23,14 @@
     <div>카테고리</div>
     <div th:text="${board.category == '1' ? '운동일지' : (board.category == '2' ? '상체운동' : (board.category == '3' ? '하체운동' : (board.category == '4' ? '바디프로필' : (board.category == '5' ? '식단' : ''))))}"></div><br><br>
 
-    <div th:text="|현재 좋아요 한 인원 수 : ${board.boardLikes}}|"></div><br><br>
+
 
 <!--    게시판 - 좋아요 , 수정 , 삭제 -->
     <div class="my-3">
         <a onclick="return confirm('좋아요 하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
            th:href="@{|/usr/board/like/${board.id}|}">
             좋아요
-            <span class="badge rounded-pill bg-success" th:text="${#lists.size(board.boardLikes)}"></span>
+            <span class="badge rounded-pill bg-success" th:text="${board.boardLikes.size()}"></span>
         </a>
 
         <a th:href="@{|/usr/board/modify/${board.id}|}" class="btn btn-sm btn-outline-secondary"
@@ -89,11 +89,7 @@
     </div>
     <!-- 댓글 반복 끝  -->
     
-    
-    
-    
-    
-    
+
 <!--    댓글 작성   -->
     <form th:action="@{|/comment/create/${board.id}|}" th:object="${commentForm}" method="post" class="my-3">
 <!--        <div th:replace="~{form_errors :: formErrorsFragment}"></div>-->
