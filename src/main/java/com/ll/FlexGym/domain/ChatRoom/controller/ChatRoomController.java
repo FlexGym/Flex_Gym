@@ -104,4 +104,12 @@ public class ChatRoomController {
         return "redirect:/usr/meeting/list";
     }
 
+    // 방장이 유저 강퇴시키기
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/rooms/kick/{id}")
+    public String kickChatMember(@PathVariable Long id){
+        chatRoomService.kickChatMember(id);
+
+        return "redirect:/usr/meeting/list";
+    }
 }

@@ -3,7 +3,7 @@
 <head>
     <title>참여자 관리</title>
     <style>
-        .table, .button {
+        .table {
             display: flex;
             justify-content: center;
             margin-top: 50px;
@@ -29,18 +29,19 @@
                 <td th:text="${loop.count}"></td>
                 <td th:text="${chatMember.member.username}"></td>
                 <td th:text="${#temporals.format(chatMember.createDate, 'yyyy/MM/dd hh:mm')}"></td>
-                <td><input type="checkbox" class="checkbox" /></td>
+                <td>
+                    <form th:action="@{/usr/chat/rooms/kick/{id}(id=${chatMember.id})}" th:if="${chatMember.chatRoom.owner.id != chatMember.id}"
+                          method="post" onsubmit="if ( !confirm('강퇴하시겠습니까?') ) return false; disconnect()">
+                        <input type="hidden" name="_method" value="delete">
+                        <button class="btn btn-primary">강퇴</button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
 
-    <div class="button">
-        <form th:action="@{/usr/chat/rooms/{id}(id=${chatMemberList.get(0).chatRoom.id})}" method="post" onsubmit="if ( !confirm('방을 나가시겠습니까?') ) return false; disconnect()">
-            <input type="hidden" name="_method" value="delete">
-            <button id="disconnectButton">강퇴</button>
-        </form>
-    </div>
+
 </main>
 
 </body>

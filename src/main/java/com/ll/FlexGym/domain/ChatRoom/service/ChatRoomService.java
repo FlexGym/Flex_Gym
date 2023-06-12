@@ -1,6 +1,7 @@
 package com.ll.FlexGym.domain.ChatRoom.service;
 
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatMember.service.ChatMemberService;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.repository.ChatRoomRepository;
@@ -28,6 +29,7 @@ public class ChatRoomService {
     private final MemberService memberService;
     private final SimpMessageSendingOperations template;
     private final ApplicationEventPublisher publisher;
+    private final ChatMemberService chatMemberService;
 
     @Transactional
     public ChatRoom createAndConnect(String subject, Meeting meeting, Long ownerId) {
@@ -162,5 +164,15 @@ public class ChatRoomService {
         log.info("update subject = {}", subject);
         chatRoom.updateName(subject);
         chatRoomRepository.save(chatRoom);
+    }
+
+    // 유저 강퇴하기
+    @Transactional
+    public void kickChatMember(Long chatMemberId) {
+
+        ChatMember chatMember = chatMemberService.findById(chatMemberId);
+        ChatRoom chatRoom = chatMember.getChatRoom();
+
+        exitChatRoom(chatRoom.getId(), chatMember.getMember().getId());
     }
 }
