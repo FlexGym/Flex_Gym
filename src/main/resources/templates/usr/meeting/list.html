@@ -29,7 +29,6 @@
         <table class="table">
             <thead class="table-dark">
             <tr>
-                <th>번호</th>
                 <th>제목</th>
                 <th>날짜</th>
                 <th>시간</th>
@@ -40,7 +39,6 @@
             </thead>
             <tbody>
             <tr th:each="meeting, loop : ${meetingList}">
-                <td th:text="${loop.count}"></td>
                 <td>
                     <a th:href="@{|/usr/meeting/detail/${meeting.id}|}" th:text="${meeting.subject}"></a>
                 </td>

@@ -121,7 +121,7 @@ public class MeetingController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/manage/{id}")
     public String manage(Model model, @PathVariable("id") Long id) {
-        List<ChatMember> chatMemberList = chatMemberService.getList();
+        List<ChatMember> chatMemberList = chatMemberService.findByChatRoomId(id);
         model.addAttribute("chatMemberList", chatMemberList);
         return "usr/meeting/manage";
     }

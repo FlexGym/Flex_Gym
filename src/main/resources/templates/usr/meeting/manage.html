@@ -3,17 +3,10 @@
 <head>
     <title>참여자 관리</title>
     <style>
-        .table {
+        .table, .button {
             display: flex;
             justify-content: center;
             margin-top: 50px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: flex-end;
-            margin-right: 10px;
-            margin-top: 10px;
         }
     </style>
 </head>
@@ -28,6 +21,7 @@
                 <th>번호</th>
                 <th>아이디</th>
                 <th>입장일시</th>
+                <th>선택</th>
             </tr>
             </thead>
             <tbody>
@@ -35,13 +29,17 @@
                 <td th:text="${loop.count}"></td>
                 <td th:text="${chatMember.member.username}"></td>
                 <td th:text="${#temporals.format(chatMember.createDate, 'yyyy/MM/dd hh:mm')}"></td>
+                <td><input type="checkbox" class="checkbox" /></td>
             </tr>
             </tbody>
         </table>
     </div>
 
-    <div class="header">
-        <a th:href="@{/usr/meeting/create}" class="btn btn-dark">강퇴</a>
+    <div class="button">
+        <form th:action="@{/usr/chat/rooms/{id}(id=${chatMemberList.get(0).chatRoom.id})}" method="post" onsubmit="if ( !confirm('방을 나가시겠습니까?') ) return false; disconnect()">
+            <input type="hidden" name="_method" value="delete">
+            <button id="disconnectButton">강퇴</button>
+        </form>
     </div>
 </main>
 

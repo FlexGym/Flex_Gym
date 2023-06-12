@@ -1,8 +1,6 @@
 package com.ll.FlexGym.domain.ChatRoom.service;
 
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
-import com.ll.FlexGym.domain.ChatMessage.dto.response.SignalResponse;
-import com.ll.FlexGym.domain.ChatMessage.dto.response.SignalType;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.repository.ChatRoomRepository;
@@ -101,7 +99,7 @@ public class ChatRoomService {
 
         if (!getChatUser(chatRoom, member, memberId).isEmpty()) return RsData.of("S-2", "기존 모임 채팅방에 참여합니다.");
 
-        if (!meeting.canAddParticipant()) return RsData.of("F-1", "참여자 수 초과로 해당 모임에 참여할 수 없습니다.");
+        if (!meeting.canAddParticipant()) return RsData.of("F-1", "모임 정원 초과!");
 
         return RsData.of("S-1", "새로운 모임 채팅방에 참여합니다.");
     }

@@ -17,7 +17,7 @@ public class ChatMemberService {
         return chatMemberRepository.findById(chatRoomUserId).orElseThrow();
     }
 
-    public List<ChatMember> getList() {
-        return chatMemberRepository.findAll();
+    public List<ChatMember> findByChatRoomId(Long chatRoomId) {
+        return chatMemberRepository.findByChatRoomId(chatRoomId);
     }
 }
