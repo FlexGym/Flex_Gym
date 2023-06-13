@@ -1,0 +1,35 @@
+<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="http://www.thymeleaf.org">
+
+<head>
+  <title>게시글</title>
+</head>
+
+<body>
+
+<main layout:fragment="main">
+  <table class="table">
+    <thead class="table-dark">
+    <tr>
+      <th>번호</th>
+      <th>제목</th>
+      <th>작성일시</th>
+      <th>작성자</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="boardLike, loop : ${boardLikeList}">
+      <td th:text="${loop.count}"></td>
+      <td>
+        <a th:href="@{|/usr/board/detail/${boardLike.id}|}" th:text="${boardLike.board.title}"></a>
+      </td>
+      <td th:text="${#temporals.format(boardLike.createDate, 'yyyy-MM-dd')}"></td>
+      <td th:text="${boardLike.board.member.username}">
+    </tr>
+    </tbody>
+  </table>
+</main>
+
+
+</body>
+
+</html>
