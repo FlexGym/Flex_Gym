@@ -35,13 +35,13 @@ public class Comment extends BaseEntity {
      * 부모 댓글과 자식 추가
      * 셀프 조인
      */
-    @ManyToOne(fetch = LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Comment parent;
 
-    @Builder.Default
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private List<Comment> children = new ArrayList<>();
+    private List<Comment> childComments = new ArrayList<>();
 
 
     public void updateContent(String content){this.content = content;}
@@ -50,4 +50,8 @@ public class Comment extends BaseEntity {
         commentLikes.add(0,commentLike);
     }
 
+
+    public void addChildComment(Comment comment) {
+        childComments.add(comment);
+    }
 }

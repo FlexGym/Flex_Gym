@@ -44,10 +44,10 @@ public class BoardService {
 
     public void create(String title, String category, String content, Member member){
         Board b = Board
-            .builder()
-            .title(title).category(category).content(content)
-            .member(member)
-            .build();
+                .builder()
+                .title(title).category(category).content(content)
+                .member(member)
+                .build();
         this.boardRepository.save(b);
     }
 
@@ -66,7 +66,7 @@ public class BoardService {
         board.updateTitle(title);
         board.updateContent(content);
         this.boardRepository.save(board);
-            }
+    }
 
 
     public void delete(Board board) {
@@ -93,7 +93,7 @@ public class BoardService {
 
 
     public List<Board> getBoardListByCategory(String kw) {
-       return boardRepository.findAllByCategory(kw);
+        return boardRepository.findAllByCategory(kw);
     }
 
     public List<Board> getPopularBoardList() {

@@ -36,4 +36,6 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
         return findTop10ByOrderByLikes(PageRequest.of(0, 10));
     }
 
+
+
 }

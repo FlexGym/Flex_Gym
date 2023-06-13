@@ -49,45 +49,95 @@
 
     <!-- 댓글의 갯수 표시 -->
     <h5 class="border-bottom my-3 py-2"
-        th:text="|${#lists.size(board.comments)}개의 답변이 있습니다.|"></h5>
+        th:text="|${#lists.size(board.comments)}개의 댓글이 있습니다.|"></h5>
 
-    <!-- 댓글 반복 시작 -->
-    <div th:id="|comment_${comment.id}|" class="card my-3" th:each="comment : ${board.comments}">
-        <div class="card-body">
-            <div class="card-text" th:utext="${comment.content}"></div>
-            <div class="d-flex justify-content-end">
-                <div th:if="${comment.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
-                    <div class="mb-2">modified at</div>
-                    <div th:text="${#temporals.format(comment.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
-                </div>
 
-                <div class="badge bg-light text-dark p-2 text-start">
-                    <div class="mb-2">
-                        <span th:if="${comment.member != null}" th:text="${comment.member.username}"></span>
+        <div th:id="|comment_${comment.id}|" class="card my-3" th:each="comment : ${board.comments}">
+            <!--댓글 반복시작-->
+            <div class="card-body" th:unless="${comment.parent != null}">
+                <div class="card-text" th:utext="${comment.content}"></div>
+                <div class="d-flex justify-content-end">
+                    <div th:if="${comment.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                        <div class="mb-2">수정 날짜</div>
+                        <div th:text="${#temporals.format(comment.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
                     </div>
-                    <div th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    <div class="badge bg-light text-dark p-2 text-start">
+                        <div class="mb-2">
+                            <span th:if="${comment.member != null}" th:text="${comment.member.username}"></span>
+                        </div>
+                        <div th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    </div>
+                </div>
+                <div class="my-3">
+                    <a onclick="return confirm('좋아요 누르시겠습니까?');" class="recommend btn btn-sm btn-outline-secondary"
+                       th:href="@{|/comment/like/${comment.id}|}">
+                        좋아요
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(comment.commentLikes)}"></span>
+                    </a>
+                    <a th:href="@{|/comment/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.username}"
+                       th:text="수정"></a>
+                    <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/comment/delete/${comment.id}|}"
+                       class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                       th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.username}"
+                       th:text="삭제"></a>
                 </div>
             </div>
-            <div class="my-3">
-                <a onclick="return confirm('좋아요 누르시겠습니까?');" class="recommend btn btn-sm btn-outline-secondary"
-                   th:href="@{|/comment/like/${comment.id}|}">
-                    좋아요
-                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(comment.commentLikes)}"></span>
-                </a>
 
-                <a th:href="@{|/comment/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
-                   sec:authorize="isAuthenticated()"
-                   th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.username}"
-                   th:text="수정"></a>
 
-                <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/comment/delete/${comment.id}|}"
-                   class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-                   th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.username}"
-                   th:text="삭제"></a>
+
+<!--        대댓글 반복 시작-->
+        <div th:each="childComment : ${comment.childComments}">
+            <div class="card-body" style="margin-left: 30px;">
+                <div class="card-text" th:utext="${childComment.content}"></div>
+                <div class="d-flex justify-content-end">
+                    <div th:if="${childComment.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                        <div class="mb-2">수정 날짜(대댓글)</div>
+                        <div th:text="${#temporals.format(childComment.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    </div>
+
+                    <div class="badge bg-light text-dark p-2 text-start">
+                        <div class="mb-2">
+
+                            <span th:if="${childComment.member != null}" th:text="${childComment.member.username}"></span>
+                        </div>
+                        <div th:text="${#temporals.format(childComment.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    </div>
+                </div>
+                <div class="my-3">
+                    <a onclick="return confirm('좋아요 누르시겠습니까?');" class="recommend btn btn-sm btn-outline-secondary"
+                       th:href="@{|/comment/like/${childComment.id}|}">
+                        좋아요
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(childComment.commentLikes)}"></span>
+                    </a>
+
+                    <a th:href="@{|/comment/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${childComment.member != null and #authentication.getPrincipal().getUsername() == childComment.member.username}"
+                       th:text="수정"></a>
+
+                    <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/comment/delete/${comment.id}|}"
+                       class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                       th:if="${childComment.member != null and #authentication.getPrincipal().getUsername() == childComment.member.username}"
+                       th:text="삭제"></a>
+                </div>
             </div>
         </div>
+
+<!--         대댓글 작성 폼-->
+            <div th:if="${comment.parent == null and #authorization.expression('isAuthenticated()')}">
+                <form th:action="@{|/comment/create/${board.id}|}" method="post" class="my-3" style="margin-left: 30px;">
+                    <textarea required maxlength="200" placeholder="내용(200자 이하)" name="content" rows="2" class="form-control"></textarea>
+                    <input type="hidden" name="parentId" th:value="${comment.id}">
+                    <input type="submit" value="댓글 등록" class="btn btn-primary my-2">
+                </form>
+            </div>
+
+
+
+
     </div>
-    <!-- 댓글 반복 끝  -->
 
 
     <!--    댓글 작성   -->
