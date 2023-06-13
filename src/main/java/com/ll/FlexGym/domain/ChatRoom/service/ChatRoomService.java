@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ll.FlexGym.domain.ChatMember.entity.ChatMemberType.KICKED;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -99,11 +101,21 @@ public class ChatRoomService {
 
         Member member = memberService.findByIdElseThrow(memberId);
 
-        if (!getChatUser(chatRoom, member, memberId).isEmpty()) return RsData.of("S-2", "기존 모임 채팅방에 참여합니다.");
+        // 이미 채팅방에 동일 유저가 존재하는 경우
+        if (!getChatUser(chatRoom, member, memberId).isEmpty()) {
+            ChatMember chatMember = getChatUser(chatRoom, member, memberId).get();
+            return checkChatMemberType(chatMember);
+        }
 
-        if (!meeting.canAddParticipant()) return RsData.of("F-1", "모임 정원 초과!");
+        if (!meeting.canAddParticipant()) return RsData.of("F-2", "모임 정원 초과!");
 
         return RsData.of("S-1", "새로운 모임 채팅방에 참여합니다.");
+    }
+
+    public RsData checkChatMemberType(ChatMember chatMember) {
+        if (chatMember.getType().equals(KICKED)) return RsData.of("F-1", "강퇴당한 모임입니다!");
+
+        return RsData.of("S-1", "기존 모임 채팅방에 참여합니다.");
     }
 
     /**
@@ -173,6 +185,7 @@ public class ChatRoomService {
         ChatMember chatMember = chatMemberService.findById(chatMemberId);
         ChatRoom chatRoom = chatMember.getChatRoom();
 
-        exitChatRoom(chatRoom.getId(), chatMember.getMember().getId());
+        chatMember.changeType(); // 강퇴된 유저의 type 을 "KICKED"로 변경
+        chatRoom.getMeeting().decreaseParticipantsCount(); // 유저가 강퇴되면 '현재 참여자 수' 1 감소
     }
 }
