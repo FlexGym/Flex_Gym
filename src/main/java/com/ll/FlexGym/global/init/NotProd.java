@@ -49,42 +49,42 @@ public class NotProd {
                         memberUser4,20, "여의도", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting5 = meetingService.create("매주 토요일 조기 축구 모임",
-                        memberUser1,5, "서초구", "2023-06-28", "10:00",
+                        memberUser4,5, "서초구", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting6 = meetingService.create("마라톤 대회 같이 참여해요!!!",
-                        memberUser1,3, "강남", "2023-06-28", "10:00",
+                        memberUser3,3, "강남", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting7 = meetingService.create("마포대교에서 같이 러닝하실 분",
                         memberUser2,8, "홍대", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting8 = meetingService.create("풋살 모임 참여하실 분~~~",
-                        memberUser2,10, "판교", "2023-06-28", "10:00",
+                        memberUser1,10, "판교", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting9 = meetingService.create("잠실대교에서 같이 러닝해요",
-                        memberUser2,9, "잠실","2023-06-28", "10:00",
+                        memberUser4,9, "잠실","2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting10 = meetingService.create("매주 등산하는 프로등산러 모임",
-                        memberUser2,3, "고양", "2023-06-28", "10:00",
+                        memberUser3,3, "고양", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting11 = meetingService.create("이번주 토요일 바이크 타실 분!!",
                         memberUser2,5, "광교", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting12 = meetingService.create("RUNNING CREW 모집 :)",
-                        memberUser2,6, "영등포", "2023-06-28", "10:00",
+                        memberUser1,3, "영등포", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
 
                 ChatRoom chatRoom1 = chatRoomService.createAndConnect(meeting1.getSubject(), meeting1, memberUser1.getId());
                 ChatRoom chatRoom2 = chatRoomService.createAndConnect(meeting2.getSubject(), meeting2, memberUser2.getId());
                 ChatRoom chatRoom3 = chatRoomService.createAndConnect(meeting3.getSubject(), meeting3, memberUser3.getId());
                 ChatRoom chatRoom4 = chatRoomService.createAndConnect(meeting4.getSubject(), meeting4, memberUser4.getId());
-                ChatRoom chatRoom5 = chatRoomService.createAndConnect(meeting5.getSubject(), meeting5, memberUser1.getId());
-                ChatRoom chatRoom6 = chatRoomService.createAndConnect(meeting6.getSubject(), meeting6, memberUser1.getId());
+                ChatRoom chatRoom5 = chatRoomService.createAndConnect(meeting5.getSubject(), meeting5, memberUser4.getId());
+                ChatRoom chatRoom6 = chatRoomService.createAndConnect(meeting6.getSubject(), meeting6, memberUser3.getId());
                 ChatRoom chatRoom7 = chatRoomService.createAndConnect(meeting7.getSubject(), meeting7, memberUser2.getId());
-                ChatRoom chatRoom8 = chatRoomService.createAndConnect(meeting8.getSubject(), meeting8, memberUser2.getId());
-                ChatRoom chatRoom9 = chatRoomService.createAndConnect(meeting9.getSubject(), meeting9, memberUser2.getId());
-                ChatRoom chatRoom10 = chatRoomService.createAndConnect(meeting10.getSubject(), meeting10, memberUser2.getId());
+                ChatRoom chatRoom8 = chatRoomService.createAndConnect(meeting8.getSubject(), meeting8, memberUser1.getId());
+                ChatRoom chatRoom9 = chatRoomService.createAndConnect(meeting9.getSubject(), meeting9, memberUser4.getId());
+                ChatRoom chatRoom10 = chatRoomService.createAndConnect(meeting10.getSubject(), meeting10, memberUser3.getId());
                 ChatRoom chatRoom11 = chatRoomService.createAndConnect(meeting11.getSubject(), meeting11, memberUser2.getId());
-                ChatRoom chatRoom12 = chatRoomService.createAndConnect(meeting12.getSubject(), meeting12, memberUser2.getId());
+                ChatRoom chatRoom12 = chatRoomService.createAndConnect(meeting12.getSubject(), meeting12, memberUser1.getId());
 
                 Information information1 = informationService.create("H-AcDBLqxi4","[운동자극]피곤하고 귀찮을때 보는 동기부여영상","https://i.ytimg.com/vi/H-AcDBLqxi4/default.jpg");
                 Information information2 = informationService.create("7A08jgKKRvk","[운동자극]피곤하고 귀찮을때 보는 동기부여영상 | 하드 공격적 운동 힙합 음악 체육관 훈련 동기 부여 ( 운동 음악 )","https://i.ytimg.com/vi/7A08jgKKRvk/default.jpg");

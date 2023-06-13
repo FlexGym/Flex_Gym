@@ -120,11 +120,11 @@ public class MeetingController {
 
     // 모임 참여자 관리
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/manage/{id}")
+    @GetMapping("/chatMembers/{id}")
     public String manage(Model model, @PathVariable("id") Long id) {
         List<ChatMember> chatMemberList = chatMemberService.findByChatRoomId(id);
         model.addAttribute("chatMemberList", chatMemberList);
         model.addAttribute("KICKED", KICKED);
-        return "usr/meeting/manage";
+        return "usr/meeting/chatMembers";
     }
 }

@@ -1,7 +1,7 @@
 <html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="">
 
 <head>
-    <title>참여자 관리</title>
+    <title>참여자 목록</title>
     <style>
         .table {
             display: flex;
@@ -30,11 +30,11 @@
                 <td th:text="${chatMember.member.username}"></td>
                 <td th:text="${#temporals.format(chatMember.createDate, 'yyyy/MM/dd hh:mm')}"></td>
                 <td>
-                    <div th:if="${chatMember.chatRoom.owner.id == chatMember.id}">방장 (나)</div>
-                    <form th:action="@{/usr/chat/rooms/kick/{id}(id=${chatMember.id})}" th:if="${chatMember.chatRoom.owner.id != chatMember.id}"
+                    <div th:if="${chatMember.chatRoom.owner.id == chatMember.member.id}" class="badge badge-primary">방장 </div>
+                    <form th:action="@{/usr/chat/rooms/kick/{id}(id=${chatMember.id})}" th:if="${chatMember.chatRoom.owner.id != chatMember.member.id}"
                           method="post" onsubmit="if ( !confirm('강퇴하시겠습니까?') ) return false; disconnect()">
                         <input type="hidden" name="_method" value="delete">
-                        <button class="btn btn-primary">강퇴</button>
+                        <button class="btn btn-error">강퇴</button>
                     </form>
                 </td>
             </tr>

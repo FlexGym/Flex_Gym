@@ -28,14 +28,27 @@
 <body>
 
 <main layout:fragment="main">
-    <div class="top-buttons">
-        <a th:href="@{|/usr/meeting/manage/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-dark">참여자 관리</a>
-        <a th:href="@{|/usr/meeting/modify/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-dark">수정</a>
-        <form th:action="@{|/usr/meeting/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}"
-              method="post" onsubmit="if ( !confirm('모임을 삭제하시겠습니까?') ) return false; disconnect()">
-            <input type="hidden" name="_method" value="delete">
-            <button class="btn btn-dark">삭제</button>
-        </form>
+    <div class="dropdown" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}">
+        <label tabindex="0" class="btn btn-ghost btn-circle">
+            <i class="fa-solid fa-bars"></i>
+        </label>
+        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-64">
+            <li>
+                <a th:href="@{|/usr/meeting/chatMembers/${meeting.id}|}">
+                    <span>참여자 목록</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{|/usr/meeting/modify/${meeting.id}|}">수정</a>
+            </li>
+            <li>
+                <form th:action="@{|/usr/meeting/${meeting.id}|}"
+                      method="post" onsubmit="if ( !confirm('모임을 삭제하시겠습니까?') ) return false; disconnect()">
+                    <input type="hidden" name="_method" value="delete">
+                    <button>삭제</button>
+                </form>
+            </li>
+        </ul>
     </div>
 
     <div class="detail">
@@ -53,9 +66,11 @@
         <div th:text="|현재 참여자 수 : ${meeting.participantsCount} / ${meeting.capacity}|"></div><br><br>
     </div>
     <div class="bottom-buttons">
-        <a th:if="${@rq.login} and ${@rq.getMember().username} != ${meeting.member.username}" class="btn btn-primary" th:href="@{|/usr/chat/rooms/${meeting.chatRoom.id}|}">참여하기</a>
-        <a th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-primary" th:href="@{|/usr/chat/rooms/${meeting.chatRoom.id}|}">채팅방으로 이동</a>
-        <a class="btn btn-dark" th:href="@{/usr/meeting/list}">목록</a>
+        <a th:if="${@rq.login} and ${@rq.getMember().username} != ${meeting.member.username}"
+           class="btn btn-primary btn-wide" th:href="@{|/usr/chat/rooms/${meeting.chatRoom.id}|}">참여하기</a>
+        <a th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}"
+           class="btn btn-primary btn-wide" th:href="@{|/usr/chat/rooms/${meeting.chatRoom.id}|}">채팅방으로 이동</a>
+        <a class="btn" th:href="@{/usr/meeting/list}">목록</a>
     </div>
 </main>
 
