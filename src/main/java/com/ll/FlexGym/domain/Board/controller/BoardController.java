@@ -13,6 +13,9 @@ import com.ll.FlexGym.global.security.SecurityMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,18 +38,20 @@ public class BoardController {
     private final Rq rq;
 
     private final BoardLikeRepository boardLikeRepository;
+
+
     @GetMapping("/board/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "kw", defaultValue = "") String kw) {
-        List<Board> boardList;
-        Page<Board> paging;
+    public String list(Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                       @RequestParam(value = "kw", defaultValue = "") String kw) {
+        Page<Board> boardPage;
 
         if (kw.isEmpty()) {
-            boardList = boardService.getBoardList();
-            paging = boardService.getList(page, kw);
+            boardPage = boardService.getList(pageable);
         } else {
-            boardList = boardService.getBoardListByCategory(kw);
-//            paging = boardService.getListByCategory(page, kw);
+            boardPage = boardService.getListByCategory(pageable, kw);
         }
+
+        List<Board> boardList = boardPage.getContent();
 
         Map<Integer, String> category = new LinkedHashMap<>();
         category.put(1, "운동일지");
@@ -55,14 +60,14 @@ public class BoardController {
         category.put(4, "바디프로필");
         category.put(5, "식단");
 
-
-//        model.addAttribute("paging", paging);
+        model.addAttribute("boardPage", boardPage);
         model.addAttribute("kw", kw);
         model.addAttribute("boardList", boardList);
         model.addAttribute("category", category);
 
         return "usr/board/board_list";
     }
+
 
     @GetMapping("/board/popular")
     public String popular(Model model) {
