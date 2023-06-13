@@ -8,17 +8,30 @@
 <body>
 <main layout:fragment="main" style="display: flex; flex-direction: row; width: 15rem; flex-wrap: wrap; align-content: center;">
     <container style="display: flex; flex-direction: row;">
-        <div class="card items-center text-center" th:each="loop : ${informationList}"style="margin-left: 20px; margin-top: 50px; width: 230px; border: 1px solid #dddddd;">
+        <div class="card items-center text-center" th:each="loop : ${informationList}" style="margin-left: 20px; margin-top: 50px; width: 230px; border: 1px solid #dddddd;">
             <img th:src="${loop.videoThumnailUrl}" class="card-img-top" alt="" width="230px" height="100px" style="border-radius:15px;">
             <div class="card-body">
                 <h3 class="card-title" th:text="${loop.title}">운동영상</h3>
                 <p class="card-text" th:text="${loop.content}"></p>
-                <div style="display: flex; justify-content: end; margin-right: 5px;"><button class="fa-regular fa-star"></button></div>
-                <div style="display: flex; justify-content: end; margin-right: 5px;"><button class="fa-solid fa-star"></button></div>
+                <!--아래 버튼에서 즐겨찾기확인이 필요해-->
+<!--                <form action="/usr/information/favorites/add" mathod="post" style="display: flex; justify-content: end; margin-right: 5px;">-->
+<!--                    <input type="hidden" name="informationId" th:value="${loop.id}">-->
+<!--                    <input type="hidden" name="username" th:value="${member.username}">-->
+<!--                <button th:if="${loop.favorite}" th:class="${'fa-solid fa-star'} onclick=""></button>-->
+<!--                <button th:unless="${loop.favorite}" th:class="${'fa-regular fa-star'}"></button>-->
+<!--                </form>-->
                 <a th:href="@{'https://www.youtube.com/watch?v=' + ${loop.videoId}}" class="btn btn-primary" target='_blank'>영상으로 가기</a>
+
+
+                <a onclick="return confirm('좋아요 하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
+                   th:href="@{|/usr/information/favorites/${loop.id}|}">
+                    좋아요
+<!--                    <span class="badge rounded-pill bg-success" th:text="${board.boardLikes.size()}"></span>-->
+                </a>
             </div>
         </div>
     </container>
 </main>
+
 </body>
 </html>

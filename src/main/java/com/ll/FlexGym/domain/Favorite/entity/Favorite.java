@@ -21,6 +21,6 @@ public class Favorite extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     private Member member;
 
-    @OneToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY)
     private Information information;
 }

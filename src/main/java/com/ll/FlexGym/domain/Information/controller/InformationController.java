@@ -5,15 +5,20 @@ package com.ll.FlexGym.domain.Information.controller;
 import com.ll.FlexGym.domain.Information.entity.InfoStatus;
 import com.ll.FlexGym.domain.Information.entity.Information;
 import com.ll.FlexGym.domain.Information.service.InformationService;
+import com.ll.FlexGym.domain.Member.entitiy.Member;
+import com.ll.FlexGym.domain.Member.service.MemberService;
 import com.ll.FlexGym.domain.youtube.controller.YoutubeController;
+import com.ll.FlexGym.global.security.SecurityMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +32,7 @@ public class InformationController {
 
     private final InformationService informationService;
     private final YoutubeController youtubeController;
-
+    private final MemberService memberService;
 
     @PreAuthorize("isAnonymous()")//나중에 관리자로 바꿔야함
     @GetMapping("/usr/information/getYoutube")
@@ -49,11 +54,17 @@ public class InformationController {
     }
 
     @GetMapping("/usr/information/info")
-    public String showInfo(Model model) {
+    public String showInfo(Model model , @AuthenticationPrincipal SecurityMember member) {
         List<Information> informationList = this.informationService.getList(InfoStatus.ON);
-        log.info("ssss = {}", informationList);
-        model.addAttribute("informationList", informationList);
 
+
+        Optional<Member> byUsername = memberService.findByUsername(member.getUsername());
+        Member member1 = null;
+        if(byUsername.isPresent()){
+            member1 = byUsername.get();
+        }
+        model.addAttribute("informationList", informationList);
+        model.addAttribute("member",member1);
         return "usr/information/info";
         //y.id, title, jpg
     }
