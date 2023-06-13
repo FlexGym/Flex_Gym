@@ -9,6 +9,7 @@
         const chatRoomId = /*[[${chatRoom.id}]]*/ '';
         const token = /*[[${_csrf.token}]]*/ '';
         const memberId = /*[[${member.id}]]*/ '';
+        const memberName = /*[[${member.username}]]*/ '';
     </script>
     <script th:src="@{/app.js}"></script>
 
@@ -23,10 +24,10 @@
         }
 
         .container2 {
-            max-width: 72%;
+            max-width: 78%;
             max-height: 700px;
             margin: 0 auto;
-            padding: 20px;
+            /*padding: 1px;*/
             border-radius: 8px;
             color: #f1f1f1;
             height: 80%;
@@ -41,7 +42,7 @@
         .chat-messages {
             flex: 1 1 auto;
             overflow-y: auto;
-            height: 700px;
+            height: 650px;
         }
 
         .chat-input {
@@ -65,7 +66,7 @@
             display: flex;
             margin-top: 20px;
             position: fixed;
-            bottom: 5%;
+            bottom: 2%;
             left: 50%;
             transform: translateX(-50%);
             width: 70%;
@@ -130,32 +131,37 @@
 <body>
 
 <main layout:fragment="main">
+
     <section class="container">
         <div class="room-info">
             <table>
-                <thead>
-                <tr>
-                    <th>방 이름</th>
-                    <th>Owner</th>
-                    <th>방 나가기</th>
-                    <th>채팅방 삭제</th>
-                </tr>
-                </thead>
                 <tbody>
                 <tr>
                     <td th:text="${chatRoom.name}"></td>
-                    <td th:text="${chatRoom.owner.username}"></td>
-                    <td>
-                        <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="if ( !confirm('방을 나가시겠습니까?') ) return false; disconnect()">
-                            <input type="hidden" name="_method" value="delete">
-                            <button id="disconnectButton">나가기</button>
-                        </form>
-                    </td>
-                    <td th:if="${chatRoom.owner.id == #authentication.principal.id}">
-                        <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="return confirm('채팅방을 삭제하시겠습니까?\n채팅방을 삭제한다면 모임도 같이 삭제됩니다.')">
-                            <button type="submit">삭제</button>
-                        </form>
-                    </td>
+                    <div class="dropdown">
+                        <label tabindex="0" class="btn btn-ghost btn-circle">
+                            <i class="fa-solid fa-bars"></i>
+                        </label>
+                        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-64">
+                            <li>
+                                <a th:href="@{|/usr/chat/${chatRoom.id}/memberList|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${member.username}">
+<!--                                    <i class="fa-solid fa-user"></i>-->
+                                    <span>참여자 목록</span>
+                                </a>
+                            </li>
+                            <li>
+                                <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="if ( !confirm('방을 나가시겠습니까?') ) return false; disconnect()">
+                                    <input type="hidden" name="_method" value="delete">
+                                    <button>나가기</button>
+                                </form>
+                            </li>
+                            <li th:if="${chatRoom.owner.id == #authentication.principal.id}">
+                                <form th:action="@{/usr/chat/rooms/{id}(id=${chatRoom.id})}" method="post" onsubmit="return confirm('채팅방을 삭제하시겠습니까?\n채팅방을 삭제한다면 모임도 같이 삭제됩니다.')">
+                                    <button type="submit">채팅방 삭제</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 </tr>
                 </tbody>
             </table>
