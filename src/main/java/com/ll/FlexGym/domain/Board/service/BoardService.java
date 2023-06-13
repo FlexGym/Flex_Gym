@@ -107,10 +107,6 @@ public class BoardService {
     }
 
 
-<<<<<<< HEAD
-
-
-=======
     public List<Board> getListForMember(Long memberId, Long currentMemberId) {
 
         Optional<Member> member = memberRepository.findById(memberId);
@@ -134,6 +130,5 @@ public class BoardService {
 
         return null;
     }
->>>>>>> e4daa1fcf3441bb0aeaf17d9f4c7010f573a9544
 
 }

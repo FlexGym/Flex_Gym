@@ -35,15 +35,8 @@ public class CommentController {
     private final CommentService commentService;
     private final BoardService boardService;
     private final MemberService memberService;
-<<<<<<< HEAD
-
-    private final Rq rq;
-
-=======
->>>>>>> e4daa1fcf3441bb0aeaf17d9f4c7010f573a9544
     private final CommentLikeRepository commentLikeRepository;
     private final Rq rq;
-
 
     @PreAuthorize("isAuthenticated")
     @PostMapping("/create/{id}")
@@ -140,11 +133,6 @@ public class CommentController {
         comment.addToCommentLikes(commentLike);
     }
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> e4daa1fcf3441bb0aeaf17d9f4c7010f573a9544
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String commentDelete(Principal principal, @PathVariable("id") Long id){
@@ -164,8 +152,6 @@ public class CommentController {
 
         List<Comment> commentList = commentService.getListForMember(memberId, currentMemberId);
 
-<<<<<<< HEAD
-=======
         if (commentList == null) {
             return rq.historyBack("자신의 정보만 확인할 수 있습니다.");
         }
@@ -175,5 +161,4 @@ public class CommentController {
         return "/usr/comment/myComment_list";
     }
 
->>>>>>> e4daa1fcf3441bb0aeaf17d9f4c7010f573a9544
 }
