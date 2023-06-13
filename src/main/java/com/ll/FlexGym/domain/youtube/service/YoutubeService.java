@@ -195,8 +195,9 @@ public class YoutubeService {
             // Double checks the kind is video.
             if (rId.getKind().equals("youtube#video")) {
                 Thumbnail thumbnail = (Thumbnail) singleVideo.getSnippet().getThumbnails().get("default");
+                //default를 0으로 바꾸는 방식은 안됨 그렇다면 String에서 replace로 바꿈
 
-                videoList.put(rId.getVideoId(), getMap(singleVideo.getSnippet().getTitle(), thumbnail.getUrl()));
+                videoList.put(rId.getVideoId(), getMap(singleVideo.getSnippet().getTitle(), thumbnail.getUrl().replace("default", "0")));
                 System.out.println(videoList);
                 System.out.println(" Video Id" + rId.getVideoId());
                 System.out.println(" Title: " + singleVideo.getSnippet().getTitle());
