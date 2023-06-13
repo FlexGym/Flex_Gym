@@ -2,17 +2,50 @@
 
 <head>
     <title>게시글 상세</title>
+
+    <style>
+       .ui-button {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        .detail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 
 <body>
 
 <main layout:fragment="main">
 
-    <h1 th:text="${board.title}"></h1>
-    <div th:text="${board.member.username}"></div>
-    <div th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></div><br><br>
 
 
+
+    <div class="ui-button">
+        <!--게시글 수정-->
+        <a th:href="@{|/usr/board/modify/${board.id}|}" class="btn btn-sm btn-outline-secondary"
+           sec:memberize="isAuthenticated()"
+           th:if="${board.member != null and #authentication.getPrincipal().getUsername() == board.member.username}"
+           th:text="수정"></a>
+
+        <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/usr/board/delete/${board.id}|}"
+           class="btn btn-sm btn-outline-secondary"
+           sec:memberize="isAuthenticated()"
+           th:if="${board.member != null and #authentication.getPrincipal().getUsername() == board.member.username}"
+           th:text="삭제"></a>
+
+    </div>
+
+    <div class="detail">
+        <h2 th:text="${board.title}"></h2>
+        <div th:text="${board.member.username}"></div>
+        <div th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></div><br><br>
     <div>게시글 내용</div>
     <div th:text="${board.content}"></div><br><br>
 
@@ -155,18 +188,8 @@
 
 
 
-    <!--게시글 수정-->
-    <a th:href="@{|/usr/board/modify/${board.id}|}" class="btn btn-sm btn-outline-secondary"
-       sec:memberize="isAuthenticated()"
-       th:if="${board.member != null and #authentication.getPrincipal().getUsername() == board.member.username}"
-       th:text="수정"></a>
 
-    <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/usr/board/delete/${board.id}|}"
-       class="btn btn-sm btn-outline-secondary"
-       sec:memberize="isAuthenticated()"
-       th:if="${board.member != null and #authentication.getPrincipal().getUsername() == board.member.username}"
-       th:text="삭제"></a>
-
+    </div>
 </main>
 
 </body>
