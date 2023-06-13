@@ -11,14 +11,12 @@ import com.ll.FlexGym.global.rsData.RsData;
 import com.ll.FlexGym.global.security.SecurityMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,9 +33,9 @@ public class MeetingController {
     private final ChatMemberService chatMemberService;
 
     @GetMapping("/list")
-    public String showList(Model model) {
-        List<Meeting> meetingList = meetingService.getList();
-        model.addAttribute("meetingList", meetingList);
+    public String showList(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        Page<Meeting> paging = meetingService.getList(page);
+        model.addAttribute("paging", paging);
         return "usr/meeting/list";
     }
 

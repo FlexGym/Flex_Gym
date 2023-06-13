@@ -75,6 +75,16 @@ public class NotProd {
 
                 ChatRoom chatRoom1 = chatRoomService.createAndConnect(meeting1.getSubject(), meeting1, memberUser1.getId());
                 ChatRoom chatRoom2 = chatRoomService.createAndConnect(meeting2.getSubject(), meeting2, memberUser2.getId());
+                ChatRoom chatRoom3 = chatRoomService.createAndConnect(meeting3.getSubject(), meeting3, memberUser3.getId());
+                ChatRoom chatRoom4 = chatRoomService.createAndConnect(meeting4.getSubject(), meeting4, memberUser4.getId());
+                ChatRoom chatRoom5 = chatRoomService.createAndConnect(meeting5.getSubject(), meeting5, memberUser1.getId());
+                ChatRoom chatRoom6 = chatRoomService.createAndConnect(meeting6.getSubject(), meeting6, memberUser1.getId());
+                ChatRoom chatRoom7 = chatRoomService.createAndConnect(meeting7.getSubject(), meeting7, memberUser2.getId());
+                ChatRoom chatRoom8 = chatRoomService.createAndConnect(meeting8.getSubject(), meeting8, memberUser2.getId());
+                ChatRoom chatRoom9 = chatRoomService.createAndConnect(meeting9.getSubject(), meeting9, memberUser2.getId());
+                ChatRoom chatRoom10 = chatRoomService.createAndConnect(meeting10.getSubject(), meeting10, memberUser2.getId());
+                ChatRoom chatRoom11 = chatRoomService.createAndConnect(meeting11.getSubject(), meeting11, memberUser2.getId());
+                ChatRoom chatRoom12 = chatRoomService.createAndConnect(meeting12.getSubject(), meeting12, memberUser2.getId());
 
                 Information information1 = informationService.create("H-AcDBLqxi4","[운동자극]피곤하고 귀찮을때 보는 동기부여영상","https://i.ytimg.com/vi/H-AcDBLqxi4/default.jpg");
                 Information information2 = informationService.create("7A08jgKKRvk","[운동자극]피곤하고 귀찮을때 보는 동기부여영상 | 하드 공격적 운동 힙합 음악 체육관 훈련 동기 부여 ( 운동 음악 )","https://i.ytimg.com/vi/7A08jgKKRvk/default.jpg");
