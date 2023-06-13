@@ -27,7 +27,7 @@ public class MeetingService {
     }
 
     @Transactional
-    public Meeting create(String subject, Member member, Integer capacity, String location, String dateTime, String content) {
+    public Meeting create(String subject, Member member, Integer capacity, String location, String date, String time, String content) {
         Meeting meeting = Meeting
                 .builder()
                 .subject(subject)
@@ -35,7 +35,8 @@ public class MeetingService {
                 .capacity(capacity)
                 .participantsCount(1)
                 .location(location)
-                .dateTime(dateTime)
+                .date(date)
+                .time(time)
                 .content(content)
                 .build();
 
@@ -67,20 +68,27 @@ public class MeetingService {
 
     @Transactional
     public RsData<Meeting> modify(Meeting meeting, String subject, Integer capacity,
-                                  String location, String dateTime, String content) {
+                                  String location, String date, String time, String content) {
 
-        meeting.update(subject, capacity, location, dateTime, content);
-
+        meeting.update(subject, capacity, location, date, time, content);
         meetingRepository.save(meeting);
+
         return RsData.of("S-1", "모임 내용을 수정하였습니다.", meeting);
     }
 
     public RsData canModify(Member actor, Meeting meeting) {
         long actorMemberId = actor.getId();
 
-        if (!Objects.equals(actorMemberId, meeting.getMember().getId())) {
+        if (!Objects.equals(actorMemberId, meeting.getMember().getId()))
             return RsData.of("F-1", "해당 모임을 수정할 권한이 없습니다.");
-        }
+
+        return RsData.of("S-1", "모임 수정이 가능합니다.");
+    }
+
+    public RsData checkCapacity(Integer capacity, Integer participantsCount) {
+
+        if(capacity < participantsCount)
+            return RsData.of("F-1", "모집인원이 현재 모임 참여자 수보다 적습니다.");
 
         return RsData.of("S-1", "모임 수정이 가능합니다.");
     }

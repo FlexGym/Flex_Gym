@@ -25,7 +25,10 @@
             <div class="card-body">
                 <h3 class="card-title" th:text="${loop.title}">운동영상</h3>
                 <p class="card-text">이 영상은 이렇습니다</p>
-                <a th:href="@{'https://www.youtube.com/watch?v=' + ${loop.videoId}}" class="btn btn-primary" target='_blank'>영상으로 가기</a>
+                <!--여기서 폼으로 넘어가야함-->
+<!--                <a th:href="@{'https://www.youtube.com/watch?v=' + ${loop.videoId}}" class="btn btn-primary" target='_blank'>영상으로 가기</a>-->
+                <a th:href="@{adminToInfo_form + '?videoId=' +${loop.videoId}}" method="post" class="btn btn-primary" target='_blank'>글 작성하기</a>
+<!--  리팩토링 참조링크 https://amongthestar.tistory.com/178#:~:text=jsp%EC%97%90%EC%84%9C%20%ED%83%9C%EA%B7%B8%EC%97%90,%EC%95%88%EC%97%90%EC%84%9C%20post%EB%A1%9C%20%EB%84%98%EA%B8%B0%EB%A9%B4%20%EB%90%9C%EB%8B%A4-->
             </div>
         </div>
     </td>

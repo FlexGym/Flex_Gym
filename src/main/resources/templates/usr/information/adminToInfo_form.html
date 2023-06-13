@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html layout:decorate="~{usr/layout/layout.html}" xmlns:layout="">
+<main layout:fragment="main">
+<div layout:fragment="content" class="container">
+    <h5 class="my-3 border-bottom pb-2">제목</h5>
+        <form th:action="@{adminToInfo_form +'?id='+ ${video.id}}" method="post">
+<!--    <form th:action="@{adminToInfo_form +'?id='+ ${video.id}${content}}" method="post">-->
+        <div class="mb-3">
+            <label for="title" class="form-label"></label>
+            <input type="text" th:value="${video.title}" name="title" id="title" class="form-control" style="width:500px">
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label" >내용</label>
+            <textarea name="content" id="content" class="form-control" rows="10 " style="width:500px"></textarea>
+        </div>
+        <h5 class="my-3 border-bottom pb-2">미리보기</h5>
+        <img th:src="${video.videoThumnailUrl}" style="width: 500px; height: 300px">
+        <input type="submit" value="저장하기" class="btn btn-primary my-2">
+    </form>
+</div>
+</main>
+</html>
+
+<!--<tr th:each="loop : ${informationList}" >-->
+<!--    <td>-->
+<!--        <div class="card" style="width: 15rem; ">-->
+<!--            <img th:src="${loop.videoThumnailUrl}" class="card-img-top" alt="" height="100px">-->
+<!--            <div class="card-body">-->
+<!--                <h3 class="card-title" th:text="${loop.title}">운동영상</h3>-->
+<!--                <p class="card-text">이 영상은 이렇습니다</p>-->
+<!--                <a th:href="@{'https://www.youtube.com/watch?v=' + ${loop.videoId}}" class="btn btn-primary" target='_blank'>영상으로 가기</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </td>-->
+<!--</tr>-->

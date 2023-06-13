@@ -111,12 +111,30 @@
             color: #4c51bf;
         }
 
+        .banner-content {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 20px; /* 이미지와 텍스트 사이의 간격을 조정합니다. */
+        }
+
+        .text-container {
+            text-align: left;
+            color: #333333;
+        }
+
     </style>
 </head>
 <body>
 <div layout:fragment="main" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
     <div class="banner">
-        Flex Gym에 오신 것을 환영합니다.
+        <div class="banner-content">
+            <div class="text-container">
+                <h1 style="margin-left: 20%; top: 300px">Welcome to our Room</h1>
+                <p>Explore and enjoy our room!</p>
+            </div>
+            <img src="https://i.ibb.co/Z2Ly8f5/19327-removebg-preview.png" alt="19327-removebg-preview" border="0" style="height: 290px; width: 900px; margin-left: 300px;">
+        </div>
     </div>
 
     <section>
@@ -124,7 +142,11 @@
         <div class="explain">
             <div class="dic">
                 <div class="chunk">
-                    <div class="circle"></div>
+                    <div class="circle">
+
+                        <a href="https://imgbb.com/"><img src="https://i.ibb.co/tmGxhMn/friend.png" alt="friend" border="0"></a>
+                    </div>
+
                     <div class="dsc">
                         </br>
                         모임</br>
@@ -136,8 +158,10 @@
                 <div></div>
 
                 <div class="chunk">
-                    <div class="circle"></div>
-                    <div class="dsc">
+                    <div class="circle">
+                    <img src="https://www.northbrucepeninsula.ca/en/live/resources/Documents/01_Icon-Community2x.png">
+                    </div>
+                        <div class="dsc">
                         </br>
                         커뮤니티</br>
                         여기는 커뮤니티입니다.</br>
@@ -146,7 +170,9 @@
                 </div>
 
                 <div class="chunk">
-                    <div class="circle"></div>
+                    <div class="circle">
+                        <a href="https://imgbb.com/"><img src="https://i.ibb.co/S6L1S4S/video2.png" alt="video2" border="0"></a>
+                    </div>
                     <div class="dsc">
                         </br>
                         운동영상</br>
@@ -161,7 +187,9 @@
         <div class="dic2">
             <div class="txt2">인기 동영상</div>
             <div class="chunk">
-                <div class="recta"></div>
+                <div class="recta">
+                    <a href="https://imgbb.com/"><img src="https://file.notion.so/f/s/f1e35826-ed41-42a0-a645-d2d258907e30/Untitled.png?id=8fc69e0d-708f-4a58-9207-06c9fc912111&table=block&spaceId=063bb2d1-ee4b-4cdf-a8cb-3612352a6b48&expirationTimestamp=1686642802454&signature=3p4rzo2_rrnQY-h2gvb7iJD4BwHVa6nyK5xCWywkelM&downloadName=Untitled.png" alt="images" border="0"></a>
+                </div>
                 <div class="dsc">
                     </br>
                     영상</br>

@@ -2,6 +2,7 @@ package com.ll.FlexGym.domain.Information.controller;
 
 //import com.ll.FlexGym.domain.Information.service.InformationService;
 
+import com.ll.FlexGym.domain.Information.entity.InfoStatus;
 import com.ll.FlexGym.domain.Information.entity.Information;
 import com.ll.FlexGym.domain.Information.service.InformationService;
 import com.ll.FlexGym.domain.youtube.controller.YoutubeController;
@@ -28,8 +29,6 @@ public class InformationController {
     private final YoutubeController youtubeController;
 
 
-
-
     @PreAuthorize("isAnonymous()")//나중에 관리자로 바꿔야함
     @GetMapping("/usr/information/getYoutube")
     @ResponseBody
@@ -41,23 +40,23 @@ public class InformationController {
     //관리자페이지
     @GetMapping("/usr/information/admin")
     public String showAdmin(Model model) {
-        List<Information> informationList = this.informationService.getList();
+        List<Information> informationList = this.informationService.getList(InfoStatus.WAIT);
         log.info("ssss = {}", informationList);
         model.addAttribute("informationList", informationList);
 
         return "usr/information/admin";
         //y.id, title, jpg
     }
+
     @GetMapping("/usr/information/info")
     public String showInfo(Model model) {
-        List<Information> informationList = this.informationService.getList();
+        List<Information> informationList = this.informationService.getList(InfoStatus.ON);
         log.info("ssss = {}", informationList);
         model.addAttribute("informationList", informationList);
 
         return "usr/information/info";
         //y.id, title, jpg
     }
-
 
     //api확인 페이지
     @ResponseBody
@@ -68,6 +67,30 @@ public class InformationController {
 
         return hs;
         //y.id, title, jpg
+    }
+
+    //값을 받아왔다면 해당 uri에 대한 정보를 jpa를 통해 데이터호출 후 폼에 자동입력
+    //값이 없다면 일반입력
+    @GetMapping("/usr/information/adminToInfo_form")
+    public String getForm(@RequestParam(required=false) String videoId, Model model) {
+        Optional<Information> video =
+                this.informationService.getInformationByVideoId(videoId);
+        if (video.isPresent()) {
+            model.addAttribute("video", video.get());
+        }
+        return "/usr/information/adminToInfo_form";
+    }
+
+
+    @PostMapping("/usr/information/adminToInfo_form")
+    public String submitForm(@RequestParam Long id, @RequestParam String content) {
+        //여기에 각자 위치 구현
+        Information video = this.informationService.getInformation(id);
+
+        informationService.create(id, content);
+        //model.addAttribute("informationList", video);
+
+        return "redirect:/usr/information/info";
     }
 
 }
