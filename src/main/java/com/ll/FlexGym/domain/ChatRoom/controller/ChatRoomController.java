@@ -1,5 +1,7 @@
 package com.ll.FlexGym.domain.ChatRoom.controller;
 
+import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatMember.service.ChatMemberService;
 import com.ll.FlexGym.domain.ChatMessage.dto.response.SignalResponse;
 import com.ll.FlexGym.domain.ChatMessage.service.ChatMessageService;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
@@ -33,6 +35,7 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
     private final SimpMessageSendingOperations template;
+    private final ChatMemberService chatMemberService;
 
     /**
      * 방 조회
@@ -111,5 +114,22 @@ public class ChatRoomController {
         chatRoomService.kickChatMember(id);
 
         return "redirect:/usr/meeting/list";
+    }
+
+    // 유저 정보 가져오기
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{roomId}/memberList")
+    public String memberList(Model model, @PathVariable Long roomId,
+                             @AuthenticationPrincipal SecurityMember member) {
+        List<ChatMember> chatMemberList = chatMemberService.findByChatRoomIdAndChatMember(roomId, member.getId());
+        ChatRoom chatRoom = chatRoomService.findById(roomId);
+
+        if (chatMemberList == null) {
+            return rq.historyBack("해당 방에 참가하지 않았습니다.");
+        }
+
+        model.addAttribute("chatMemberList", chatMemberList);
+        model.addAttribute("chatRoom", chatRoom);
+        return "usr/chat/memberList";
     }
 }

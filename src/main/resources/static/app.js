@@ -26,6 +26,7 @@ function drawMessages(messages) {
         const newItem = document.createElement("li");
         console.log(message);
         console.log("memberId : " + memberId);
+        console.log("memberName : " + memberName);
 
         if (message.sender.user_id === memberId) {
             newItem.classList.add("sender");
@@ -82,6 +83,7 @@ function connect() {
 document.addEventListener("DOMContentLoaded", function() {
     ChatMessageUl = document.querySelector('.chat__message-ul');
     getChatMessages();
+    // getUserList();
     connect();
 });
 
@@ -90,4 +92,27 @@ function disconnect() {
         stompClient.disconnect();
         console.log('Disconnected');
     }
+}
+
+// 참가자 목록 가져오기 (
+function getUserList() {
+    fetch(`/usr/chat/rooms/${chatRoomId}/members`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    })
+        .then(response => response.json())
+        .then(members => {
+            const userList = document.getElementById("userList");
+            userList.innerHTML = ""; // 이전 목록 초기화
+
+            members.forEach(member => {
+                const listItem = document.createElement("a");
+                listItem.classList.add("dropdown-item");
+                listItem.textContent = member.username;
+                userList.appendChild(listItem);
+            });
+        });
 }
