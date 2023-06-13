@@ -49,4 +49,12 @@ public class MemberController {
 
         return rq.redirectWithMsg("/usr/member/login", joinRs);
     }
+
+    @PreAuthorize("isAuthenticated()") // 로그인 해야만 접속가능
+    @GetMapping("/me") // 로그인 한 나의 정보 보여주는 페이지
+    public String showMe() {
+
+        return "usr/member/me";
+    }
+
 }

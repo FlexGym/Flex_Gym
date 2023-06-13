@@ -6,12 +6,14 @@ import com.ll.FlexGym.domain.Comment.repository.CommentRepository;
 import com.ll.FlexGym.domain.CommentLIke.entity.CommentLike;
 import com.ll.FlexGym.domain.CommentLIke.repository.CommentLikeRepository;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
+import com.ll.FlexGym.domain.Member.repository.MemberRepository;
 import com.ll.FlexGym.global.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -20,6 +22,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
+    private final MemberRepository memberRepository;
 
     public Comment create(Board board, String content, Member member, Comment parentComment){
         Comment comment = Comment.builder()
@@ -39,7 +42,7 @@ public class CommentService {
         return comment;
     }
 
-    public Comment getComment(Integer id){
+    public Comment getComment(Long id){
         Optional<Comment> comment = this.commentRepository.findById(id);
         if(comment.isPresent()){
             return comment.get();
@@ -78,5 +81,28 @@ public class CommentService {
     }
 
 
+    public List<Comment> getListForMember(Long memberId, Long currentMemberId) {
+
+        Optional<Member> member = memberRepository.findById(memberId);
+        Member foundMember = findByMemberId(member, currentMemberId);
+
+        if (foundMember == null) {
+            return null;
+        }
+
+        return commentRepository.findByMember(foundMember);
+    }
+
+
+    private Member findByMemberId(Optional<Member> member, Long memberId) {
+        if (member.isPresent()) {
+            Member foundMember = member.get();
+            if (foundMember.getId().equals(memberId)) {
+                return foundMember;
+            }
+        }
+
+        return null;
+    }
 
 }
