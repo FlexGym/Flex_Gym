@@ -1,12 +1,19 @@
 package com.ll.FlexGym.domain.Information.service;
 
+import com.ll.FlexGym.domain.Board.entity.Board;
+import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
+import com.ll.FlexGym.domain.Favorite.entity.Favorite;
+import com.ll.FlexGym.domain.Favorite.repository.FavoriteRepository;
 import com.ll.FlexGym.domain.Information.entity.InfoStatus;
 import com.ll.FlexGym.domain.Information.entity.Information;
 import com.ll.FlexGym.domain.Information.repository.InformationRepository;
+import com.ll.FlexGym.domain.Member.entitiy.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -17,6 +24,7 @@ import java.util.*;
 public class InformationService {
 
     private final InformationRepository informationRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Transactional
     public Information create(String videoId, String title, String videoThumnailUrl){
@@ -80,6 +88,23 @@ public class InformationService {
             information = oi.get();
         }
         return information;
+    }
+
+    public void favoriteInfo(Information information, Member member){
+        // 해당 게시글이 이 맴버에 의해 이전에 좋아요 체크된 적 있는 지 체크
+        boolean isFavorited = favoriteRepository.existsByInformationAndMember(information,member);
+        if(isFavorited){
+            // 한 게시글 당 좋아요 한개만 누를 수 있도록 제한
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "이미 즐겨찾기 되었습니다.");
+
+        }
+
+        Favorite favorite = Favorite.builder()
+                .information(information)
+                .member(member)
+                .build();
+        favoriteRepository.save(favorite);
+        information.addToFavorite(favorite);
     }
 
     @Transactional
