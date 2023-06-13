@@ -51,6 +51,8 @@ function drawMessages(messages) {
 
         ChatMessageUl.appendChild(newItem);
     });
+
+    scrollToBottom();
 }
 
 function ChatWriteMessage(form) {
@@ -115,4 +117,9 @@ function getUserList() {
                 userList.appendChild(listItem);
             });
         });
+}
+
+function scrollToBottom() {
+    const chatMessages = document.querySelector('.chat-messages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
