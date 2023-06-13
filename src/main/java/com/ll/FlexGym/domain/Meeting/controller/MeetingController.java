@@ -118,6 +118,7 @@ public class MeetingController {
         return rq.redirectWithMsg("/usr/meeting/detail/%s".formatted(id), rsData);
     }
 
+    // 모임 참여자 관리
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/manage/{id}")
     public String manage(Model model, @PathVariable("id") Long id) {

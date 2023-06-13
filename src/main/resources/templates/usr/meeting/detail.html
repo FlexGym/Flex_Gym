@@ -3,7 +3,7 @@
 <head>
     <title>모임 상세</title>
     <style>
-        .ui-button {
+        .top-buttons {
             display: flex;
             justify-content: flex-end;
             margin-right: 10px;
@@ -16,13 +16,19 @@
             align-items: center;
             margin-top: 50px;
         }
+
+        .bottom-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
     </style>
 </head>
 
 <body>
 
 <main layout:fragment="main">
-    <div class="ui-button">
+    <div class="top-buttons">
         <a th:href="@{|/usr/meeting/manage/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-dark">참여자 관리</a>
         <a th:href="@{|/usr/meeting/modify/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-dark">수정</a>
         <a th:href="@{|/usr/meeting/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-dark">삭제</a>
@@ -41,9 +47,11 @@
         <div th:text="|모임 소개 : ${meeting.content}|"></div><br><br>
 
         <div th:text="|현재 참여자 수 : ${meeting.participantsCount} / ${meeting.capacity}|"></div><br><br>
-
+    </div>
+    <div class="bottom-buttons">
         <a th:if="${@rq.login} and ${@rq.getMember().username} != ${meeting.member.username}" class="btn btn-primary" th:href="@{|/usr/chat/rooms/${meeting.chatRoom.id}|}">참여하기</a>
         <a th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-primary" th:href="@{|/usr/chat/rooms/${meeting.chatRoom.id}|}">채팅방으로 이동</a>
+        <a class="btn btn-dark" th:href="@{/usr/meeting/list}">목록</a>
     </div>
 </main>
 
