@@ -21,7 +21,7 @@
                 <th>번호</th>
                 <th>아이디</th>
                 <th>입장일시</th>
-                <th>선택</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -30,6 +30,7 @@
                 <td th:text="${chatMember.member.username}"></td>
                 <td th:text="${#temporals.format(chatMember.createDate, 'yyyy/MM/dd hh:mm')}"></td>
                 <td>
+                    <div th:if="${chatMember.chatRoom.owner.id == chatMember.id}">방장 (나)</div>
                     <form th:action="@{/usr/chat/rooms/kick/{id}(id=${chatMember.id})}" th:if="${chatMember.chatRoom.owner.id != chatMember.id}"
                           method="post" onsubmit="if ( !confirm('강퇴하시겠습니까?') ) return false; disconnect()">
                         <input type="hidden" name="_method" value="delete">
