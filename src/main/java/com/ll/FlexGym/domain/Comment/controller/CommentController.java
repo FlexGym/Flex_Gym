@@ -11,10 +11,13 @@ import com.ll.FlexGym.domain.CommentLIke.entity.CommentLike;
 import com.ll.FlexGym.domain.CommentLIke.repository.CommentLikeRepository;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.service.MemberService;
+import com.ll.FlexGym.global.rq.Rq;
+import com.ll.FlexGym.global.security.SecurityMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 
 @RequestMapping("/comment")
 @RequiredArgsConstructor
@@ -32,7 +36,10 @@ public class CommentController {
     private final BoardService boardService;
     private final MemberService memberService;
 
+    private final Rq rq;
+
     private final CommentLikeRepository commentLikeRepository;
+
 
     @PreAuthorize("isAuthenticated")
     @PostMapping("/create/{id}")
@@ -131,10 +138,6 @@ public class CommentController {
 
 
 
-
-
-
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String commentDelete(Principal principal, @PathVariable("id") Integer id){
@@ -145,7 +148,6 @@ public class CommentController {
         this.commentService.delete(comment);
         return String.format("redirect:/usr/board/detail/%s", comment.getBoard().getId());
     }
-
 
 
 

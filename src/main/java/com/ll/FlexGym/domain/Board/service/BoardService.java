@@ -6,6 +6,7 @@ import com.ll.FlexGym.domain.Board.repository.BoardRepository;
 import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.BoardLike.repository.BoardLikeRepository;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
+import com.ll.FlexGym.domain.Member.repository.MemberRepository;
 import com.ll.FlexGym.global.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -26,6 +27,7 @@ import java.util.Optional;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
     private final BoardLikeRepository boardLikeRepository;
     private final ApplicationEventPublisher publisher;
 
@@ -99,4 +101,9 @@ public class BoardService {
     public List<Board> getPopularBoardList() {
         return boardRepository.findTop10ByOrderByLikes();
     }
+
+
+
+
+
 }
