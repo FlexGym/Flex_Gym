@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.ll.FlexGym.domain.ChatMember.entity.ChatMemberType.KICKED;
 import static com.ll.FlexGym.domain.ChatMessage.dto.response.SignalType.*;
 import static com.ll.FlexGym.domain.ChatMessage.entity.ChatMessageType.ENTER;
 
@@ -130,6 +131,7 @@ public class ChatRoomController {
 
         model.addAttribute("chatMemberList", chatMemberList);
         model.addAttribute("chatRoom", chatRoom);
+        model.addAttribute("KICKED", KICKED);
         return "usr/chat/memberList";
     }
 }

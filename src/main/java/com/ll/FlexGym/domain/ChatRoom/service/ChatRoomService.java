@@ -2,6 +2,7 @@ package com.ll.FlexGym.domain.ChatRoom.service;
 
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
 import com.ll.FlexGym.domain.ChatMember.service.ChatMemberService;
+import com.ll.FlexGym.domain.ChatMessage.entity.ChatMessage;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.repository.ChatRoomRepository;
@@ -29,8 +30,6 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final MemberService memberService;
-    private final SimpMessageSendingOperations template;
-    private final ApplicationEventPublisher publisher;
     private final ChatMemberService chatMemberService;
 
     @Transactional
@@ -181,11 +180,17 @@ public class ChatRoomService {
     // 유저 강퇴하기
     @Transactional
     public void kickChatMember(Long chatMemberId) {
-
         ChatMember chatMember = chatMemberService.findById(chatMemberId);
         ChatRoom chatRoom = chatMember.getChatRoom();
 
         chatMember.changeType(); // 강퇴된 유저의 type 을 "KICKED"로 변경
+
+        List<ChatMessage> chatMessages = chatRoom.getChatMessages();
+
+        chatMessages.stream()
+                .filter(chatMessage -> chatMessage.getSender().getId().equals(chatMemberId))
+                .forEach(chatMessage -> chatMessage.removeChatMessages("강퇴된 사용자의 메시지입니다."));
+
         chatRoom.getMeeting().decreaseParticipantsCount(); // 유저가 강퇴되면 '현재 참여자 수' 1 감소
     }
 }
