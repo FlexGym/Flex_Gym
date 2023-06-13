@@ -59,6 +59,17 @@ public class NotProd {
                 boardService.create("하체하체하체","3","하체운동최고", memberUser1);
                 boardService.create("바디프로필","4","바디프로필이 목표입니다",memberUser3);
                 boardService.create("오늘의 식단~","5","닭가슴살과 당근쥬스",memberUser4);
+                boardService.create("오늘도 운동 열심히!!!!","1","꾸준히 하는 것이 중요합니다~", memberUser1);
+                boardService.create("상체상체상체~~~~~","2","상체운동최고", memberUser2);
+                boardService.create("하체하체하체!!!!!!","3","하체운동최고", memberUser1);
+                boardService.create("바디프로필!!!","4","바디프로필이 목표입니다",memberUser3);
+                boardService.create("오늘의 식단~~~~~","5","닭가슴살과 당근쥬스",memberUser4);
+                boardService.create("오늘도 운동 열심히!~!~!~","1","꾸준히 하는 것이 중요합니다~", memberUser1);
+                boardService.create("상체상체상체!!!!!!1","2","상체운동최고", memberUser2);
+                boardService.create("하체하체하체~~","3","하체운동최고", memberUser1);
+                boardService.create("바디프로필!~!","4","바디프로필이 목표입니다",memberUser3);
+                boardService.create("오늘의 식단~~~~","5","닭가슴살과 당근쥬스",memberUser4);
+
 
             }
         };

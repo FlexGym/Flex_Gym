@@ -21,13 +21,21 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
 
-    public Comment create(Board board, String content, Member member){
+    public Comment create(Board board, String content, Member member, Comment parentComment){
         Comment comment = Comment.builder()
-                                .content(content)
-                                 .member(member)
-                                .board(board)
-                                .build();
+                .content(content)
+                .member(member)
+                .board(board)
+                .parent(parentComment)
+                .build();
         this.commentRepository.save(comment);
+
+        // Add the new comment as a child to the parent comment
+        if (parentComment != null) {
+            parentComment.addChildComment(comment);
+            this.commentRepository.save(parentComment);
+        }
+
         return comment;
     }
 
@@ -51,7 +59,7 @@ public class CommentService {
     }
 
     public void likeComment(Comment comment, Member member){
-       // 해당 댓글이 이 맴버에 의해 이전에 좋아요 체크된 적 있는 지 체크
+        // 해당 댓글이 이 맴버에 의해 이전에 좋아요 체크된 적 있는 지 체크
         boolean isLiked = commentLikeRepository.existsByCommentAndMember(comment,member);
         if(isLiked){
             // 한 댓글당 좋아요 한개만 누를 수 있도록 제한

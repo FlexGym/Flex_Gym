@@ -164,7 +164,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/board/modify/{id}")
     public String boardModify(@Valid BoardForm boardForm, BindingResult bindingResult,
-                             Principal principal, @PathVariable("id") Integer id){
+                              Principal principal, @PathVariable("id") Integer id){
         Board board = this.boardService.getBoard(id);
         if(!board.getMember().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다.");
