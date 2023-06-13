@@ -35,15 +35,19 @@ public class CommentController {
     private final CommentService commentService;
     private final BoardService boardService;
     private final MemberService memberService;
+<<<<<<< HEAD
 
     private final Rq rq;
 
+=======
+>>>>>>> e4daa1fcf3441bb0aeaf17d9f4c7010f573a9544
     private final CommentLikeRepository commentLikeRepository;
+    private final Rq rq;
 
 
     @PreAuthorize("isAuthenticated")
     @PostMapping("/create/{id}")
-    public String createComment(Model model, @PathVariable("id") Integer id,
+    public String createComment(Model model, @PathVariable("id") Long id,
                                 @Valid CommentForm commentForm, BindingResult bindingResult, Principal principal){
         Board board = this.boardService.getBoard(id);
         Member member = this.memberService.getMember(principal.getName());
@@ -64,7 +68,7 @@ public class CommentController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String commentModify(CommentForm commentForm, @PathVariable("id") Integer id, Principal principal) {
+    public String commentModify(CommentForm commentForm, @PathVariable("id") Long id, Principal principal) {
         Comment comment = this.commentService.getComment(id);
 
         if (!comment.getMember().getUsername().equals(principal.getName())) {
@@ -78,7 +82,7 @@ public class CommentController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String commentModify(@Valid CommentForm commentForm, BindingResult bindingResult,
-                                @PathVariable("id") Integer id, Principal principal)
+                                @PathVariable("id") Long id, Principal principal)
     {
         if(bindingResult.hasErrors()){
             return "usr/comment/comment_form";
@@ -99,7 +103,7 @@ public class CommentController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/like/{id}")
-    public String commentLike(Principal principal, @PathVariable("id") Integer id){
+    public String commentLike(Principal principal, @PathVariable("id") Long id){
         Comment comment = this.commentService.getComment(id);
         Member member = this.memberService.getMember(principal.getName());
 
@@ -136,11 +140,14 @@ public class CommentController {
         comment.addToCommentLikes(commentLike);
     }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> e4daa1fcf3441bb0aeaf17d9f4c7010f573a9544
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
-    public String commentDelete(Principal principal, @PathVariable("id") Integer id){
+    public String commentDelete(Principal principal, @PathVariable("id") Long id){
         Comment comment = this.commentService.getComment(id);
         if(!comment.getMember().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
@@ -149,7 +156,24 @@ public class CommentController {
         return String.format("redirect:/usr/board/detail/%s", comment.getBoard().getId());
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{memberId}/commentList")
+    public String getCommentList(Model model, @PathVariable Long memberId, @AuthenticationPrincipal SecurityMember member){
 
+        Long currentMemberId = member.getId();
 
+        List<Comment> commentList = commentService.getListForMember(memberId, currentMemberId);
 
+<<<<<<< HEAD
+=======
+        if (commentList == null) {
+            return rq.historyBack("자신의 정보만 확인할 수 있습니다.");
+        }
+
+        model.addAttribute(commentList);
+
+        return "/usr/comment/myComment_list";
+    }
+
+>>>>>>> e4daa1fcf3441bb0aeaf17d9f4c7010f573a9544
 }

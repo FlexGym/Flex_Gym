@@ -2,7 +2,6 @@ package com.ll.FlexGym.domain.Board.controller;
 
 import com.ll.FlexGym.domain.Board.entity.Board;
 import com.ll.FlexGym.domain.Board.form.BoardForm;
-import com.ll.FlexGym.domain.Board.repository.BoardRepository;
 import com.ll.FlexGym.domain.Board.service.BoardService;
 import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.BoardLike.repository.BoardLikeRepository;
@@ -13,7 +12,6 @@ import com.ll.FlexGym.global.rq.Rq;
 import com.ll.FlexGym.global.security.SecurityMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -86,7 +84,7 @@ public class BoardController {
     }
 
     @GetMapping("/board/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id, CommentForm commentForm){
+    public String detail(Model model, @PathVariable("id") Long id, CommentForm commentForm){
         Board board = this.boardService.getBoard(id);
         model.addAttribute("board", board);
         return "usr/board/board_detail";
@@ -137,7 +135,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/board/modify/{id}")
     public String boardModify(BoardForm boardForm,Model model,
-                              Principal principal, @PathVariable("id") Integer id){
+                              Principal principal, @PathVariable("id") Long id){
         Board board = this.boardService.getBoard(id);
         if(!board.getMember().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다.");
@@ -164,7 +162,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/board/modify/{id}")
     public String boardModify(@Valid BoardForm boardForm, BindingResult bindingResult,
-                              Principal principal, @PathVariable("id") Integer id){
+                              Principal principal, @PathVariable("id") Long id){
         Board board = this.boardService.getBoard(id);
         if(!board.getMember().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다.");
@@ -175,7 +173,7 @@ public class BoardController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/board/delete/{id}")
-    public String boardDelete(Principal principal, @PathVariable("id") Integer id){
+    public String boardDelete(Principal principal, @PathVariable("id") Long id){
         Board board = this.boardService.getBoard(id);
         if( !board.getMember().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"삭제권한이 없습니다.");
@@ -188,7 +186,7 @@ public class BoardController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/board/like/{id}")
-    public String boardLike(Principal principal, @PathVariable("id") Integer id){
+    public String boardLike(Principal principal, @PathVariable("id") Long id){
         Board board = this.boardService.getBoard(id);
         Member member = this.memberService.getMember(principal.getName());
 
@@ -224,9 +222,28 @@ public class BoardController {
     }
 
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/board/{memberId}/boardList")
+    public String getBoardList(Model model, @PathVariable Long memberId, @AuthenticationPrincipal SecurityMember member){
+
+        Long currentMemberId = member.getId();
+
+        List<Board> boardList = this.boardService.getListForMember(memberId, currentMemberId);
+
+        if (boardList == null) {
+            return rq.historyBack("자신의 정보만 확인할 수 있습니다.");
+        }
+
+        model.addAttribute(boardList);
+
+        return "/usr/board/myBoard_list";
+    }
+>>>>>>> e4daa1fcf3441bb0aeaf17d9f4c7010f573a9544
 }

@@ -5,9 +5,12 @@ import com.ll.FlexGym.domain.Board.entity.Board;
 import com.ll.FlexGym.domain.Board.repository.BoardRepository;
 import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.BoardLike.repository.BoardLikeRepository;
+import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
+import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.repository.MemberRepository;
 import com.ll.FlexGym.global.exception.DataNotFoundException;
+import com.ll.FlexGym.global.rq.Rq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -30,6 +33,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardLikeRepository boardLikeRepository;
     private final ApplicationEventPublisher publisher;
+    private final Rq rq;
 
 
     public List<Board> getBoardList(){
@@ -53,7 +57,7 @@ public class BoardService {
         this.boardRepository.save(b);
     }
 
-    public Board getBoard(Integer id){
+    public Board getBoard(Long id){
         Optional<Board> board = this.boardRepository.findById(id);
         if(board.isPresent()){
             return board.get();
@@ -103,7 +107,33 @@ public class BoardService {
     }
 
 
+<<<<<<< HEAD
 
 
+=======
+    public List<Board> getListForMember(Long memberId, Long currentMemberId) {
+
+        Optional<Member> member = memberRepository.findById(memberId);
+        Member foundMember = findByMemberId(member, currentMemberId);
+
+        if (foundMember == null) {
+            return null;
+        }
+
+        return boardRepository.findByMember(foundMember);
+    }
+
+
+    private Member findByMemberId(Optional<Member> member, Long memberId) {
+        if (member.isPresent()) {
+            Member foundMember = member.get();
+            if (foundMember.getId().equals(memberId)) {
+                return foundMember;
+            }
+        }
+
+        return null;
+    }
+>>>>>>> e4daa1fcf3441bb0aeaf17d9f4c7010f573a9544
 
 }

@@ -1,8 +1,10 @@
 package com.ll.FlexGym.domain.Meeting.service;
 
+import com.ll.FlexGym.domain.Board.entity.Board;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Meeting.repository.MeetingRepository;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
+import com.ll.FlexGym.domain.Member.repository.MemberRepository;
 import com.ll.FlexGym.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class MeetingService {
     private final MeetingRepository meetingRepository;
+    private final MemberRepository memberRepository;
 
     public List<Meeting> getList() {
         return this.meetingRepository.findAll();
@@ -92,4 +95,28 @@ public class MeetingService {
 
         return RsData.of("S-1", "모임 수정이 가능합니다.");
     }
+
+    public List<Meeting> getListForMember(Long memberId, Long currentMemberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        Member foundMember = findByMemberId(member, currentMemberId);
+
+        if (foundMember == null) {
+            return null;
+        }
+
+        return meetingRepository.findByMember(foundMember);
+    }
+
+
+    private Member findByMemberId(Optional<Member> member, Long memberId) {
+        if (member.isPresent()) {
+            Member foundMember = member.get();
+            if (foundMember.getId().equals(memberId)) {
+                return foundMember;
+            }
+        }
+
+        return null;
+    }
+
 }

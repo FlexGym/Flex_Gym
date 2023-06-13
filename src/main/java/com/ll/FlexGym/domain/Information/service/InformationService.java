@@ -1,12 +1,20 @@
 package com.ll.FlexGym.domain.Information.service;
 
+import com.ll.FlexGym.domain.Board.entity.Board;
+import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
+import com.ll.FlexGym.domain.Favorite.entity.Favorite;
+//import com.ll.FlexGym.domain.Favorite.repository.FavoriteRepository;
+import com.ll.FlexGym.domain.Favorite.repository.FavoriteRepository;
 import com.ll.FlexGym.domain.Information.entity.InfoStatus;
 import com.ll.FlexGym.domain.Information.entity.Information;
 import com.ll.FlexGym.domain.Information.repository.InformationRepository;
+import com.ll.FlexGym.domain.Member.entitiy.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -17,6 +25,7 @@ import java.util.*;
 public class InformationService {
 
     private final InformationRepository informationRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Transactional
     public Information create(String videoId, String title, String videoThumnailUrl){
@@ -129,6 +138,7 @@ public class InformationService {
                     .videoId(s[i])
                     .title(titleArray.get(i))
                     .videoThumnailUrl(videoThumnailUrlArray.get(i))
+                    .status(InfoStatus.WAIT)
                     .build();
             informationRepository.save(information);
         }
