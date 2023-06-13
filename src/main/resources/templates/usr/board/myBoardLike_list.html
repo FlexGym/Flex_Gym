@@ -20,7 +20,7 @@
     <tr th:each="boardLike, loop : ${boardLikeList}">
       <td th:text="${loop.count}"></td>
       <td>
-        <a th:href="@{|/usr/board/detail/${boardLike.id}|}" th:text="${boardLike.board.title}"></a>
+        <a th:href="@{|/usr/board/detail/${boardLike.board.id}|}" th:text="${boardLike.board.title}"></a>
       </td>
       <td th:text="${#temporals.format(boardLike.createDate, 'yyyy-MM-dd')}"></td>
       <td th:text="${boardLike.board.member.username}">

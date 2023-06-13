@@ -19,7 +19,7 @@
         <tr th:each="comment, loop : ${commentList}">
             <td th:text="${loop.count}"></td>
             <td>
-                <a th:href="@{|/usr/board/detail/${comment.id}|}" th:text="${comment.content}"></a>
+                <a th:href="@{|/usr/board/detail/${comment.board.id}|}" th:text="${comment.content}"></a>
             </td>
             <td th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd')}"></td>
         </tr>
