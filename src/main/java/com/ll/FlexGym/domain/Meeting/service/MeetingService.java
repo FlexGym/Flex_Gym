@@ -26,7 +26,7 @@ public class MeetingService {
     public Page<Meeting> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 8, Sort.by(sorts));
+        Pageable pageable = PageRequest.of(page, 9, Sort.by(sorts));
         return meetingRepository.findAll(pageable);
     }
 

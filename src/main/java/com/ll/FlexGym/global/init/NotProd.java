@@ -37,40 +37,40 @@ public class NotProd {
                 Member memberUser4 = memberService.join("user4", "1234").getData();
 
                 Meeting meeting1 = meetingService.create("오늘 한강에서 러닝하실 분 구합니다!!",
-                        memberUser1, 8, "여의도", "2023-07-08", "14:00",
+                        memberUser1, 8, "용산구", "2023-07-08", "14:00",
                         "한강에서 2시간 정도 같이 달리실 분 구합니다!");
                 Meeting meeting2 = meetingService.create("이번주 토요일 바이크 타실 분 구합니다 :)",
-                        memberUser2,3, "마포구", "2023-06-28", "10:00",
+                        memberUser2,3, "잠실", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting3 = meetingService.create("등산모임 멤버 모집합니다!",
                         memberUser3,15, "종로구", "2023-05-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting4 = meetingService.create("러닝크루 모집합니다 :)",
-                        memberUser4,20, "마포구", "2023-06-28", "10:00",
+                        memberUser4,20, "여의도", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
-                Meeting meeting5 = meetingService.create("매주 토요일 정기 풋살 모임",
-                        memberUser1,5, "마포구", "2023-06-28", "10:00",
+                Meeting meeting5 = meetingService.create("매주 토요일 조기 축구 모임",
+                        memberUser1,5, "서초구", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
-                Meeting meeting6 = meetingService.create("이번주 토요일 바이크 타실 분 구합니다!!!",
-                        memberUser1,3, "마포구", "2023-06-28", "10:00",
+                Meeting meeting6 = meetingService.create("마라톤 대회 같이 참여해요!!!",
+                        memberUser1,3, "강남", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
-                Meeting meeting7 = meetingService.create("마포대교 러닝하실 분",
-                        memberUser2,8, "마포구", "2023-06-28", "10:00",
+                Meeting meeting7 = meetingService.create("마포대교에서 같이 러닝하실 분",
+                        memberUser2,8, "홍대", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting8 = meetingService.create("풋살 모임 참여하실 분~~~",
-                        memberUser2,10, "마포구", "2023-06-28", "10:00",
+                        memberUser2,10, "판교", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting9 = meetingService.create("잠실대교에서 같이 러닝해요",
-                        memberUser2,9, "마포구", "2023-06-28", "10:00",
+                        memberUser2,9, "잠실","2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
-                Meeting meeting10 = meetingService.create("RUNNING CREW 모집",
-                        memberUser2,3, "마포구", "2023-06-28", "10:00",
+                Meeting meeting10 = meetingService.create("매주 등산하는 프로등산러 모임",
+                        memberUser2,3, "고양", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting11 = meetingService.create("이번주 토요일 바이크 타실 분!!",
-                        memberUser2,5, "마포구", "2023-06-28", "10:00",
+                        memberUser2,5, "광교", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
                 Meeting meeting12 = meetingService.create("RUNNING CREW 모집 :)",
-                        memberUser2,6, "마포구", "2023-06-28", "10:00",
+                        memberUser2,6, "영등포", "2023-06-28", "10:00",
                         "오전에 같이 운동해요!");
 
                 ChatRoom chatRoom1 = chatRoomService.createAndConnect(meeting1.getSubject(), meeting1, memberUser1.getId());

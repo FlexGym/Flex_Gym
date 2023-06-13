@@ -6,8 +6,8 @@
         .header {
             display: flex;
             justify-content: flex-end;
-            margin-right: 10px;
-            margin-top: 10px;
+            margin-right: 20px;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -19,55 +19,47 @@
     <a th:href="@{/usr/meeting/create}" class="btn btn-primary">모임 등록하기</a>
     </div>
 
-    <div style="display: flex; flex-direction: column; align-items: center">
-        <table class="table">
-            <thead class="table-dark">
-            <tr>
-                <th>제목</th>
-                <th>날짜</th>
-                <th>시간</th>
-                <th>모집위치</th>
-                <th>모집인원</th>
-                <th>작성자</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="meeting, loop : ${paging}">
-                <td>
-                    <a th:href="@{|/usr/meeting/detail/${meeting.id}|}" th:text="${meeting.subject}"></a>
-                </td>
-                <td th:text="${meeting.date}"></td>
-                <td th:text="${meeting.time}"></td>
-                <td th:text="${meeting.location}"></td>
-                <td th:text="|${meeting.participantsCount} / ${meeting.capacity}|"></td>
-                <td th:text="${meeting.member.username}"></td>
-            </tr>
-            </tbody>
-        </table>
-
-        <!-- 페이징처리 시작 -->
-        <div th:if="${!paging.isEmpty()}">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" th:class="${!paging.hasPrevious()} ? 'disabled'">
-                    <a class="page-link" th:href="@{|?page=${(paging.number > 0) ? paging.number - 1 : 0}|}">
-                        <span>이전</span>
-                    </a>
-                </li>
-                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                    th:if="${page >= paging.number-5 and page <= paging.number+5}"
-                    th:classappend="${page == paging.number} ? 'active'"
-                    class="page-item">
-                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-                </li>
-                <li class="page-item" th:class="${!paging.hasNext()} ? 'disabled'">
-                    <a class="page-link" th:href="@{|?page=${(paging.number < paging.totalPages - 1) ? paging.number + 1 : paging.totalPages - 1}|}">
-                        <span>다음</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <!-- 페이징처리 끝 -->
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; width: 1700px">
+        <a th:each="meeting, loop : ${paging}" th:href="@{|/usr/meeting/detail/${meeting.id}|}"
+             class="card w-96 bg-base-100 shadow-xl"
+             style="background-color: #E0E0E0; color: #333333; box-shadow: 3px 3px 7px #C0C0C0; margin: 30px;">
+            <figure ></figure>
+            <div class="card-body">
+                <div>
+                    <span class="badge badge-secondary" th:text="${meeting.location}"></span>
+                    <span class="badge badge-outline" th:text="|${meeting.participantsCount} / ${meeting.capacity}|"></span>
+                </div>
+                <h1 class="card-title" th:text="${meeting.subject}"></h1>
+                <p th:text="|${meeting.date}, ${meeting.time}|"></p>
+                <div class="card-actions justify-end">
+                    <div class="badge badge-outline" th:text="${meeting.member.username}"></div>
+                </div>
+            </div>
+        </a>
     </div>
+
+    <!-- 페이징처리 시작 -->
+    <div th:if="${!paging.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:class="${!paging.hasPrevious()} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${(paging.number > 0) ? paging.number - 1 : 0}|}">
+                    <span>이전</span>
+                </a>
+            </li>
+            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                th:classappend="${page == paging.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+            </li>
+            <li class="page-item" th:class="${!paging.hasNext()} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${(paging.number < paging.totalPages - 1) ? paging.number + 1 : paging.totalPages - 1}|}">
+                    <span>다음</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- 페이징처리 끝 -->
 </main>
 
 </body>

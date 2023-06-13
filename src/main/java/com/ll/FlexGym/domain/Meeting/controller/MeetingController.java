@@ -65,7 +65,7 @@ public class MeetingController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{id}")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
         Meeting meeting = meetingService.getMeeting(id).orElse(null);
 

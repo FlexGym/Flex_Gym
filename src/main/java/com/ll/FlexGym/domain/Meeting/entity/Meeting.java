@@ -31,8 +31,6 @@ public class Meeting extends BaseEntity {
     @OneToMany(mappedBy = "meeting")
     private List<Participant> participants;
 
-    //ChatRoom 미반영
-
     private String subject;
     private Integer capacity; // 참여 가능 인원
     private Integer participantsCount; // 현재 참여자 수

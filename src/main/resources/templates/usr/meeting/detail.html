@@ -31,7 +31,11 @@
     <div class="top-buttons">
         <a th:href="@{|/usr/meeting/manage/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-dark">참여자 관리</a>
         <a th:href="@{|/usr/meeting/modify/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-dark">수정</a>
-        <a th:href="@{|/usr/meeting/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" class="btn btn-dark">삭제</a>
+        <form th:action="@{|/usr/meeting/${meeting.id}|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}"
+              method="post" onsubmit="if ( !confirm('모임을 삭제하시겠습니까?') ) return false; disconnect()">
+            <input type="hidden" name="_method" value="delete">
+            <button class="btn btn-dark">삭제</button>
+        </form>
     </div>
 
     <div class="detail">
