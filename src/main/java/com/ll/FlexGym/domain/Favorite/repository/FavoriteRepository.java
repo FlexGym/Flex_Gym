@@ -7,5 +7,5 @@ import com.ll.FlexGym.domain.Member.entitiy.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
-    boolean existsByInformationAndMember(Information information, Member member);
+//    boolean existsByInformationAndMember(Information information, Member member);
 }

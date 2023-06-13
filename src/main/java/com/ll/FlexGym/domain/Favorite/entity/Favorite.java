@@ -22,6 +22,6 @@ public class Favorite extends BaseEntity {
     private Member member;
 
 
-    @ManyToOne(fetch = LAZY) 
+    @OneToOne(mappedBy ="favorite", fetch = LAZY)
     private Information information;
 }

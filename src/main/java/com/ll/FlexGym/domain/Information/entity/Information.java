@@ -28,10 +28,7 @@ public class Information extends BaseEntity {
     @Enumerated(STRING)
     private InfoStatus status;
 
-    @OneToMany(fetch = LAZY)
-    private List<Favorite> favorites;
+    @OneToOne(fetch = LAZY)
+    private Favorite favorite;
 
-    public void addToFavorite(Favorite favorite){
-        favorites.add(0,favorite);
-    }
 }
