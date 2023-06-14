@@ -22,48 +22,56 @@
             justify-content: center;
             margin-top: 30px;
         }
+        i {
+            margin-right: 7px;
+        }
     </style>
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 </head>
 
 <body>
 
 <main layout:fragment="main">
-    <div class="dropdown" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}">
-        <label tabindex="0" class="btn btn-ghost btn-circle">
-            <i class="fa-solid fa-bars"></i>
-        </label>
-        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-64">
-            <li>
-                <a th:href="@{|/usr/meeting/chatMembers/${meeting.id}|}">
-                    <span>참여자 목록</span>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{|/usr/meeting/modify/${meeting.id}|}">수정</a>
-            </li>
-            <li>
-                <form th:action="@{|/usr/meeting/${meeting.id}|}"
-                      method="post" onsubmit="if ( !confirm('모임을 삭제하시겠습니까?') ) return false; disconnect()">
-                    <input type="hidden" name="_method" value="delete">
-                    <button>삭제</button>
-                </form>
-            </li>
-        </ul>
+    <div class="top-buttons" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}">
+        <a th:href="@{|/usr/meeting/chatMembers/${meeting.id}|}" class="btn">
+            <i class="fa-solid fa-user"></i>
+        </a>
+        <a th:href="@{|/usr/meeting/modify/${meeting.id}|}" class="btn">수정</a>
+        <form th:action="@{|/usr/meeting/${meeting.id}|}" method="post" onsubmit="if ( !confirm('모임을 삭제하시겠습니까?') ) return false; disconnect()">
+            <input type="hidden" name="_method" value="delete">
+            <button class="btn">삭제</button>
+        </form>
     </div>
 
     <div class="detail">
-        <h1 th:text="${meeting.subject}"></h1>
-        <div th:text="${meeting.member.username}"></div>
-        <div th:text="${#temporals.format(meeting.createDate, 'yyyy-MM-dd HH:mm')}"></div><br><br>
+        <div class="card w-96 bg-base-100 shadow-xl"
+             style="background-color: #E0E0E0; color: #333333; width: 750px; box-shadow: 2px 2px 7px #C0C0C0; margin: 10px;">
+            <div class="card-body">
+                <span class="card-title" th:text="${meeting.subject}"></span>
+                <div style="align-self: flex-end">
+                    <div th:text="${meeting.member.username}" class="badge badge-outline"></div>
+                    <div th:text="${#temporals.format(meeting.createDate, 'yyyy-MM-dd HH:mm')}" style="margin-top: 10px"></div>
+                </div>
+            </div>
+        </div>
 
-        <div th:text="|모집 인원 : ${meeting.capacity}명|"></div>
-        <div th:text="|모임 날짜 : ${meeting.date}|"></div>
-        <div th:text="|모임 시간 : ${meeting.time}|"></div>
-        <div th:text="|모임 장소 : ${meeting.location}|"></div><br>
-
-        <div th:text="|모임 소개 : ${meeting.content}|"></div><br><br>
-
-        <div th:text="|현재 참여자 수 : ${meeting.participantsCount} / ${meeting.capacity}|"></div><br><br>
+        <div class="box" style="color: #E0E0E0; width: 750px; border-color: #E0E0E0; border-width: 1px; border-radius: 20px">
+            <div class="card-body">
+                <div>
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span th:text="|${meeting.date}, ${meeting.time}|"></span>
+                </div>
+                <div style="margin-bottom: 30px">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span th:text="${meeting.location}"></span>
+                </div>
+                <div th:text="${meeting.content}" style="margin-bottom: 30px"></div>
+                <div style="align-self: flex-end">
+                    <span class="badge badge-outline" style="margin-right: 15px">현재 참여자 수</span>
+                    <span th:text="|${meeting.participantsCount} / ${meeting.capacity}|"></span>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="bottom-buttons">
         <a th:if="${@rq.login} and ${@rq.getMember().username} != ${meeting.member.username}"
