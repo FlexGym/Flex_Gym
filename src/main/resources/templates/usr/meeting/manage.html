@@ -30,7 +30,7 @@
                 <td th:text="${chatMember.member.username}"></td>
                 <td th:text="${#temporals.format(chatMember.createDate, 'yyyy/MM/dd hh:mm')}"></td>
                 <td>
-                    <form th:action="@{/usr/chat/rooms/kick/{id}(id=${chatMember.id})}" th:if="${chatMember.chatRoom.owner.id != chatMember.id}"
+                    <form th:action="@{/usr/chat/{roomId}/kick/{memberId}(roomId=${chatRoom.id}, memberId=${chatMember.id})}" th:if="${chatMember.chatRoom.owner.id != chatMember.id}"
                           method="post" onsubmit="if ( !confirm('강퇴하시겠습니까?') ) return false; disconnect()">
                         <input type="hidden" name="_method" value="delete">
                         <button class="btn btn-primary">강퇴</button>

@@ -3,11 +3,13 @@ package com.ll.FlexGym.domain.ChatRoom.controller;
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
 import com.ll.FlexGym.domain.ChatMember.service.ChatMemberService;
 import com.ll.FlexGym.domain.ChatMessage.dto.response.SignalResponse;
+import com.ll.FlexGym.domain.ChatMessage.entity.ChatMessageType;
 import com.ll.FlexGym.domain.ChatMessage.service.ChatMessageService;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.service.ChatRoomService;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
+import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.global.rq.Rq;
 import com.ll.FlexGym.global.rsData.RsData;
 import com.ll.FlexGym.global.security.SecurityMember;
@@ -23,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.ll.FlexGym.domain.ChatMember.entity.ChatMemberType.KICKED;
-import static com.ll.FlexGym.domain.ChatMessage.dto.response.SignalType.*;
+import static com.ll.FlexGym.domain.ChatMessage.dto.response.SignalType.NEW_MESSAGE;
 import static com.ll.FlexGym.domain.ChatMessage.entity.ChatMessageType.ENTER;
 
 @Controller
@@ -110,9 +112,10 @@ public class ChatRoomController {
 
     // 방장이 유저 강퇴시키기
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("/rooms/kick/{id}")
-    public String kickChatMember(@PathVariable Long id){
-        chatRoomService.kickChatMember(id);
+    @DeleteMapping("/{roomId}/kick/{memberId}")
+    public String kickChatMember(@PathVariable Long roomId, @PathVariable Long memberId,
+                                 @AuthenticationPrincipal SecurityMember member){
+        chatRoomService.kickChatMember(roomId, memberId, member);
 
         return "redirect:/usr/meeting/list";
     }

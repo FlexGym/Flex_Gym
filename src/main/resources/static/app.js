@@ -79,6 +79,14 @@ function connect() {
         stompClient.subscribe(`/topic/chats/${chatRoomId}`, function (data) {
             getChatMessages();
         });
+
+        stompClient.subscribe(`/topic/chats/${chatRoomId}/kicked`, function (data) {
+            console.log(data);
+            if (data.body == memberId) {
+                disconnect();
+                location.reload();
+            }
+        });
     });
 }
 
@@ -96,7 +104,7 @@ function disconnect() {
     }
 }
 
-// 참가자 목록 가져오기 (
+// 참가자 목록 가져오기 ( 사용 x, 추후 사용)
 function getUserList() {
     fetch(`/usr/chat/rooms/${chatRoomId}/members`, {
         method: "GET",
