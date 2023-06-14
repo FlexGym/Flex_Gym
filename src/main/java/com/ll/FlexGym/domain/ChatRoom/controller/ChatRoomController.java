@@ -113,7 +113,9 @@ public class ChatRoomController {
     public String kickChatMember(@PathVariable Long id){
         chatRoomService.kickChatMember(id);
 
-        return "redirect:/usr/meeting/list";
+        Long chatRoomId = chatMemberService.findById(id).getChatRoom().getId();
+
+        return ("redirect:/usr/meeting/detail/%d").formatted(chatRoomId);
     }
 
     // 유저 정보 가져오기
