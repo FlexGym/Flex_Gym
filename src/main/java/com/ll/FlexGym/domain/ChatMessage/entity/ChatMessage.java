@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
@@ -55,5 +57,9 @@ public class ChatMessage extends BaseEntity {
                 .build();
 
         return chatMessage;
+    }
+
+    public void removeChatMessages(String content){
+        this.content = content;
     }
 }
