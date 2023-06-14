@@ -8,6 +8,7 @@ import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.repository.MemberRepository;
 import com.ll.FlexGym.domain.Member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
@@ -33,7 +35,8 @@ public class FavoriteService {
 //    }
 
     @Transactional
-    public void removeFavorite(Favorite favorite) {
+    public void removeFavorite(Long id, Long infoId) {
+        Favorite favorite = favoriteRepository.findByMemberIdAndInformationId(id, infoId).orElseThrow();
         favoriteRepository.delete(favorite);
     }
 
@@ -58,7 +61,15 @@ public class FavoriteService {
                 .member(member)
                 .information(information)
                 .build();
-
+        log.info("favorite = {}", favorite);
         favoriteRepository.save(favorite);
+    }
+
+    public boolean isFavorite(Long memberId, Long informationId){
+        log.info("Optional = {}", favoriteRepository.findByMemberIdAndInformationId(memberId, informationId).isEmpty());
+        if(favoriteRepository.findByMemberIdAndInformationId(memberId, informationId).isEmpty()){
+            return false;
+        }
+        return true;
     }
 }
