@@ -40,21 +40,21 @@
 
     <!-- 페이징처리 시작 -->
     <div th:if="${!paging.isEmpty()}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:class="${!paging.hasPrevious()} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${(paging.number > 0) ? paging.number - 1 : 0}|}">
-                    <span>이전</span>
+        <ul class="join" style="display: flex; justify-content: center; margin-bottom: 50px; margin-top: 50px">
+            <li th:class="${!paging.hasPrevious()} ? 'disabled'">
+                <a th:href="@{|?page=${(paging.number > 0) ? paging.number - 1 : 0}|}">
+                    <button class="join-item btn"><</button>
                 </a>
             </li>
             <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
                 th:if="${page >= paging.number-5 and page <= paging.number+5}"
                 th:classappend="${page == paging.number} ? 'active'"
-                class="page-item">
-                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                class="join-item btn">
+                <a th:text="${page}" th:href="@{|?page=${page}|}"></a>
             </li>
-            <li class="page-item" th:class="${!paging.hasNext()} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${(paging.number < paging.totalPages - 1) ? paging.number + 1 : paging.totalPages - 1}|}">
-                    <span>다음</span>
+            <li th:class="${!paging.hasNext()} ? 'disabled'">
+                <a th:href="@{|?page=${(paging.number < paging.totalPages - 1) ? paging.number + 1 : paging.totalPages - 1}|}">
+                    <button class="join-item btn">></button>
                 </a>
             </li>
         </ul>
