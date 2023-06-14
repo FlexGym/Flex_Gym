@@ -85,7 +85,7 @@ public class BoardController {
 
 
         model.addAttribute("boardList", popularBoardList);
-        return "usr/board/board_list";
+        return "usr/board/popular_board_list";
     }
 
     @GetMapping("/board/detail/{id}")
