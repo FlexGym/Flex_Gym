@@ -2,6 +2,8 @@ package com.ll.FlexGym.domain.Information.controller;
 
 //import com.ll.FlexGym.domain.Information.service.InformationService;
 
+import com.ll.FlexGym.domain.Favorite.entity.Favorite;
+import com.ll.FlexGym.domain.Favorite.service.FavoriteService;
 import com.ll.FlexGym.domain.Information.entity.InfoStatus;
 import com.ll.FlexGym.domain.Information.entity.Information;
 import com.ll.FlexGym.domain.Information.service.InformationService;
@@ -33,6 +35,7 @@ public class InformationController {
     private final InformationService informationService;
     private final YoutubeController youtubeController;
     private final MemberService memberService;
+    private final FavoriteService favoriteService;
 
     @PreAuthorize("isAnonymous()")//나중에 관리자로 바꿔야함
     @GetMapping("/usr/information/getYoutube")
@@ -64,8 +67,19 @@ public class InformationController {
             }
             model.addAttribute("member",member1);
         }
+        List<Favorite> favorites = null;
+        for(Information info : informationList){
+            favorites = info.getFavorite();
+        }
+        int count;
+        if(favorites == null){
+            count = 0;
+        }else{
+            count = favorites.size();
+        }
 
         model.addAttribute("informationList", informationList);
+        model.addAttribute("favorite", count);
 
         return "usr/information/info";
         //y.id, title, jpg

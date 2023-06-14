@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -72,4 +72,22 @@ public class FavoriteService {
         }
         return true;
     }
+
+    public Favorite findByMemberIdAndInformationId(Long memberId, Long informationId){
+        return favoriteRepository.findByMemberIdAndInformationId(memberId, informationId).orElseThrow();
+    }
+
+    public List<Favorite> getFavoriteList(){
+        return favoriteRepository.findAll();
+    }
+
+//    public Long favoriteCount(Long id){
+//        favoriteRepository.findByMemberIdAndInformationId().getmember()
+//                .stream()
+//                .filter()
+//                .count();
+//
+//
+//    }
+
 }
