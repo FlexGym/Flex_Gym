@@ -2,20 +2,17 @@ package com.ll.FlexGym.domain.Favorite.controller;
 
 import com.ll.FlexGym.domain.Favorite.entity.Favorite;
 import com.ll.FlexGym.domain.Favorite.service.FavoriteService;
-import com.ll.FlexGym.domain.Information.entity.Information;
 import com.ll.FlexGym.domain.Information.service.InformationService;
-import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.service.MemberService;
 import com.ll.FlexGym.global.rq.Rq;
-import com.ll.FlexGym.global.rsData.RsData;
 import com.ll.FlexGym.global.security.SecurityMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -41,6 +38,10 @@ public class FavoriteController {
             favoriteService.removeFavorite(member.getId(), infoId);
         }
         return "redirect:/usr/information/info";
+    }
+
+    public List<Favorite> getInformation(Long informationId){
+        return favoriteService.getFavoriteMemberId(informationId);
     }
 
 
