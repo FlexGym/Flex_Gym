@@ -89,7 +89,9 @@
                             ID
                         </div>
                         <div class="mt-2">
-                            <span class="badge badge-primary" th:text="${@rq.member.username}"></span>
+                            <a th:href="@{|/usr/information/favorite/${@rq.member.getId()}|}">
+                                <span class="badge badge-primary" th:text="${@rq.member.username}"></span>
+                            </a>
                         </div>
                     </div>
                 </div>

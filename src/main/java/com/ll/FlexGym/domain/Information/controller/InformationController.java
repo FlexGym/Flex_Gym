@@ -20,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,29 +56,45 @@ public class InformationController {
     }
 
     @GetMapping("/usr/information/info")
-    public String showInfo(Model model , @AuthenticationPrincipal SecurityMember member) {
+    public String showInfo(Model model, @AuthenticationPrincipal SecurityMember member) {
         List<Information> informationList = this.informationService.getList(InfoStatus.ON);
-        if(member != null){
+        if (member != null) {
             Member member1 = null;
             Optional<Member> byUsername = memberService.findByUsername(member.getUsername());
-            if(byUsername.isPresent()){
+            if (byUsername.isPresent()) {
                 member1 = byUsername.get();
             }
-            model.addAttribute("member",member1);
-        }
-        List<Favorite> favorites = null;
-        for(Information info : informationList){
-            favorites = info.getFavorite();
-        }
-        int count;
-        if(favorites == null){
-            count = 0;
-        }else{
-            count = favorites.size();
+            model.addAttribute("member", member1);
         }
 
         model.addAttribute("informationList", informationList);
-        model.addAttribute("favorite", count);
+
+        return "usr/information/info";
+        //y.id, title, jpg
+    }
+
+    @GetMapping("/usr/information/favorite/{memberId}")
+    public String showFavorite(Model model, @AuthenticationPrincipal SecurityMember member, @PathVariable Long memberId) {
+        List<Favorite> favoriteList = favoriteService.getFavoriteMemberId(memberId);
+
+        List<Information> informationList= new ArrayList<>();
+
+
+
+        for (Favorite favorite : favoriteList) {
+            informationList.add(favorite.getInformation());
+        }
+
+        if (member != null) {
+            Member member1 = null;
+            Optional<Member> byUsername = memberService.findByUsername(member.getUsername());
+            if (byUsername.isPresent()) {
+                member1 = byUsername.get();
+            }
+            model.addAttribute("member", member1);
+        }
+//        Member checkMember = memberService.findByIdElseThrow(memberId);
+        model.addAttribute("informationList", informationList);
 
         return "usr/information/info";
         //y.id, title, jpg
@@ -99,7 +114,7 @@ public class InformationController {
     //값을 받아왔다면 해당 uri에 대한 정보를 jpa를 통해 데이터호출 후 폼에 자동입력
     //값이 없다면 일반입력
     @GetMapping("/usr/information/adminToInfo_form")
-    public String getForm(@RequestParam(required=false) String videoId, Model model) {
+    public String getForm(@RequestParam(required = false) String videoId, Model model) {
         Optional<Information> video =
                 this.informationService.getInformationByVideoId(videoId);
         if (video.isPresent()) {

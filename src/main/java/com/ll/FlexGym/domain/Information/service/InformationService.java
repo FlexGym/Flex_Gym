@@ -75,6 +75,12 @@ public class InformationService {
 
         return informationList;
     }
+//    @Transactional
+//    public List<Information> getFavoriteList(InfoStatus status){
+//        List<Information> informationList = this.informationRepository.findByStatus(status);
+//
+//        return informationList;
+//    }
 
     public Optional getInformationByVideoId(String videoId){
         Optional<Information> oi = informationRepository.findByVideoId(videoId);

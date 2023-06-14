@@ -25,7 +25,7 @@
 
                 <a onclick="return confirm('좋아요 하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
                    th:href="@{|/usr/information/favorites/${loop.id}|}">
-                    좋아요 <i th:text="${favorite}"></i>
+                    좋아요 <i th:text="${loop.getFavorite().size()}"></i>
 <!--                    <span class="badge rounded-pill bg-success" th:text="${board.boardLikes.size()}"></span>-->
                 </a>
             </div>
