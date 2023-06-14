@@ -48,9 +48,13 @@
             </li>
             <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
                 th:if="${page >= paging.number-5 and page <= paging.number+5}"
-                th:classappend="${page == paging.number} ? 'active'"
-                class="join-item btn">
-                <a th:text="${page}" th:href="@{|?page=${page}|}"></a>
+                th:classappend="${page == paging.number} ? 'active'">
+                <a th:if="${page == paging.number}" th:href="@{|?page=${page}|}">
+                    <button class="join-item btn btn-active" th:text="${page}"></button>
+                </a>
+                <a th:if="${page != paging.number}" th:href="@{|?page=${page}|}">
+                    <button class="join-item btn" th:text="${page}"></button>
+                </a>
             </li>
             <li th:class="${!paging.hasNext()} ? 'disabled'">
                 <a th:href="@{|?page=${(paging.number < paging.totalPages - 1) ? paging.number + 1 : paging.totalPages - 1}|}">
