@@ -8,6 +8,9 @@
             justify-content: center;
             margin-top: 50px;
         }
+        i {
+            margin-right: 7px;
+        }
     </style>
 </head>
 
@@ -18,10 +21,10 @@
         <table class="table">
             <thead class="table-dark">
             <tr>
-                <th>번호</th>
-                <th>아이디</th>
+                <th>입장순번</th>
+                <th>ID</th>
                 <th>입장일시</th>
-                <th>방장</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -30,7 +33,9 @@
                 <td th:text="${chatMember.member.username}"></td>
                 <td th:text="${#temporals.format(chatMember.createDate, 'yyyy/MM/dd hh:mm')}"></td>
                 <td>
-                    <div th:if="${chatMember.chatRoom.owner.id == chatMember.member.id}" class="badge badge-primary">방장 </div>
+                    <div th:if="${chatMember.chatRoom.owner.id == chatMember.member.id}" class="badge badge-primary">
+                        <i class="fa-solid fa-crown"></i> 방장
+                    </div>
                     <form th:action="@{/usr/chat/{roomId}/kick/{memberId}(roomId=${chatRoom.id}, memberId=${chatMember.id})}" th:if="${chatMember.chatRoom.owner.id != chatMember.member.id}"
                           method="post" onsubmit="if ( !confirm('강퇴하시겠습니까?') ) return false; disconnect()">
                         <input type="hidden" name="_method" value="delete">
