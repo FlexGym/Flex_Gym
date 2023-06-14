@@ -1,5 +1,6 @@
 package com.ll.FlexGym.domain.Meeting.controller;
 
+import com.ll.FlexGym.domain.Board.entity.Board;
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
 import com.ll.FlexGym.domain.ChatMember.service.ChatMemberService;
 import com.ll.FlexGym.domain.ChatRoom.service.ChatRoomService;
@@ -126,5 +127,23 @@ public class MeetingController {
         model.addAttribute("chatMemberList", chatMemberList);
         model.addAttribute("KICKED", KICKED);
         return "usr/meeting/chatMembers";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{memberId}/meetingList")
+    public String getMeetingList(Model model, @PathVariable Long memberId,
+                                 @AuthenticationPrincipal SecurityMember member){
+
+        Long currentMemberId = member.getId();
+
+        List<Meeting> meetingList = meetingService.getListForMember(memberId, currentMemberId);
+
+        if (meetingList == null) {
+            return rq.historyBack("자신의 정보만 확인할 수 있습니다.");
+        }
+
+        model.addAttribute(meetingList);
+
+        return "/usr/meeting/myMeeting_list";
     }
 }

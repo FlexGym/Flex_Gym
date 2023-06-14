@@ -1,14 +1,15 @@
 package com.ll.FlexGym.domain.Information.entity;
 
+import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.Favorite.entity.Favorite;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.*;
@@ -28,6 +29,7 @@ public class Information extends BaseEntity {
     @Enumerated(STRING)
     private InfoStatus status;
 
-    @OneToOne(fetch = LAZY)
-    private Favorite favorite;
+    @OneToMany(mappedBy = "information", fetch = LAZY)
+    private List<Favorite> favorite = new ArrayList<>();
+
 }

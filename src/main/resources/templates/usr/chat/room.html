@@ -42,7 +42,6 @@
         .chat-messages {
             flex: 1 1 auto;
             overflow-y: auto;
-            /*height: 650px;*/
             height: calc(100vh - 350px);
         }
 
@@ -146,7 +145,6 @@
                         <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-64">
                             <li>
                                 <a th:href="@{|/usr/chat/${chatRoom.id}/memberList|}" th:if="${@rq.login} and ${@rq.getMember().username} == ${member.username}">
-<!--                                    <i class="fa-solid fa-user"></i>-->
                                     <span>참여자 목록</span>
                                 </a>
                             </li>
