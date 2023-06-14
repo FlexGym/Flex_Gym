@@ -10,6 +10,7 @@
             margin-top: 20px;
         }
     </style>
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 </head>
 
 <body>
@@ -23,14 +24,16 @@
         <a th:each="meeting, loop : ${paging}" th:href="@{|/usr/meeting/detail/${meeting.id}|}"
              class="card w-96 bg-base-100 shadow-xl"
              style="background-color: #E0E0E0; color: #333333; box-shadow: 3px 3px 7px #C0C0C0; margin: 30px;">
-            <figure ></figure>
             <div class="card-body">
                 <div>
                     <span class="badge badge-secondary" th:text="${meeting.location}"></span>
                     <span class="badge badge-outline" th:text="|${meeting.participantsCount} / ${meeting.capacity}|"></span>
                 </div>
                 <h1 class="card-title" th:text="${meeting.subject}"></h1>
-                <p th:text="|${meeting.date}, ${meeting.time}|"></p>
+                <div>
+                    <i class="fa-solid fa-calendar-days" style="margin-right: 6px"></i>
+                    <span th:text="|${meeting.date}, ${meeting.time}|"></span>
+                </div>
                 <div class="card-actions justify-end">
                     <div class="badge badge-outline" th:text="${meeting.member.username}"></div>
                 </div>
