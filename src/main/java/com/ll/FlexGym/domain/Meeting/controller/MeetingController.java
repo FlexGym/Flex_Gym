@@ -3,6 +3,7 @@ package com.ll.FlexGym.domain.Meeting.controller;
 import com.ll.FlexGym.domain.Board.entity.Board;
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
 import com.ll.FlexGym.domain.ChatMember.service.ChatMemberService;
+import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.service.ChatRoomService;
 import com.ll.FlexGym.domain.Meeting.MeetingForm;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
@@ -123,7 +124,10 @@ public class MeetingController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/chatMembers/{id}")
     public String manage(Model model, @PathVariable("id") Long id) {
+        ChatRoom chatRoom = chatRoomService.findById(id);
         List<ChatMember> chatMemberList = chatMemberService.findByChatRoomId(id);
+
+        model.addAttribute("chatRoom", chatRoom);
         model.addAttribute("chatMemberList", chatMemberList);
         model.addAttribute("KICKED", KICKED);
         return "usr/meeting/chatMembers";

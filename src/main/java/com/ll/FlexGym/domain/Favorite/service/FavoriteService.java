@@ -5,7 +5,6 @@ import com.ll.FlexGym.domain.Favorite.repository.FavoriteRepository;
 import com.ll.FlexGym.domain.Information.entity.Information;
 import com.ll.FlexGym.domain.Information.service.InformationService;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
-import com.ll.FlexGym.domain.Member.repository.MemberRepository;
 import com.ll.FlexGym.domain.Member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,17 +76,9 @@ public class FavoriteService {
         return favoriteRepository.findByMemberIdAndInformationId(memberId, informationId).orElseThrow();
     }
 
-    public List<Favorite> getFavoriteList(){
-        return favoriteRepository.findAll();
+    public List<Favorite> getFavoriteMemberId(Long memberId){
+        return favoriteRepository.findByMemberId(memberId);
     }
 
-//    public Long favoriteCount(Long id){
-//        favoriteRepository.findByMemberIdAndInformationId().getmember()
-//                .stream()
-//                .filter()
-//                .count();
-//
-//
-//    }
 
 }

@@ -24,7 +24,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="chatMember, loop : ${chatMemberList}">
+      <tr th:each="chatMember, loop : ${chatMemberList}" th:if="${chatMember.type != KICKED}">
         <td th:text="${chatMember.member.username}"></td>
         <td th:text="${#temporals.format(chatMember.createDate, 'yyyy/MM/dd hh:mm')}"></td>
         <td>

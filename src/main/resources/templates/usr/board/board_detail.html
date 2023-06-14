@@ -16,6 +16,7 @@
             flex-direction: column;
             align-items: center;
             margin-top: 50px;
+
         }
     </style>
 </head>
@@ -23,8 +24,6 @@
 <body>
 
 <main layout:fragment="main">
-
-
 
 
     <div class="ui-button">
@@ -43,7 +42,7 @@
     </div>
 
     <div class="detail">
-        <h2 th:text="${board.title}"></h2>
+        <h1 th:text="${board.title}"></h1>
         <div th:text="${board.member.username}"></div>
         <div th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></div><br><br>
     <div>게시글 내용</div>
@@ -85,7 +84,8 @@
         th:text="|${#lists.size(board.comments)}개의 댓글이 있습니다.|"></h5>
 
 
-        <div th:id="|comment_${comment.id}|" class="card my-3" th:each="comment : ${board.comments}">
+        <div th:id="|comment_${comment.id}|" class="card my-3"  style="border: 1px solid #ccc;" th:each="comment : ${board.comments}">
+
             <!--댓글 반복시작-->
             <div class="card-body" th:unless="${comment.parent != null}">
                 <div class="card-text" th:utext="${comment.content}"></div>
@@ -145,6 +145,10 @@
                         <span class="badge rounded-pill bg-success" th:text="${#lists.size(childComment.commentLikes)}"></span>
                     </a>
 
+
+
+
+
                     <a th:href="@{|/comment/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
                        sec:authorize="isAuthenticated()"
                        th:if="${childComment.member != null and #authentication.getPrincipal().getUsername() == childComment.member.username}"
@@ -173,7 +177,15 @@
     </div>
 
 
+
+
+
+
+
+    </div>
+
     <!--    댓글 작성   -->
+    <div class="detail">
     <form th:action="@{|/comment/create/${board.id}|}" th:object="${commentForm}" method="post" class="my-3">
         <!--        <div th:replace="~{form_errors :: formErrorsFragment}"></div>-->
 
@@ -185,14 +197,12 @@
         <input sec:authorize="isAnonymous()" disabled type="submit" value="댓글등록" class="btn btn-primary my-2">
         <input sec:authorize="isAuthenticated()" type="submit" value="댓글등록" class="btn btn-primary my-2">
     </form>
-
-
-
-
     </div>
 </main>
 
 </body>
+
+
 
 
 </html>

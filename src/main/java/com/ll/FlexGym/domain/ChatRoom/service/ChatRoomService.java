@@ -2,6 +2,7 @@ package com.ll.FlexGym.domain.ChatRoom.service;
 
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
 import com.ll.FlexGym.domain.ChatMember.service.ChatMemberService;
+import com.ll.FlexGym.domain.ChatMessage.entity.ChatMessage;
 import com.ll.FlexGym.domain.ChatRoom.dto.ChatRoomDto;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.repository.ChatRoomRepository;
@@ -9,10 +10,11 @@ import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.service.MemberService;
 import com.ll.FlexGym.global.rsData.RsData;
+import com.ll.FlexGym.global.security.SecurityMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +31,8 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final MemberService memberService;
-    private final SimpMessageSendingOperations template;
-    private final ApplicationEventPublisher publisher;
     private final ChatMemberService chatMemberService;
+    private final SimpMessageSendingOperations template;
 
     @Transactional
     public ChatRoom createAndConnect(String subject, Meeting meeting, Long ownerId) {
@@ -180,12 +181,39 @@ public class ChatRoomService {
 
     // 유저 강퇴하기
     @Transactional
-    public void kickChatMember(Long chatMemberId) {
+    public void kickChatMember(Long roomId, Long chatMemberId, SecurityMember member) {
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 방입니다."));
+
+        checkOwner(chatRoom, member.getId());
 
         ChatMember chatMember = chatMemberService.findById(chatMemberId);
-        ChatRoom chatRoom = chatMember.getChatRoom();
+        Member kickMember = chatMember.getMember();
+
+        // 강톼당할 MemberId를 받아와야한다.
+        Long originMemberId = kickMember.getId();
 
         chatMember.changeType(); // 강퇴된 유저의 type 을 "KICKED"로 변경
+
+        List<ChatMessage> chatMessages = chatRoom.getChatMessages();
+
+        chatMessages.stream()
+                .filter(chatMessage -> chatMessage.getSender().getId().equals(chatMemberId))
+                .forEach(chatMessage -> chatMessage.removeChatMessages("강퇴된 사용자의 메시지입니다."));
+
         chatRoom.getMeeting().decreaseParticipantsCount(); // 유저가 강퇴되면 '현재 참여자 수' 1 감소
+
+        template.convertAndSend("/topic/chats/" + roomId + "/kicked", originMemberId);
+    }
+
+    public void checkOwner(ChatRoom chatRoom, Long ownerId) {
+        Member owner = memberService.findByIdElseThrow(ownerId);
+
+        log.info("roomId = {}", chatRoom.getId());
+        log.info("OwnerId = {}", owner.getId());
+
+        if (!chatRoom.getOwner().getId().equals(owner.getId())) {
+            throw new IllegalArgumentException("강퇴 권한이 없습니다.");
+        }
     }
 }
