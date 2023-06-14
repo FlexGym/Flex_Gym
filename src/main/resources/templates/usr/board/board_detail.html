@@ -148,15 +148,13 @@
 
 
 
-
-                    <a th:href="@{|/comment/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
+                    <a th:href="@{|/comment/modify/${childComment.id}|}" class="btn btn-sm btn-outline-secondary"
                        sec:authorize="isAuthenticated()"
-                       th:if="${childComment.member != null and #authentication.getPrincipal().getUsername() == childComment.member.username}"
+                       th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == childComment.member.username}"
                        th:text="수정"></a>
-
-                    <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/comment/delete/${comment.id}|}"
+                    <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/comment/delete/${childComment.id}|}"
                        class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-                       th:if="${childComment.member != null and #authentication.getPrincipal().getUsername() == childComment.member.username}"
+                       th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == childComment.member.username}"
                        th:text="삭제"></a>
                 </div>
             </div>
@@ -170,20 +168,10 @@
                     <input type="submit" value="댓글 등록" class="btn btn-primary my-2">
                 </form>
             </div>
-
-
-
-
     </div>
 
 
-
-
-
-
-
     </div>
-
     <!--    댓글 작성   -->
     <div class="detail">
     <form th:action="@{|/comment/create/${board.id}|}" th:object="${commentForm}" method="post" class="my-3">

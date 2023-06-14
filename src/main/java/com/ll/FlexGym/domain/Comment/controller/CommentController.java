@@ -118,21 +118,6 @@ public class CommentController {
 
     }
 
-    public void likeComment(Comment comment, Member member){
-        // Check if the post has already been liked by the member
-        boolean isLiked = commentLikeRepository.existsByCommentAndMember(comment, member);
-        if(isLiked){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "이미 좋아요 누른 댓글 입니다.");
-        }
-
-        CommentLike commentLike = CommentLike.builder()
-                .comment(comment)
-                .member(member)
-                .build();
-        commentLikeRepository.save(commentLike);
-        comment.addToCommentLikes(commentLike);
-    }
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String commentDelete(Principal principal, @PathVariable("id") Long id){
