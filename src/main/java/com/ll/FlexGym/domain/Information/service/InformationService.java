@@ -145,4 +145,7 @@ public class InformationService {
 
     }
 
+    public Information findById(Long infoId) {
+        return informationRepository.findById(infoId).orElseThrow();
+    }
 }
