@@ -67,19 +67,8 @@ public class InformationController {
             }
             model.addAttribute("member",member1);
         }
-        List<Favorite> favorites = null;
-        for(Information info : informationList){
-            favorites = info.getFavorite();
-        }
-        int count;
-        if(favorites == null){
-            count = 0;
-        }else{
-            count = favorites.size();
-        }
 
         model.addAttribute("informationList", informationList);
-        model.addAttribute("favorite", count);
 
         return "usr/information/info";
         //y.id, title, jpg
