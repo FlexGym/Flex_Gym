@@ -56,15 +56,17 @@ public class InformationController {
     @GetMapping("/usr/information/info")
     public String showInfo(Model model , @AuthenticationPrincipal SecurityMember member) {
         List<Information> informationList = this.informationService.getList(InfoStatus.ON);
-
-
-        Optional<Member> byUsername = memberService.findByUsername(member.getUsername());
-        Member member1 = null;
-        if(byUsername.isPresent()){
-            member1 = byUsername.get();
+        if(member != null){
+            Member member1 = null;
+            Optional<Member> byUsername = memberService.findByUsername(member.getUsername());
+            if(byUsername.isPresent()){
+                member1 = byUsername.get();
+            }
+            model.addAttribute("member",member1);
         }
+
         model.addAttribute("informationList", informationList);
-        model.addAttribute("member",member1);
+
         return "usr/information/info";
         //y.id, title, jpg
     }
