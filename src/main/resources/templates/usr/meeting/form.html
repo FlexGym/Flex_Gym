@@ -3,7 +3,12 @@
 <head>
   <title>모임 등록</title>
   <style>
-    main, main div {
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    main div {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -12,7 +17,11 @@
     form {
       width: 600px;
     }
-
+    /* Adjust width for subject and content inputs */
+    input[name="subject"], textarea[name="content"] {
+      width: 100%;
+      max-width: 600px; /* Adjust the max-width as needed */
+    }
   </style>
 </head>
 
@@ -73,7 +82,7 @@
     </div>
 
     <div class="submit-button">
-      <input type="submit" value="등록하기" class="btn btn-primary btn-wide">
+      <input type="submit" value="등록하기" class="btn btn-primary btn-wide" style="font-size: 18px">
     </div>
   </form>
 </main>
