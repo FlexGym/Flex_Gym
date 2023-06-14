@@ -42,7 +42,9 @@
         .chat-messages {
             flex: 1 1 auto;
             overflow-y: auto;
-            height: calc(100vh - 350px);
+            border: 1px solid white;
+            border-radius: 15px;
+            height: calc(100vh - 400px);
         }
 
         .chat-input {
@@ -110,12 +112,12 @@
             word-break: break-all;
         }
         .chat__message-ul li.sender {
-            margin-left: auto; /* 수정: 오른쪽 정렬 */
+            margin-left: auto;
             text-align: left;
         }
 
         .chat__message-ul li.receiver {
-            margin-right: auto; /* 수정: 왼쪽 정렬 */
+            margin-right: auto;
             text-align: left;
         }
         .chat__message-ul li.center {
