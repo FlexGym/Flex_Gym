@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.EnumType.STRING;
@@ -28,7 +29,7 @@ public class Information extends BaseEntity {
     @Enumerated(STRING)
     private InfoStatus status;
 
-    @OneToOne(fetch = LAZY)
-    private Favorite favorite;
+    @OneToMany(mappedBy = "information", fetch = LAZY)
+    private List<Favorite> favorite = new ArrayList<>();
 
 }

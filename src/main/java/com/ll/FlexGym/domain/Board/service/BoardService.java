@@ -131,4 +131,13 @@ public class BoardService {
         return null;
     }
 
+    public Page<Board> getList(Pageable pageable) {
+        return boardRepository.findAll(pageable);
+    }
+
+    public Page<Board> getListByCategory(Pageable pageable, String category) {
+        return boardRepository.findByCategory(category, pageable);
+    }
+
+
 }

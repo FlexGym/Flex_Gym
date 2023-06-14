@@ -117,7 +117,9 @@ public class ChatRoomController {
                                  @AuthenticationPrincipal SecurityMember member){
         chatRoomService.kickChatMember(roomId, memberId, member);
 
-        return "redirect:/usr/meeting/list";
+        Long chatRoomId = chatMemberService.findById(memberId).getChatRoom().getId();
+
+        return ("redirect:/usr/meeting/detail/%d").formatted(chatRoomId);
     }
 
     // 유저 정보 가져오기
