@@ -1,6 +1,7 @@
 package com.ll.FlexGym.domain.Comment.service;
 
 import com.ll.FlexGym.domain.Board.entity.Board;
+import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.Comment.entity.Comment;
 import com.ll.FlexGym.domain.Comment.repository.CommentRepository;
 import com.ll.FlexGym.domain.CommentLIke.entity.CommentLike;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,6 +94,25 @@ public class CommentService {
         }
 
         return commentRepository.findByMember(foundMember);
+    }
+
+    /**
+     * 마이페이지에 보여주기 위하여 Limit 제한으로 목록 가져오기
+     */
+    public List<Comment> getListForMemberLimit(Long memberId, Long currentMemberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        Member foundMember = findByMemberId(member, currentMemberId);
+
+        if (foundMember == null) {
+            return null;
+        }
+
+        List<Comment> commentList = commentRepository.findByMember(foundMember);
+        Collections.sort(commentList, Comparator.comparing(Comment::getCreateDate).reversed());
+
+        int limit = 4;
+        int size = Math.min(commentList.size(), limit);
+        return commentList.subList(0, size);
     }
 
 
