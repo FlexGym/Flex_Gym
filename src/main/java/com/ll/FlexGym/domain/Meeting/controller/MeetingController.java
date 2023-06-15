@@ -130,17 +130,17 @@ public class MeetingController {
 
     // 모임 참여자 관리
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/chatMembers/{id}")
-    public String manage(Model model, @PathVariable("id") Long id) {
-        ChatRoom chatRoom = chatRoomService.findById(id);
-        List<ChatMember> chatMemberList = chatMemberService.findByChatRoomId(id);
-
-        List<ChatMember> chatMemberList = chatMemberService.findByChatRoomIdAndChatMember(roomId, member.getId());
+    @GetMapping("/chatMembers/{roomId}")
+    public String manage(Model model, @PathVariable Long roomId, @AuthenticationPrincipal SecurityMember member) {
         ChatRoom chatRoom = chatRoomService.findById(roomId);
+        List<ChatMember> chatMemberList = chatMemberService.findByChatRoomId(roomId);
 
-        if (chatMemberList == null) {
+        // 참가하지 않은 멤버의 URL 차단
+        List<ChatMember> chatMembers = chatMemberService.findByChatRoomIdAndChatMember(roomId, member.getId());
+        if (chatMembers == null) {
             return rq.historyBack("해당 방에 참가하지 않았습니다.");
         }
+
         model.addAttribute("chatRoom", chatRoom);
         model.addAttribute("chatMemberList", chatMemberList);
         model.addAttribute("KICKED", KICKED);
