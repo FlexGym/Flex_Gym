@@ -33,7 +33,7 @@
         <a href="/usr/meeting/list" style="text-decoration: none; margin-right: 50px; color: #f1f1f1;">모임</a>
         <a href="/usr/board/list" style="text-decoration: none; margin-right: 50px; color: #f1f1f1;">커뮤니티</a>
         <a href="/usr/information/info" style="text-decoration: none; margin-right: 50px; color: #f1f1f1;">운동영상</a>
-        <a href="/usr/member/me" style="text-decoration: none; margin-right: 50px; color: #f1f1f1;">마이페이지</a>
+        <a th:href="@{/usr/member/me}" style="text-decoration: none; margin-right: 50px; color: #f1f1f1;" th:if="${@rq.login}">마이페이지</a>
     </div>
     <div>
         <a href="/usr/member/login" th:if="${@rq.logout}" style="text-decoration: none; margin-right: 10px; color: #f1f1f1;" class="btn btn-link">로그인</a>
