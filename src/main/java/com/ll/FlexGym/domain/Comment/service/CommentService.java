@@ -110,7 +110,7 @@ public class CommentService {
         List<Comment> commentList = commentRepository.findByMember(foundMember);
         Collections.sort(commentList, Comparator.comparing(Comment::getCreateDate).reversed());
 
-        int limit = 5;
+        int limit = 4;
         int size = Math.min(commentList.size(), limit);
         return commentList.subList(0, size);
     }

@@ -127,7 +127,7 @@ public class MeetingService {
         List<Meeting> meetingList = meetingRepository.findByMember(foundMember);
         Collections.sort(meetingList, Comparator.comparing(Meeting::getCreateDate).reversed());
 
-        int limit = 5;
+        int limit = 4;
         int size = Math.min(meetingList.size(), limit);
         return meetingList.subList(0, size);
     }

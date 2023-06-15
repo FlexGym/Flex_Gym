@@ -45,7 +45,7 @@ public class BoardLikeService {
         List<BoardLike> boardLikeList = boardLikeRepository.findByMember(foundMember);
         Collections.sort(boardLikeList, Comparator.comparing(BoardLike::getCreateDate).reversed());
 
-        int limit = 5;
+        int limit = 4;
         int size = Math.min(boardLikeList.size(), limit);
         return boardLikeList.subList(0, size);
     }

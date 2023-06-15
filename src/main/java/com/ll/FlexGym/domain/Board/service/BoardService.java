@@ -128,7 +128,7 @@ public class BoardService {
         List<Board> boardList = boardRepository.findByMember(foundMember);
         Collections.sort(boardList, Comparator.comparing(Board::getCreateDate).reversed());
 
-        int limit = 5;
+        int limit = 4;
         int size = Math.min(boardList.size(), limit);
         return boardList.subList(0, size);
     }
