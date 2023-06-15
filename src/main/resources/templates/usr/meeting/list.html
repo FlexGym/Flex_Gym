@@ -17,13 +17,13 @@
 
 <main layout:fragment="main">
     <div class="header">
-    <a th:href="@{/usr/meeting/create}" class="btn btn-primary">모임 등록하기</a>
+    <a th:href="@{/usr/meeting/create}" class="btn btn-primary" style="font-size: 18px">모임 등록하기</a>
     </div>
 
     <div style="display: flex; justify-content: center; flex-wrap: wrap; width: 1700px">
         <a th:each="meeting, loop : ${paging}" th:href="@{|/usr/meeting/detail/${meeting.id}|}"
              class="card w-96 bg-base-100 shadow-xl"
-             style="background-color: #E0E0E0; color: #333333; box-shadow: 3px 3px 7px #C0C0C0; margin: 30px;">
+             style="background-color: #E0E0E0; color: #333333; box-shadow: 3px 3px 5px #C0C0C0; margin: 30px;">
             <div class="card-body">
                 <div>
                     <span class="badge badge-secondary" th:text="${meeting.location}"></span>

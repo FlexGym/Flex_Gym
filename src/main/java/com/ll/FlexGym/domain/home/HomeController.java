@@ -22,8 +22,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String showMain() {
-//        if (rq.isLogout()) return "redirect:/usr/main/home";
-
         if (rq.isLogout()) return "redirect:/usr/main/home";
 
         return "redirect:/usr/main/home";
@@ -38,9 +36,6 @@ public class HomeController {
         if(!il.isEmpty()) {
             model.addAttribute("Information", il);
         }
-//        Information information = new Information();
-//        information.getVideoThumnailUrl();
-//        information.getVideoId();
 
         return "usr/main/home";
     }
