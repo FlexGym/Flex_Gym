@@ -136,7 +136,7 @@ public class MeetingController {
         List<ChatMember> chatMemberList = chatMemberService.findByChatRoomId(roomId);
 
         // 참가하지 않은 멤버의 URL 차단
-        List<ChatMember> chatMembers = chatMemberService.findByChatRoomIdAndChatMember(roomId, member.getId());
+        List<ChatMember> chatMembers = chatMemberService.findByChatRoomOwnerIdAndChatMember(roomId, member.getId());
         if (chatMembers == null) {
             return rq.historyBack("해당 방에 참가하지 않았습니다.");
         }
