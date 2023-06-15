@@ -76,10 +76,10 @@ public class MemberController {
     public String showMe(Model model, @AuthenticationPrincipal SecurityMember member) {
         Long memberId = member.getId();
 
-        List<Board> myBoards = boardService.getListForMember(memberId, member.getId());
-        List<Comment> myComments = commentService.getListForMember(memberId, member.getId());
-        List<Meeting> myMeetings = meetingService.getListForMember(memberId, member.getId());
-        List<BoardLike> myBoardLikes = boardLikeService.getListForMember(memberId, member.getId());
+        List<Board> myBoards = boardService.getListForMemberLimit(memberId, member.getId());
+        List<Comment> myComments = commentService.getListForMemberLimit(memberId, member.getId());
+        List<Meeting> myMeetings = meetingService.getListForMemberLimit(memberId, member.getId());
+        List<BoardLike> myBoardLikes = boardLikeService.getListForMemberLimit(memberId, member.getId());
         List<Favorite> myFavoriteInfo = favoriteService.getFavoriteMemberId(member.getId());
 
         model.addAttribute("myBoards", myBoards);

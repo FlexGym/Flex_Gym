@@ -46,7 +46,7 @@
                         </div>
                         <a th:href="@{|/usr/board/${@rq.member.id}/boardList|}" th:if="${@rq.login}">
                             <div class="mt-2">
-                                <span th:each="board, iterStat : ${myBoards}" th:limit="3">
+                                <span th:each="board, iterStat : ${myBoards}">
                                     <span th:text="${board.title}"></span>
                                     <br th:unless="${iterStat.last}"/>
                                 </span>
@@ -78,7 +78,7 @@
                         </div>
                         <a th:href="@{|/usr/board/${@rq.member.id}/boardLikeList|}" th:if="${@rq.login}">
                             <div class="mt-2">
-                                <span th:each="boardLike, iterStat : ${myBoardLikes}" th:limit="3">
+                                <span th:each="boardLike, iterStat : ${myBoardLikes}">
                                     <span th:text="${boardLike.board.title}"></span>
                                     <br th:unless="${iterStat.last}"/>
                                 </span>
@@ -114,7 +114,7 @@
                         </div>
                         <a th:href="@{|/usr/information/favorite/${@rq.member.getId()}|}" th:if="${@rq.login}">
                             <div class="mt-2">
-                                <span th:each="favorite, iterStat : ${myFavoriteInfo}" th:limit="3">
+                                <span th:each="favorite, iterStat : ${myFavoriteInfo}">
                                     <span th:text="${favorite.information.title}"></span>
                                     <br th:unless="${iterStat.last}"/>
                                 </span>

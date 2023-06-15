@@ -21,9 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -117,6 +115,22 @@ public class BoardService {
         }
 
         return boardRepository.findByMember(foundMember);
+    }
+
+    public List<Board> getListForMemberLimit(Long memberId, Long currentMemberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        Member foundMember = findByMemberId(member, currentMemberId);
+
+        if (foundMember == null) {
+            return null;
+        }
+
+        List<Board> boardList = boardRepository.findByMember(foundMember);
+        Collections.sort(boardList, Comparator.comparing(Board::getCreateDate).reversed());
+
+        int limit = 5;
+        int size = Math.min(boardList.size(), limit);
+        return boardList.subList(0, size);
     }
 
 

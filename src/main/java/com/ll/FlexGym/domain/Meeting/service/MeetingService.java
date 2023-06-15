@@ -1,6 +1,7 @@
 package com.ll.FlexGym.domain.Meeting.service;
 
 import com.ll.FlexGym.domain.Board.entity.Board;
+import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Meeting.repository.MeetingRepository;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
@@ -14,10 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -115,6 +113,24 @@ public class MeetingService {
         return meetingRepository.findByMember(foundMember);
     }
 
+    /**
+     * 마이페이지에 보여주기 위하여 Limit 제한으로 목록 가져오기
+     */
+    public List<Meeting> getListForMemberLimit(Long memberId, Long currentMemberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        Member foundMember = findByMemberId(member, currentMemberId);
+
+        if (foundMember == null) {
+            return null;
+        }
+
+        List<Meeting> meetingList = meetingRepository.findByMember(foundMember);
+        Collections.sort(meetingList, Comparator.comparing(Meeting::getCreateDate).reversed());
+
+        int limit = 5;
+        int size = Math.min(meetingList.size(), limit);
+        return meetingList.subList(0, size);
+    }
 
     private Member findByMemberId(Optional<Member> member, Long memberId) {
         if (member.isPresent()) {
