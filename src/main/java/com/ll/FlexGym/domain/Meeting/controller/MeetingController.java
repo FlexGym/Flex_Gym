@@ -148,6 +148,6 @@ public class MeetingController {
 
         model.addAttribute(meetingList);
 
-        return "/usr/meeting/myMeeting_list";
+        return "usr/meeting/myMeeting_list";
     }
 }
