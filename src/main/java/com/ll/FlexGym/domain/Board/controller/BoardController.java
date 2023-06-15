@@ -88,6 +88,7 @@ public class BoardController {
         return "usr/board/popular_board_list";
     }
 
+
     @GetMapping("/board/detail/{id}")
     public String detail(Model model, @PathVariable("id") Long id, CommentForm commentForm){
         Board board = this.boardService.getBoard(id);
@@ -186,15 +187,6 @@ public class BoardController {
         this.boardService.delete(board);
         return "redirect:/usr/board/list";
     }
-//    @PreAuthorize("isAuthenticated()")
-//    @GetMapping("/board/like/{id}")
-//    public String boardLike(Principal principal, @PathVariable("id") Integer id){
-//        Board board = this.boardService.getBoard(id);
-//        Member member = this.memberService.getMember(principal.getName());
-//        this.boardService.likeBoard(board,member);
-//        return String.format("redirect:/usr/board/detail/%s",id);
-//
-//    }
 
 
     @PreAuthorize("isAuthenticated()")

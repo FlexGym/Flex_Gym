@@ -27,8 +27,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/usr/member")
@@ -42,11 +44,19 @@ public class MemberController {
     private final FavoriteService favoriteService;
     private final Rq rq;
 
-    @PreAuthorize("isAnonymous()")
+
     @GetMapping("/login")
-    public String showLogin() {
+    public String showLogin(@AuthenticationPrincipal SecurityMember member) {
+        if (member != null){
+            return rq.redirectWithMsg("/usr/main/home", "현재 로그인 상태입니다.");
+        }
         return "usr/member/login";
     }
+    @GetMapping("/home")
+    public String showHome() {
+        return "usr/main/home"; // Return the home page template
+    }
+
 
     @PreAuthorize("isAuthenticated()")
     public String showMe(Model model) {
@@ -90,5 +100,6 @@ public class MemberController {
 
         return "usr/member/me";
     }
+
 
 }
