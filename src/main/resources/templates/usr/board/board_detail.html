@@ -26,16 +26,13 @@
 <main layout:fragment="main">
 
 
-    <div class="ui-button">
-        <!--게시글 수정-->
-        <a th:href="@{|/usr/board/modify/${board.id}|}" class="btn btn-sm btn-outline-secondary"
-           th:text="수정"></a>
+<!--    <div class="ui-button" th:if="${#authorization.expression('isAuthenticated()')}">-->
+<!--        &lt;!&ndash; 게시글 수정 &ndash;&gt;-->
+<!--        <a th:href="@{|/usr/board/modify/${board.id}|}" class="btn btn-sm btn-outline-secondary" th:text="수정"></a>-->
 
-        <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/usr/board/delete/${board.id}|}"
-           class="btn btn-sm btn-outline-secondary"
-           th:text="삭제"></a>
-
-    </div>
+<!--        <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/usr/board/delete/${board.id}|}"-->
+<!--           class="btn btn-sm btn-outline-secondary" th:text="삭제"></a>-->
+<!--    </div>-->
 
     <div class="detail">
         <h1 th:text="${board.title}"></h1>
@@ -49,17 +46,18 @@
 
         <div class="my-3">
             <a onclick="return confirm('좋아요 하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
-               th:href="@{|/usr/board/like/${board.id}|}">
+               th:href="@{|/usr/board/like/${board.id}|}" th:if="${#authorization.expression('isAuthenticated()')}">
                 좋아요
                 <span class="badge rounded-pill bg-success" th:text="${board.boardLikes.size()}"></span>
             </a>
 
-            <a th:href="@{|/usr/board/modify/${board.id}|}" class="btn btn-sm btn-outline-secondary"
-               th:text="수정"></a>
+            <div th:if="${#authorization.expression('isAuthenticated()') and board.member.username == #authentication.principal.username}">
+                <!-- 게시글 수정 -->
+                <a th:href="@{|/usr/board/modify/${board.id}|}" class="btn btn-sm btn-outline-secondary" th:text="수정"></a>
 
-            <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/usr/board/delete/${board.id}|}"
-               class="btn btn-sm btn-outline-secondary"
-               th:text="삭제"></a>
+                <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/usr/board/delete/${board.id}|}"
+                   class="btn btn-sm btn-outline-secondary" th:text="삭제"></a>
+            </div>
         </div>
 
         <h5 class="border-bottom my-3 py-2"
@@ -94,7 +92,7 @@
                 </div>
             </div>
 
-            <!-- 대댓글 반복 시작 -->
+            <!--        대댓글 반복 시작-->
             <div th:each="childComment : ${comment.childComments}">
                 <div class="card-body" style="margin-left: 30px;">
                     <div class="card-text" th:utext="${childComment.content}"></div>
@@ -106,6 +104,7 @@
 
                         <div class="badge bg-light text-dark p-2 text-start">
                             <div class="mb-2">
+
                                 <span th:if="${childComment.member != null}" th:text="${childComment.member.username}"></span>
                             </div>
                             <div th:text="${#temporals.format(childComment.createDate, 'yyyy-MM-dd HH:mm')}"></div>
@@ -117,5 +116,53 @@
                             좋아요
                             <span class="badge rounded-pill bg-success" th:text="${#lists.size(childComment.commentLikes)}"></span>
                         </a>
+
+
+
+
                         <a th:href="@{|/comment/modify/${childComment.id}|}" class="btn btn-sm btn-outline-secondary"
+                           sec:authorize="isAuthenticated()"
+                           th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == childComment.member.username}"
                            th:text="수정"></a>
+                        <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/comment/delete/${childComment.id}|}"
+                           class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                           th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == childComment.member.username}"
+                           th:text="삭제"></a>
+                    </div>
+                </div>
+            </div>
+
+            <!--         대댓글 작성 폼-->
+            <div th:if="${comment.parent == null and #authorization.expression('isAuthenticated()')}">
+                <form th:action="@{|/comment/create/${board.id}|}" method="post" class="my-3" style="margin-left: 30px;">
+                    <textarea required maxlength="200" placeholder="내용(200자 이하)" name="content" rows="2" class="form-control"></textarea>
+                    <input type="hidden" name="parentId" th:value="${comment.id}">
+                    <input type="submit" value="댓글 등록" class="btn btn-primary my-2">
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+    <!--    댓글 작성   -->
+    <div class="detail">
+        <form th:action="@{|/comment/create/${board.id}|}" th:object="${commentForm}" method="post" class="my-3">
+            <!--        <div th:replace="~{form_errors :: formErrorsFragment}"></div>-->
+
+            <textarea sec:authorize="isAnonymous()" disabled required maxlength="20000" placeholder="로그인 후 이용해주세요."
+                      th:field="*{content}" rows="10" class="form-control"></textarea>
+            <textarea sec:authorize="isAuthenticated()" required maxlength="20000" placeholder="내용(20,000자 이하)"
+                      th:field="*{content}" rows="10" class="form-control"></textarea>
+
+            <input sec:authorize="isAnonymous()" disabled type="submit" value="댓글등록" class="btn btn-primary my-2">
+            <input sec:authorize="isAuthenticated()" type="submit" value="댓글등록" class="btn btn-primary my-2">
+        </form>
+    </div>
+</main>
+
+</body>
+
+
+
+
+</html>
