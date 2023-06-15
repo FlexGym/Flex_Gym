@@ -62,9 +62,9 @@
         .recta {
             /*margin: 0 auto;*/
             margin-top: 120px;
-            width: 100px;
+            width: 200px;
             height: 100px;
-            border: 5px solid rgb(163, 151, 198);
+            border: 1px solid rgb(163, 151, 198);
             justify-content: center;
 
         }
@@ -188,7 +188,8 @@
             <div class="txt2">인기 동영상</div>
             <div class="chunk">
                 <div class="recta">
-                    <a href="https://imgbb.com/"><img src="https://file.notion.so/f/s/f1e35826-ed41-42a0-a645-d2d258907e30/Untitled.png?id=8fc69e0d-708f-4a58-9207-06c9fc912111&table=block&spaceId=063bb2d1-ee4b-4cdf-a8cb-3612352a6b48&expirationTimestamp=1686642802454&signature=3p4rzo2_rrnQY-h2gvb7iJD4BwHVa6nyK5xCWywkelM&downloadName=Untitled.png" alt="images" border="0"></a>
+                    <a th:if="${Information != null}" th:href="@{'https://www.youtube.com/watch?v=' + ${Information.get(0).getVideoId()}}">
+                        <img th:if="${Information != null}" th:src="${Information.get(0).getVideoThumnailUrl()}"></a>
                 </div>
                 <div class="dsc">
                     </br>
@@ -200,7 +201,10 @@
             <div></div>
 
             <div class="chunk">
-                <div class="recta"></div>
+                <div class="recta">
+                    <a th:if="${Information != null && Information.size() > 1}" th:href="@{'https://www.youtube.com/watch?v=' + ${Information.get(1).getVideoId()}}">
+                        <img th:if="${Information != null && Information.size() > 1}" th:src="${Information.get(1).getVideoThumnailUrl()}"></a>
+                </div>
                 <div class="dsc">
                     </br>
                     영상 2</br>

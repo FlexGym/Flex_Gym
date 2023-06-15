@@ -20,10 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @RequiredArgsConstructor
@@ -71,6 +68,37 @@ public class InformationController {
 
         return "usr/information/info";
         //y.id, title, jpg
+    }
+
+    public List<Information> showMainInfo(){
+        List<Favorite> favoriteList = favoriteService.getFavorites();
+        List<Information> informationList= new ArrayList<>();
+
+        for (Favorite favorite : favoriteList) {
+            informationList.add(favorite.getInformation());
+        }
+
+        for(Information info : informationList){
+            if(info.getStatus() == InfoStatus.WAIT){
+                informationList.remove(info);
+            }
+        }
+
+        informationService.sort(informationList);
+
+        List<Information> mainInfo = new ArrayList<>();
+
+        if(!informationList.isEmpty()){
+            int index = 0;
+            mainInfo.add(informationList.get(index++));
+            if(informationList.size()>1) {
+                mainInfo.add(informationList.get(index));
+            }
+            return mainInfo;
+        }
+
+        return mainInfo;
+
     }
 
     @GetMapping("/usr/information/favorite/{memberId}")
