@@ -1,4 +1,8 @@
 spring:
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://172.17.0.1:3306/flexGym__prod?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
