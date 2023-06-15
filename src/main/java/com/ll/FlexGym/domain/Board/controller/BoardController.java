@@ -48,9 +48,15 @@ public class BoardController {
 
 
     @GetMapping("/board/list")
-    public String list(Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Board> boardPage = boardService.getList(pageable);
+    public String list(Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                       @RequestParam(value = "kw", defaultValue = "") String kw) {
+        Page<Board> boardPage;
 
+        if (kw.isEmpty()) {
+            boardPage = boardService.getList(pageable);
+        } else {
+            boardPage = boardService.getListByCategory(pageable, kw);
+        }
 
         List<Board> boardList = boardPage.getContent();
 
@@ -62,6 +68,7 @@ public class BoardController {
         category.put(5, "식단");
 
         model.addAttribute("boardPage", boardPage);
+        model.addAttribute("kw", kw);
         model.addAttribute("boardList", boardList);
         model.addAttribute("category", category);
 
@@ -169,11 +176,13 @@ public class BoardController {
     @PostMapping("/board/modify/{id}")
     public String boardModify(@Valid BoardForm boardForm, BindingResult bindingResult,
                               Principal principal, @PathVariable("id") Long id){
-        Board board = this.boardService.getBoard(id);
+        Board board = this.boardService.getBoard(id); // board 모든
+        log.info("modify Id = {}", id);
         if(!board.getMember().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다.");
         }
-        this.boardService.modify(board, board.getCategory(), boardForm.getTitle(),boardForm.getContent());
+
+        this.boardService.modify(board, boardForm.getCategory(), boardForm.getTitle(), boardForm.getContent());
         return "redirect:/usr/board/detail/%d".formatted(id);
     }
 

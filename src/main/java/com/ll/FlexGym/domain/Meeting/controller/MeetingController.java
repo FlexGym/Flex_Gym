@@ -135,6 +135,12 @@ public class MeetingController {
         ChatRoom chatRoom = chatRoomService.findById(id);
         List<ChatMember> chatMemberList = chatMemberService.findByChatRoomId(id);
 
+        List<ChatMember> chatMemberList = chatMemberService.findByChatRoomIdAndChatMember(roomId, member.getId());
+        ChatRoom chatRoom = chatRoomService.findById(roomId);
+
+        if (chatMemberList == null) {
+            return rq.historyBack("해당 방에 참가하지 않았습니다.");
+        }
         model.addAttribute("chatRoom", chatRoom);
         model.addAttribute("chatMemberList", chatMemberList);
         model.addAttribute("KICKED", KICKED);

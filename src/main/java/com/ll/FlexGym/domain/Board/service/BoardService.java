@@ -65,6 +65,7 @@ public class BoardService {
         }
     }
 
+    @Transactional
     public void modify(Board board,String category, String title, String content) {
         board.updateCategory(category);
         board.updateTitle(title);

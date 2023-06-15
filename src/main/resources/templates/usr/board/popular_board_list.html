@@ -16,6 +16,83 @@
             margin-right: 10px;
             margin-top: 10px;
         }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .search-bar {
+            margin-left: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 600px;
+        }
+
+        .search-bar input[type="text"] {
+            margin-left: 5px;
+            border: 2px solid #f1f1f1;
+            background-color: transparent;
+            border-radius: 5px;
+            outline: none;
+            width: 500px;
+            padding: 5px;
+        }
+
+        .search-bar input[type="submit"] {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-bar button[type="submit"] {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .cate-area {
+            padding: 5px 0 2px;
+            overflow: hidden;
+            border-bottom: 1px solid #ebebeb;
+        }
+        .custom-link {
+            padding: 8px 16px;
+            border: 2px solid #f1f1f1;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .custom-button {
+            margin-right: 10px;
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
     </style>
 
 </head>
@@ -24,30 +101,39 @@
 
 <main layout:fragment="main">
 
+    <div style="display: flex; justify-content: left; margin-left: 2cm; margin-top: 1cm; ">
+        <h3 class="w-full text-base font-semibold sm:text-xl" style="font-size: 24px;">
+            커뮤니티<br>
+            <span style="font-size: 13px;">좋은 운동 정보를 공유해주세요.</span>
+        </h3>
+    </div>
 
-        <div style="display: flex; justify-content: center;">
-            <h3>카테고리에 따라 게시글을 확인하세요.</h3>
-        </div>
-        <br>
-        <div style="display: flex; justify-content: center;">
-            <ul>
-                <li th:each="entry : ${category}" style="display: inline-block; margin-right: 40px;">
-                    <a th:href="@{|/usr/board/list?kw=${entry.key}|}" th:text="${entry.value}"></a>
-                </li>
-            </ul>
-        </div>
-        <br>
-        <!-- 인기글보기 버튼 -->
-        <div style="display: flex; justify-content: center;">
-            <a th:href="@{/usr/board/list}" class="btn btn-primary" style="margin-right: 40px;">모든 게시글</a>
+    <div style="display: flex; justify-content: left; margin-left: 1.5cm;">
+        <ul style="list-style: none; display: flex; justify-content: center; margin-top: 20px;">
+            <li th:each="entry : ${category}" style="margin-right: 10px;">
+                <a th:href="@{|/usr/board/list?kw=${entry.key}|}" class="custom-link">
+                    <span th:text="${entry.value}"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
-            <a th:href="@{/usr/board/popular}" class="btn btn-primary">인기 게시글</a>
-        </div>
+    <!-- 인기글보기 버튼 -->
+    <div style="display: flex; justify-content: left; margin-top: 0.5cm; margin-left: 1.5cm;">
+        <a th:href="@{/usr/board/list}" class="custom-button">
+            모든 게시글
+        </a>
+        <a th:href="@{/usr/board/popular}" class="custom-button">
+            인기 게시글
+        </a>
+    </div>
 
+    <div class="header">
+        <a th:href="@{/usr/board/create}" class="btn btn-primary" style="font-size: 13px">게시글 등록하기</a>
+    </div>
 
-
-    <div style="display: flex; justify-content: center;">
-        <table class="table" style="width: 1200px;">
+    <div style="display: flex; justify-content: center; margin-top: -30px;">
+        <table class="table" style="width: 95%;">
             <thead class="table-dark">
             <tr>
                 <th>제목</th>
@@ -68,13 +154,6 @@
             </tbody>
         </table>
     </div>
-
-    <div style="display: flex; justify-content: center;">
-    <a th:href="@{/usr/board/create}" class="btn btn-primary">게시글 등록하기</a>
-    </div>
 </main>
-
-
 </body>
-
 </html>

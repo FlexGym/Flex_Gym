@@ -4,46 +4,67 @@
     <title>게시글 상세</title>
 
     <style>
-        .ui-button {
-            display: flex;
-            justify-content: flex-end;
-            margin-right: 10px;
-            margin-top: 10px;
+        .title-container {
+            border: 1px solid #dddddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 5px;
         }
-
-        .detail {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .title-text {
+            text-align: left;
+        }
+        .info-container {
+            border: 1px solid #dddddd;
+            border-radius: 10px;
+            padding: 5px;
             margin-top: 50px;
-
+            font-size: 13px;
+            width: 150px;
         }
+        .category-container {
+            border: 1px solid #dddddd;
+            margin-left: auto;
+            text-align: center;
+            border-radius: 10px;
+            padding: 5px;
+            margin-top: 5px;
+            font-size: 13px;
+            width: 150px;
+            background-color: darkslateblue;
+        }
+        .content-container{
+            border: 1px solid #dddddd;
+            background-color: darkslateblue;
+            margin-left: auto;
+            height: calc(100vh - 500px);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
     </style>
 </head>
 
 <body>
 
 <main layout:fragment="main">
+    <div class="info-container">
+        <div th:text="${board.member.username}"></div>
+        <div th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+    </div>
+    <div class="title-container">
+        <div class="category-container">
+            <div th:text="${board.category == '1' ? '운동일지' : (board.category == '2' ? '상체운동' : (board.category == '3' ? '하체운동' : (board.category == '4' ? '바디프로필' : (board.category == '5' ? '식단' : ''))))}"></div>
+        </div>
+        <h1 class="title-text" th:text="${board.title}"></h1>
+    </div>
 
-
-<!--    <div class="ui-button" th:if="${#authorization.expression('isAuthenticated()')}">-->
-<!--        &lt;!&ndash; 게시글 수정 &ndash;&gt;-->
-<!--        <a th:href="@{|/usr/board/modify/${board.id}|}" class="btn btn-sm btn-outline-secondary" th:text="수정"></a>-->
-
-<!--        <a onclick="return confirm('정말로 삭제하시겠습니까?');" th:href="@{|/usr/board/delete/${board.id}|}"-->
-<!--           class="btn btn-sm btn-outline-secondary" th:text="삭제"></a>-->
-<!--    </div>-->
+    <div>
+        <div class="content-container" th:text="${board.content}"></div>
+    </div>
 
     <div class="detail">
-        <h1 th:text="${board.title}"></h1>
-        <div th:text="${board.member.username}"></div>
-        <div th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></div><br><br>
-        <div>게시글 내용</div>
-        <div th:text="${board.content}"></div><br><br>
-
-        <div>카테고리</div>
-        <div th:text="${board.category == '1' ? '운동일지' : (board.category == '2' ? '상체운동' : (board.category == '3' ? '하체운동' : (board.category == '4' ? '바디프로필' : (board.category == '5' ? '식단' : ''))))}"></div><br><br>
-
         <div class="my-3">
             <a onclick="return confirm('좋아요 하시겠습니까?');" class="btn btn-sm btn-outline-secondary"
                th:href="@{|/usr/board/like/${board.id}|}" th:if="${#authorization.expression('isAuthenticated()')}">
@@ -116,9 +137,6 @@
                             좋아요
                             <span class="badge rounded-pill bg-success" th:text="${#lists.size(childComment.commentLikes)}"></span>
                         </a>
-
-
-
 
                         <a th:href="@{|/comment/modify/${childComment.id}|}" class="btn btn-sm btn-outline-secondary"
                            sec:authorize="isAuthenticated()"
