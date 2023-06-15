@@ -203,7 +203,7 @@
             <div class="chunk">
                 <div class="recta">
                     <a th:if="${Information != null && Information.size() > 1}" th:href="@{'https://www.youtube.com/watch?v=' + ${Information.get(1).getVideoId()}}">
-                        <img th:if="${Information != null && Information.size() > 1}" th:src="${Information.get(1).getVideoThumnailUrl()}">
+                        <img th:if="${Information != null && Information.size() > 1}" th:src="${Information.get(1).getVideoThumnailUrl()}"></a>
                 </div>
                 <div class="dsc">
                     </br>
