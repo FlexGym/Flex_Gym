@@ -7,18 +7,18 @@ import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.BoardLike.repository.BoardLikeRepository;
 import com.ll.FlexGym.domain.ChatMember.entity.ChatMember;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
+import com.ll.FlexGym.domain.Meeting.entity.Meeting;
+import com.ll.FlexGym.domain.Meeting.entity.SearchQuery;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.repository.MemberRepository;
 import com.ll.FlexGym.global.exception.DataNotFoundException;
 import com.ll.FlexGym.global.rq.Rq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
@@ -154,4 +154,10 @@ public class BoardService {
     }
 
 
+    public Page<Board> searchBoard(String keyword, Pageable pageable) {
+        SearchQuery searchQuery = new SearchQuery(keyword);
+        Page<Board> boards = boardRepository.findByTitleContainingIgnoreCase(searchQuery.getValue(), pageable);
+
+        return boards;
+    }
 }

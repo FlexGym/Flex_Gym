@@ -1,10 +1,12 @@
 package com.ll.FlexGym.domain.Board.repository;
 
 import com.ll.FlexGym.domain.Board.entity.Board;
+import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -39,4 +41,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findByMember(Member member);
 
     Page<Board> findByCategory(String category, Pageable pageable);
+
+
+    Page<Board> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
 }

@@ -15,6 +15,34 @@
             margin-right: 10px;
             margin-top: 10px;
         }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .search-bar input[type="text"] {
+            margin-left: 5px;
+        }
+
+        .search-bar input[type="submit"] {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 
 </head>
@@ -22,6 +50,15 @@
 <body>
 
 <main layout:fragment="main">
+
+    <div class="search-container">
+        <div class="search-bar">
+            <form th:action="@{/usr/board/search}" method="get">
+                <input type="text" name="keyword" placeholder="검색어를 입력하세요">
+                <button type="submit" class="search-button">검색</button>
+            </form>
+        </div>
+    </div>
 
     <div style="display: flex; justify-content: center;">
         <h3>카테고리에 따라 게시글을 확인하세요.</h3>
@@ -49,17 +86,17 @@
                 <th>제목</th>
                 <th>작성일시</th>
                 <th>작성자</th>
-                <th>좋아요 수</th> <!-- 추가 -->
+                <th>좋아요 수</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="board, loop : ${boardList}">
+            <tr th:each="board : ${boardList}">
                 <td>
                     <a th:href="@{|/usr/board/detail/${board.id}|}" th:text="${board.title}"></a>
                 </td>
                 <td th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd')}"></td>
                 <td th:text="${board.member.username}"></td>
-                <td th:text="${#lists.size(board.boardLikes)}"></td> <!-- 추가 -->
+                <td th:text="${#lists.size(board.boardLikes)}"></td>
             </tr>
             </tbody>
         </table>
@@ -72,7 +109,8 @@
             <a th:href="@{|/usr/board/list?page=${boardPage.previousPageable().pageNumber}|}">(Previous)</a>
         </div>
 
-        <div th:each="pageNumber : ${#numbers.sequence(0, boardPage.totalPages - 1)}" th:class="${boardPage.number eq pageNumber} ? 'current' : ''">
+        <div th:each="pageNumber : ${#numbers.sequence(0, boardPage.totalPages - 1)}"
+             th:class="${boardPage.number eq pageNumber} ? 'current' : ''">
             <a th:href="@{|/usr/board/list?page=${pageNumber}|}" th:text="${pageNumber + 1}" style="margin-right: 5px;"></a>
         </div>
 
@@ -81,14 +119,6 @@
         </div>
     </div>
 
-    <br>
-    <div style="display: flex; justify-content: center;">
-    <a th:href="@{/usr/board/create}" class="btn btn-primary">게시글 등록하기</a>
-    </div>
-
 </main>
-
-
 </body>
-
 </html>
