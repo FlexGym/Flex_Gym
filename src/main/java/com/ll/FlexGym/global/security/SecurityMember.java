@@ -1,27 +1,30 @@
 package com.ll.FlexGym.global.security;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 
 @Getter
-@Builder
-@AllArgsConstructor
-public class SecurityMember implements UserDetails {
+public class SecurityMember extends User implements OAuth2User {
 
     private Long id;
     private String username;
     private String password;
 
+    public SecurityMember(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, authorities);
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("MEMBER"));
+    public Map<String, Object> getAttributes() {
+        return null;
     }
 
     @Override
@@ -52,5 +55,10 @@ public class SecurityMember implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return username;
     }
 }

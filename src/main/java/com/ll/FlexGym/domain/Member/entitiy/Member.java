@@ -3,7 +3,6 @@ package com.ll.FlexGym.domain.Member.entitiy;
 import com.ll.FlexGym.domain.Favorite.entity.Favorite;
 import com.ll.FlexGym.global.baseEntity.BaseEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,6 +25,7 @@ public class Member extends BaseEntity {
 
     private String username;
     private String password;
+    private String providerTypeCode;
 
     @OneToMany(mappedBy = "member", fetch = LAZY)
     private List<Favorite> favorites;

@@ -36,6 +36,7 @@ public class NotProd {
                 Member memberUser2 = memberService.join("user2", "1234").getData();
                 Member memberUser3 = memberService.join("user3", "1234").getData();
                 Member memberUser4 = memberService.join("user4", "1234").getData();
+                Member memberUser5ByKakao = memberService.whenSocialLogin("KAKAO", "KAKAO__2844575793").getData();
 
                 Meeting meeting1 = meetingService.create("오늘 한강에서 러닝하실 분 구합니다!!",
                         memberUser1, 8, "용산구", "2023-07-08", "14:00",

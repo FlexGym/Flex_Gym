@@ -27,7 +27,7 @@ public class MemberService {
 
     @Transactional
     public RsData<Member> join(String username, String password) {
-        return join("Flex_Gym", username, password);
+        return join("FlexGym", username, password);
     }
 
     private RsData<Member> join(String providerTypeCode, String username, String password) {
@@ -39,6 +39,7 @@ public class MemberService {
 
         Member member = Member
                 .builder()
+                .providerTypeCode(providerTypeCode)
                 .username(username)
                 .password(password)
                 .build();
