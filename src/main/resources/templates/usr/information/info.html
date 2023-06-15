@@ -11,7 +11,8 @@
         <div class="card items-center text-center" th:each="loop : ${informationList}" style="margin-left: 20px; margin-top: 50px; width: 230px; border: 1px solid #dddddd;">
             <img th:src="${loop.videoThumnailUrl}" class="card-img-top" alt="" width="230px" height="100px" style="border-radius:15px;">
             <div class="card-body">
-                <h3 class="card-title" th:text="${loop.title}">운동영상</h3>
+                <h3 class="card-title" th:text="${loop.title}" style="font-size: 15px">운동영상</h3>
+                <hr>
                 <p class="card-text" th:text="${loop.content}"></p>
                 <!--아래 버튼에서 즐겨찾기확인이 필요해-->
 <!--                <form action="/usr/information/favorites/add" mathod="post" style="display: flex; justify-content: end; margin-right: 5px;">-->

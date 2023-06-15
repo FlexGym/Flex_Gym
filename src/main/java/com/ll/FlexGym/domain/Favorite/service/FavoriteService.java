@@ -79,6 +79,10 @@ public class FavoriteService {
     public List<Favorite> getFavoriteMemberId(Long memberId){
         return favoriteRepository.findByMemberId(memberId);
     }
+    public List<Favorite> getFavorites(){
+        List<Favorite> fl = favoriteRepository.findAll();
+        return fl;
+    }
 
 
 }
