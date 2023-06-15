@@ -46,7 +46,10 @@
                         </div>
                         <a th:href="@{|/usr/board/${@rq.member.id}/boardList|}" th:if="${@rq.login}">
                             <div class="mt-2">
-                                <span></span>
+                                <span th:each="board, iterStat : ${myBoards}" th:limit="3">
+                                    <span th:text="${board.title}"></span>
+                                    <br th:unless="${iterStat.last}"/>
+                                </span>
                             </div>
                         </a>
                     </div>
@@ -75,7 +78,10 @@
                         </div>
                         <a th:href="@{|/usr/board/${@rq.member.id}/boardLikeList|}" th:if="${@rq.login}">
                             <div class="mt-2">
-                                <span></span>
+                                <span th:each="boardLike, iterStat : ${myBoardLikes}" th:limit="3">
+                                    <span th:text="${boardLike.board.title}"></span>
+                                    <br th:unless="${iterStat.last}"/>
+                                </span>
                             </div>
                         </a>
                     </div>
@@ -108,7 +114,10 @@
                         </div>
                         <a th:href="@{|/usr/information/favorite/${@rq.member.getId()}|}" th:if="${@rq.login}">
                             <div class="mt-2">
-                                <span></span>
+                                <span th:each="favorite, iterStat : ${myFavoriteInfo}" th:limit="3">
+                                    <span th:text="${favorite.information.title}"></span>
+                                    <br th:unless="${iterStat.last}"/>
+                                </span>
                             </div>
                         </a>
                     </div>
@@ -137,7 +146,10 @@
                         </div>
                         <a th:href="@{|/comment/${@rq.member.id}/commentList|}" th:if="${@rq.login}">
                             <div class="mt-2">
-                                <span></span>
+                                <span th:each="comment, iterStat : ${myComments}" th:limit="3">
+                                    <span th:text="${comment.content}"></span>
+                                    <br th:unless="${iterStat.last}"/>
+                                </span>
                             </div>
                         </a>
                     </div>
@@ -166,7 +178,10 @@
                         </div>
                         <a th:href="@{|/usr/meeting/${@rq.member.id}/meetingList|}" th:if="${@rq.login}">
                             <div class="mt-2">
-                                <span></span>
+                                <span th:each="meeting, iterStat : ${myMeetings}" th:limit="3">
+                                    <span th:text="${meeting.subject}"></span>
+                                    <br th:unless="${iterStat.last}"/>
+                                </span>
                             </div>
                         </a>
                     </div>
