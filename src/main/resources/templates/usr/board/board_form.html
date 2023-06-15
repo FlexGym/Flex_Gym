@@ -24,14 +24,16 @@
         </div>
         <div class="mb-3">
             <label for="title" class="form-label">제목</label>
-            <input type="text" th:field="*{title}" class="form-control">
+            <input type="text" th:field="*{title}" class="form-control" style="width: 1000px;">
         </div>
 
         <div class="mb-3">
             <div>&lt;카테고리&gt;</div>
-            <div th:each="cate : ${category}">
-                <input type="radio" th:field="*{category}" th:value="${cate.key}" />
-                <label th:for="${#ids.prev('category')}" th:text="${cate.value}" />
+            <div>
+        <span th:each="cate : ${category}" class="form-check form-check-inline">
+            <input type="radio" th:field="*{category}" th:value="${cate.key}" class="form-check-input" />
+            <label th:for="${#ids.prev('category')}" th:text="${cate.value}" class="form-check-label" />
+        </span>
             </div>
         </div>
 
@@ -39,7 +41,9 @@
             <label for="content" class="form-label">내용</label>
             <textarea th:field="*{content}" class="form-control" rows="14" style="width: 1000px;"></textarea>
         </div>
+        <div class="mb-3">
         <input type="submit" value="등록하기" class="btn btn-primary my-2">
+        </div>
     </form>
 </main>
 
