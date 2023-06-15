@@ -42,6 +42,20 @@ public class InformationService {
     }
 
     @Transactional
+    public Information createProd(String videoId, String title, String videoThumnailUrl, InfoStatus status){
+        Information information = Information
+                .builder()
+                .videoId(videoId)
+                .title(title)
+                .videoThumnailUrl(videoThumnailUrl)
+                .status(status)
+                .build();
+        informationRepository.save(information);
+
+        return information;
+    }
+
+    @Transactional
     public Information create(Long id, String content){
         Optional<Information> oi = informationRepository.findById(id);
         Information infoData = null;

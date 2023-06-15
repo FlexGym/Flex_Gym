@@ -3,6 +3,7 @@ package com.ll.FlexGym.global.init;
 import com.ll.FlexGym.domain.Board.service.BoardService;
 import com.ll.FlexGym.domain.ChatRoom.entity.ChatRoom;
 import com.ll.FlexGym.domain.ChatRoom.service.ChatRoomService;
+import com.ll.FlexGym.domain.Information.entity.InfoStatus;
 import com.ll.FlexGym.domain.Information.entity.Information;
 import com.ll.FlexGym.domain.Information.service.InformationService;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
@@ -91,6 +92,8 @@ public class NotProd {
                 Information information3 = informationService.create("gMaB-fG4u4g","전신 다이어트 최고의 운동 [칼소폭 찐 핵핵매운맛]","https://i.ytimg.com/vi/gMaB-fG4u4g/0.jpg");
                 Information information4 = informationService.create("0uixp1vmKKY","최초공개 흑자헬스 운동영상 - 스쾃","https://i.ytimg.com/vi/0uixp1vmKKY/0.jpg");
                 Information information5 = informationService.create("Hx8Lc_0hUaI","운동할 시간이 없다는 사람에게 보여주세요... 제발","https://i.ytimg.com/vi/Hx8Lc_0hUaI/0.jpg");
+                Information information6 = informationService.createProd("Hx8Lc_0hUaI","6번째 데이터입니다","https://i.ytimg.com/vi/Hx8Lc_0hUaI/0.jpg", InfoStatus.ON);
+                Information information7 = informationService.createProd("Hx8Lc_0hUaI","7번째 데이터입니다","https://i.ytimg.com/vi/Hx8Lc_0hUaI/0.jpg", InfoStatus.ON);
 
                 boardService.create("오늘도 운동 열심히!","1","꾸준히 하는 것이 중요합니다~", memberUser1);
                 boardService.create("상체상체상체","2","상체운동최고", memberUser2);
