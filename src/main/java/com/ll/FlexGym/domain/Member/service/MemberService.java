@@ -39,6 +39,7 @@ public class MemberService {
 
         Member member = Member
                 .builder()
+                .providerTypeCode(providerTypeCode)
                 .username(username)
                 .password(password)
                 .build();

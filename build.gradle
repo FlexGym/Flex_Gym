@@ -48,6 +48,8 @@ dependencies {
 
 	implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.4'
 	implementation 'com.google.apis:google-api-services-youtube:v3-rev222-1.25.0'
+
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 tasks.named('test') {
