@@ -31,11 +31,15 @@ public class FavoriteController {
         // 예를 들어, MemberService, InformationService를 통해 가져올 수 있다고 가정한다.
         // 좋아요를 눌렀을 때 isFavorite을 통해 해당 유저의favorite이 이미 있는지
 
-        if(!favoriteService.isFavorite(member.getId(), infoId)){
-            log.info("isFavorite = {}", favoriteService.isFavorite(member.getId(), infoId));
-            favoriteService.addFavorite(member.getId(), infoId);
-        }else{
-            favoriteService.removeFavorite(member.getId(), infoId);
+        if(member==null){
+            return "redirect:/usr/information/info";
+        }else {
+            if (!favoriteService.isFavorite(member.getId(), infoId)) {
+                log.info("isFavorite = {}", favoriteService.isFavorite(member.getId(), infoId));
+                favoriteService.addFavorite(member.getId(), infoId);
+            } else {
+                favoriteService.removeFavorite(member.getId(), infoId);
+            }
         }
         return "redirect:/usr/information/info";
     }
