@@ -143,7 +143,7 @@ public class CommentController {
 
         model.addAttribute(commentList);
 
-        return "/usr/comment/myComment_list";
+        return "usr/comment/myComment_list";
     }
 
 }

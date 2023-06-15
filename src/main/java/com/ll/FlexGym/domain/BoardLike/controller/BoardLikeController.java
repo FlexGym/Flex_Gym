@@ -42,7 +42,7 @@ public class BoardLikeController {
         model.addAttribute(boardLikeList);
         model.addAttribute(boardList);
 
-        return "/usr/board/myBoardLike_list";
+        return "usr/board/myBoardLike_list";
     }
 
 }

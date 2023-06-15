@@ -120,7 +120,7 @@ public class InformationController {
         if (video.isPresent()) {
             model.addAttribute("video", video.get());
         }
-        return "/usr/information/adminToInfo_form";
+        return "usr/information/adminToInfo_form";
     }
 
 

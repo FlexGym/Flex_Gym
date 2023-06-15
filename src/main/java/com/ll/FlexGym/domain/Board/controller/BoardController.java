@@ -249,6 +249,6 @@ public class BoardController {
 
         model.addAttribute(boardList);
 
-        return "/usr/board/myBoard_list";
+        return "usr/board/myBoard_list";
     }
 }
