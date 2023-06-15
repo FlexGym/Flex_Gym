@@ -6,8 +6,8 @@
         .top-buttons {
             display: flex;
             justify-content: flex-end;
-            margin-right: 10px;
-            margin-top: 10px;
+            margin-right: 20px;
+            margin-top: 20px;
         }
 
         .detail {
@@ -34,7 +34,7 @@
 <main layout:fragment="main">
     <div class="top-buttons" th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}">
         <a th:href="@{|/usr/meeting/chatMembers/${meeting.id}|}" class="btn">
-            <i class="fa-solid fa-user"></i>
+            <i class="fa-solid fa-user-group"></i>
         </a>
         <a th:href="@{|/usr/meeting/modify/${meeting.id}|}" class="btn">수정</a>
         <form th:action="@{|/usr/meeting/${meeting.id}|}" method="post" onsubmit="if ( !confirm('모임을 삭제하시겠습니까?') ) return false; disconnect()">
@@ -45,38 +45,42 @@
 
     <div class="detail">
         <div class="card w-96 bg-base-100 shadow-xl"
-             style="background-color: #E0E0E0; color: #333333; width: 750px; box-shadow: 2px 2px 7px #C0C0C0; margin: 10px;">
-            <div class="card-body">
-                <span class="card-title" th:text="${meeting.subject}"></span>
-                <div style="align-self: flex-end">
-                    <div th:text="${meeting.member.username}" class="badge badge-outline"></div>
-                    <div th:text="${#temporals.format(meeting.createDate, 'yyyy-MM-dd HH:mm')}" style="margin-top: 10px"></div>
+             style="background-color: #E0E0E0; color: #333333; width: 800px">
+            <div style="padding: 25px; display: flex; justify-content: space-between">
+                <span th:text="${meeting.subject}" style="font-size: 22px; font-weight: 700"></span>
+                <div>
+                    <span th:text="${meeting.member.username}" class="badge badge-outline" style="margin-right: 5px"></span>
+                    <span th:text="${#temporals.format(meeting.createDate, 'yyyy-MM-dd HH:mm')}" style="font-size: 12px"></span>
                 </div>
             </div>
         </div>
 
-        <div class="box" style="color: #E0E0E0; width: 750px; border-color: #E0E0E0; border-width: 1px; border-radius: 20px">
+        <div class="box" style="color: #E0E0E0; width: 800px; border-color: #E0E0E0; border-width: 1px; border-radius: 20px">
             <div class="card-body">
-                <div>
+                <div style="font-size: 19px">
                     <i class="fa-solid fa-calendar-days"></i>
                     <span th:text="|${meeting.date}, ${meeting.time}|"></span>
                 </div>
-                <div style="margin-bottom: 30px">
+                <div style="margin-top: 5px; font-size: 19px">
                     <i class="fa-solid fa-location-dot"></i>
                     <span th:text="${meeting.location}"></span>
                 </div>
-                <div th:text="${meeting.content}" style="margin-bottom: 30px"></div>
+                <div style="margin-top: 5px; margin-bottom: 30px; font-size: 19px">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span th:text="|${meeting.capacity}명|"></span>
+                </div>
+                <div th:text="${meeting.content}" style="margin-bottom: 30px; font-size: 18px"></div>
                 <div style="align-self: flex-end">
-                    <span class="badge badge-outline" style="margin-right: 15px">현재 참여자 수</span>
-                    <span th:text="|${meeting.participantsCount} / ${meeting.capacity}|"></span>
+                    <span class="badge badge-secondary" style="margin-right: 15px; padding:18px; font-size: 18px">현재 참여자 수</span>
+                    <span th:text="|${meeting.participantsCount} / ${meeting.capacity}|" style="font-size: 19px"></span>
                 </div>
             </div>
         </div>
     </div>
     <div class="bottom-buttons">
-        <a th:if="${@rq.login} and ${@rq.getMember().username} != ${meeting.member.username}"
+        <a th:if="${@rq.login} and ${@rq.getMember().username} != ${meeting.member.username}" style="font-size: 18px"
            class="btn btn-primary btn-wide" th:href="@{|/usr/chat/rooms/${meeting.chatRoom.id}|}">참여하기</a>
-        <a th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}"
+        <a th:if="${@rq.login} and ${@rq.getMember().username} == ${meeting.member.username}" style="font-size: 18px"
            class="btn btn-primary btn-wide" th:href="@{|/usr/chat/rooms/${meeting.chatRoom.id}|}">채팅방으로 이동</a>
         <a class="btn" th:href="@{/usr/meeting/list}">목록</a>
     </div>

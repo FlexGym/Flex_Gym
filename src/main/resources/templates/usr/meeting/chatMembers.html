@@ -3,10 +3,33 @@
 <head>
     <title>참여자 목록</title>
     <style>
-        .table {
-            display: flex;
-            justify-content: center;
-            margin-top: 50px;
+        table {
+            margin-top: 20px;
+            border-top: 1px solid #E0E0E0;
+            border-collapse: collapse;
+        }
+        td, th {
+            border-bottom: 1px solid #E0E0E0;
+            text-align: center;
+        }
+        i {
+            margin-right: 7px;
+        }
+        .subject {
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .box {
+            font-size: 20px;
+            margin-left: 10px;
+        }
+        .badge-secondary {
+            padding: 15px;
+            font-weight: bold;
+        }
+        .badge-primary {
+            padding: 15px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -14,14 +37,21 @@
 <body>
 
 <main layout:fragment="main">
-    <div style="display: flex; justify-content: center;">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="subject">
+            <span class="badge badge-outline">모임명</span>
+            <span class="box" th:text="${chatRoom.meeting.subject}"></span>
+        </div>
+
+        <div class="badge badge-secondary" th:text="|${chatRoom.meeting.participantsCount} / ${chatRoom.meeting.capacity}|"></div>
+
         <table class="table">
             <thead class="table-dark">
             <tr>
-                <th>번호</th>
-                <th>아이디</th>
+                <th>입장순번</th>
+                <th>ID</th>
                 <th>입장일시</th>
-                <th>방장</th>
+                <th>강퇴</th>
             </tr>
             </thead>
             <tbody>
@@ -30,11 +60,13 @@
                 <td th:text="${chatMember.member.username}"></td>
                 <td th:text="${#temporals.format(chatMember.createDate, 'yyyy/MM/dd hh:mm')}"></td>
                 <td>
-                    <div th:if="${chatMember.chatRoom.owner.id == chatMember.member.id}" class="badge badge-primary">방장 </div>
+                    <div th:if="${chatMember.chatRoom.owner.id == chatMember.member.id}" class="badge badge-primary">
+                        <i class="fa-solid fa-crown"></i> 방장
+                    </div>
                     <form th:action="@{/usr/chat/{roomId}/kick/{memberId}(roomId=${chatRoom.id}, memberId=${chatMember.id})}" th:if="${chatMember.chatRoom.owner.id != chatMember.member.id}"
-                          method="post" onsubmit="if ( !confirm('강퇴하시겠습니까?') ) return false; disconnect()">
+                          method="post" onsubmit="if ( !confirm('해당 멤버를 강퇴하시겠습니까?\n(강퇴된 멤버는 모임에 다시 참여할 수 없습니다)') ) return false; disconnect()">
                         <input type="hidden" name="_method" value="delete">
-                        <button class="btn btn-error">강퇴</button>
+                        <button class="btn">강퇴</button>
                     </form>
                 </td>
             </tr>
