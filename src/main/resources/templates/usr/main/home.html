@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Flex Gym</title>
     <style>
+        .thumnail{
+            width: 300px;
+            height: 120px;
+            border-color: darkgray;
+            border-radius:15px;
+        }
         .banner {
             background-color: #f2f2f2;
             padding: 10px;
@@ -61,10 +67,9 @@
 
         .recta {
             /*margin: 0 auto;*/
-            margin-top: 120px;
+            margin-top: 100px;
             width: 200px;
             height: 100px;
-            border: 1px solid rgb(163, 151, 198);
             justify-content: center;
 
         }
@@ -189,7 +194,7 @@
             <div class="chunk">
                 <div class="recta">
                     <a th:if="${Information != null}" th:href="@{'https://www.youtube.com/watch?v=' + ${Information.get(0).getVideoId()}}">
-                        <img th:if="${Information != null}" th:src="${Information.get(0).getVideoThumnailUrl()}"></a>
+                        <img class="thumnail" th:if="${Information != null}" th:src="${Information.get(0).getVideoThumnailUrl()}"></a>
                 </div>
                 <div class="dsc">
                     </br>
@@ -203,7 +208,7 @@
             <div class="chunk">
                 <div class="recta">
                     <a th:if="${Information != null && Information.size() > 1}" th:href="@{'https://www.youtube.com/watch?v=' + ${Information.get(1).getVideoId()}}">
-                        <img th:if="${Information != null && Information.size() > 1}" th:src="${Information.get(1).getVideoThumnailUrl()}"></a>
+                        <img class="thumnail" th:if="${Information != null && Information.size() > 1}" th:src="${Information.get(1).getVideoThumnailUrl()}"></a>
                 </div>
                 <div class="dsc">
                     </br>
