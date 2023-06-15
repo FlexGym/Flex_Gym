@@ -13,20 +13,28 @@ import com.ll.FlexGym.global.rsData.RsData;
 import com.ll.FlexGym.global.security.SecurityMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.ll.FlexGym.domain.ChatMember.entity.ChatMemberType.KICKED;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Controller
 @RequestMapping("/usr/meeting")
 @RequiredArgsConstructor
+@Slf4j
 public class MeetingController {
 
     private final Rq rq;
@@ -127,6 +135,12 @@ public class MeetingController {
         ChatRoom chatRoom = chatRoomService.findById(id);
         List<ChatMember> chatMemberList = chatMemberService.findByChatRoomId(id);
 
+        List<ChatMember> chatMemberList = chatMemberService.findByChatRoomIdAndChatMember(roomId, member.getId());
+        ChatRoom chatRoom = chatRoomService.findById(roomId);
+
+        if (chatMemberList == null) {
+            return rq.historyBack("해당 방에 참가하지 않았습니다.");
+        }
         model.addAttribute("chatRoom", chatRoom);
         model.addAttribute("chatMemberList", chatMemberList);
         model.addAttribute("KICKED", KICKED);
@@ -149,5 +163,18 @@ public class MeetingController {
         model.addAttribute(meetingList);
 
         return "usr/meeting/myMeeting_list";
+    }
+
+
+    @GetMapping("/search")
+    public String searchMeeting(Model model, @RequestParam @Nullable String keyword,
+                                @PageableDefault(sort = "createDate", direction = DESC, size = 12) Pageable pageable){
+
+        log.info("미팅 검색 시작");
+        Page<Meeting> meetings = meetingService.searchMeeting(keyword, pageable);
+
+        model.addAttribute("paging", meetings);
+
+        return "usr/meeting/list";
     }
 }

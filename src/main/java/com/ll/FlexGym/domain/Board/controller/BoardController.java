@@ -6,14 +6,17 @@ import com.ll.FlexGym.domain.Board.service.BoardService;
 import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.BoardLike.repository.BoardLikeRepository;
 import com.ll.FlexGym.domain.Comment.entity.CommentForm;
+import com.ll.FlexGym.domain.Meeting.entity.Meeting;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.service.MemberService;
 import com.ll.FlexGym.global.rq.Rq;
 import com.ll.FlexGym.global.security.SecurityMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -25,12 +28,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.annotation.Nullable;
 import java.security.Principal;
 import java.util.*;
+
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RequestMapping("/usr")
 @RequiredArgsConstructor
 @Controller
+@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
@@ -169,11 +176,13 @@ public class BoardController {
     @PostMapping("/board/modify/{id}")
     public String boardModify(@Valid BoardForm boardForm, BindingResult bindingResult,
                               Principal principal, @PathVariable("id") Long id){
-        Board board = this.boardService.getBoard(id);
+        Board board = this.boardService.getBoard(id); // board 모든
+        log.info("modify Id = {}", id);
         if(!board.getMember().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다.");
         }
-        this.boardService.modify(board, board.getCategory(), boardForm.getTitle(),boardForm.getContent());
+
+        this.boardService.modify(board, boardForm.getCategory(), boardForm.getTitle(), boardForm.getContent());
         return "redirect:/usr/board/detail/%d".formatted(id);
     }
 
@@ -242,5 +251,19 @@ public class BoardController {
         model.addAttribute(boardList);
 
         return "usr/board/myBoard_list";
+    }
+
+    @GetMapping("/board/search")
+    public String searchMeeting(Model model, @RequestParam @Nullable String keyword,
+                                @PageableDefault(sort = "createDate", direction = DESC, size = 10) Pageable pageable){
+
+        log.info("게시판 검색 시작");
+        Page<Board> boards = boardService.searchBoard(keyword, pageable);
+        log.info("boards = {}", boards);
+
+        model.addAttribute("boardList", boards.getContent());
+        model.addAttribute("boardPage", boards);
+
+        return "usr/board/board_list";
     }
 }

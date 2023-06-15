@@ -1,17 +1,13 @@
 package com.ll.FlexGym.domain.Meeting.service;
 
-import com.ll.FlexGym.domain.Board.entity.Board;
-import com.ll.FlexGym.domain.BoardLike.entity.BoardLike;
 import com.ll.FlexGym.domain.Meeting.entity.Meeting;
+import com.ll.FlexGym.domain.Meeting.entity.SearchQuery;
 import com.ll.FlexGym.domain.Meeting.repository.MeetingRepository;
 import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.repository.MemberRepository;
 import com.ll.FlexGym.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +23,7 @@ public class MeetingService {
     public Page<Meeting> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 9, Sort.by(sorts));
+        Pageable pageable = PageRequest.of(page, 12, Sort.by(sorts));
         return meetingRepository.findAll(pageable);
     }
 
@@ -143,4 +139,10 @@ public class MeetingService {
         return null;
     }
 
+    public Page<Meeting> searchMeeting(String keyword, Pageable pageable) {
+        SearchQuery searchQuery = new SearchQuery(keyword);
+        Page<Meeting> meetings = meetingRepository.findBySubjectContainingIgnoreCase(searchQuery.getValue(), pageable);
+
+        return meetings;
+    }
 }
