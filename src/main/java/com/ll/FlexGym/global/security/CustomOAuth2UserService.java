@@ -5,17 +5,12 @@ import com.ll.FlexGym.domain.Member.entitiy.Member;
 import com.ll.FlexGym.domain.Member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
-import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
@@ -38,23 +33,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         Member member = memberService.whenSocialLogin(providerTypeCode, username).getData();
 
-        return new CustomOAuth2User(member.getUsername(), member.getPassword(), member.getGrantedAuthorities());
-    }
-}
-
-class CustomOAuth2User extends User implements OAuth2User {
-
-    public CustomOAuth2User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
-    }
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return null;
-    }
-
-    @Override
-    public String getName() {
-        return getUsername();
+        return new SecurityMember(member.getId(), member.getUsername(), member.getPassword(), member.getGrantedAuthorities());
     }
 }

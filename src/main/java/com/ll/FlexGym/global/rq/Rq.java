@@ -49,7 +49,7 @@ public class Rq {
             this.securityMember = (SecurityMember) authentication.getPrincipal();
         } else {
             this.securityMember = null;
-        }
+        } 
     }
 
 //    public boolean isAdmin() {
