@@ -24,7 +24,7 @@ spring:
             scope:
             client-name: kakao
             authorization-grant-type: authorization_code
-            redirect-uri: http://www.colikeprod.work/login/oauth2/code/kakao
+            redirect-uri: http://www.colikeprdo.work/login/oauth2/code/kakao
             client-authentication-method: POST
         provider:
           kakao:
